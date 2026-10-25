@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#022c22" />
+      <stop offset="50%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#043224" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded shield -->
+  <rect width="512" height="512" rx="108" fill="url(#bgGrad)" />
+  <rect x="20" y="20" width="472" height="472" rx="88" fill="none" stroke="url(#goldGrad)" stroke-width="8" opacity="0.8" />
+
+  <!-- School Shield Outline -->
+  <path d="M 256 70 C 370 70 410 110 410 240 C 410 370 256 440 256 440 C 256 440 102 370 102 240 C 102 110 142 70 256 70 Z"
+        fill="#032317" stroke="url(#goldGrad)" stroke-width="10" />
+
+  <!-- Torch Flame -->
+  <path d="M 256 120 C 240 145 225 170 238 190 C 246 200 256 205 256 205 C 256 205 266 200 274 190 C 287 170 272 145 256 120 Z" fill="#ef4444" />
+  <path d="M 256 135 C 246 150 238 165 246 178 C 251 184 256 188 256 188 C 256 188 261 184 266 178 C 274 165 266 150 256 135 Z" fill="#f59e0b" />
+
+  <!-- Torch Handle -->
+  <path d="M 248 200 L 264 200 L 260 250 L 252 250 Z" fill="url(#goldGrad)" />
+  <rect x="244" y="196" width="24" height="6" rx="2" fill="#fbbf24" />
+
+  <!-- Open Academic Book -->
+  <path d="M 170 280 C 210 270 250 285 256 295 C 262 285 302 270 342 280 L 342 350 C 302 340 262 355 256 365 C 250 355 210 340 170 350 Z"
+        fill="#ffffff" stroke="#d1fae5" stroke-width="4" />
+  <line x1="256" y1="295" x2="256" y2="365" stroke="#064e3b" stroke-width="4" />
+
+  <!-- Book Lines -->
+  <line x1="185" y1="300" x2="240" y2="305" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" />
+  <line x1="185" y1="316" x2="240" y2="321" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" />
+  <line x1="185" y1="332" x2="235" y2="337" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" />
+  <line x1="272" y1="305" x2="327" y2="300" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" />
+  <line x1="272" y1="321" x2="327" y2="316" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" />
+  <line x1="277" y1="337" x2="327" y2="332" stroke="#6ee7b7" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Stars -->
+  <polygon points="256,380 260,390 270,390 262,396 265,406 256,400 247,406 250,396 242,390 252,390" fill="url(#goldGrad)" />
+  <polygon points="190,360 193,368 201,368 195,373 197,381 190,376 183,381 185,373 179,368 187,368" fill="url(#goldGrad)" />
+  <polygon points="322,360 325,368 333,368 327,373 329,381 322,376 315,381 317,373 311,368 319,368" fill="url(#goldGrad)" />
+
+  <!-- DHS Text -->
+  <text x="256" y="240" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#fde047" letter-spacing="4">DADAYA</text>
+</svg>

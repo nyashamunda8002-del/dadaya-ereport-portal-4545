@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all unknown paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Connection testing endpoint
+    match /test/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Students collection
+    match /students/{studentId} {
+      allow read: if isValidId(studentId);
+      allow write: if isValidId(studentId);
+    }
+
+    // Teachers collection
+    match /teachers/{teacherId} {
+      allow read: if isValidId(teacherId);
+      allow write: if isValidId(teacherId);
+    }
+
+    // Classes collection
+    match /classes/{classId} {
+      allow read: if isValidId(classId);
+      allow write: if isValidId(classId);
+    }
+
+    // Subjects collection
+    match /subjects/{subjectId} {
+      allow read: if isValidId(subjectId);
+      allow write: if isValidId(subjectId);
+    }
+
+    // Marks collection
+    match /marks/{markId} {
+      allow read: if isValidId(markId);
+      allow write: if isValidId(markId);
+    }
+
+    // Activity Logs collection
+    match /activityLogs/{logId} {
+      allow read: if isValidId(logId);
+      allow create: if isValidId(logId);
+      allow update, delete: if false;
+    }
+
+    // Institutional Settings
+    match /settings/{settingId} {
+      allow read: if isValidId(settingId);
+      allow write: if isValidId(settingId);
+    }
+  }
+}

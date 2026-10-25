@@ -1,0 +1,6 @@
+{
+  "name": "Dadaya High School E-Report Portal",
+  "description": "Official E-Report Portal for Dadaya High School: student performance, teacher marks feeding, and administrative control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

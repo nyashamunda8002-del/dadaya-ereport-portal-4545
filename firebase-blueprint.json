@@ -1,0 +1,149 @@
+{
+  "entities": {
+    "student": {
+      "title": "Student",
+      "description": "Enrolled student at Dadaya High School",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 32, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "maxLength": 100 },
+        "surname": { "type": "string", "maxLength": 100 },
+        "classId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "className": { "type": "string", "maxLength": 100 },
+        "dob": { "type": "string", "maxLength": 20 },
+        "gender": { "type": "string", "enum": ["Male", "Female"] },
+        "status": { "type": "string", "enum": ["Active", "Inactive", "Transferred"] },
+        "email": { "type": "string", "maxLength": 120 },
+        "guardianName": { "type": "string", "maxLength": 120 },
+        "guardianPhone": { "type": "string", "maxLength": 30 },
+        "address": { "type": "string", "maxLength": 200 }
+      },
+      "required": ["id", "name", "surname", "classId", "className", "dob", "gender", "status"]
+    },
+    "teacher": {
+      "title": "Teacher",
+      "description": "Faculty teacher at Dadaya High School",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "maxLength": 100 },
+        "surname": { "type": "string", "maxLength": 100 },
+        "title": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 120 },
+        "ecNumber": { "type": "string", "maxLength": 32 },
+        "status": { "type": "string", "enum": ["Active", "On Leave"] },
+        "phone": { "type": "string", "maxLength": 30 }
+      },
+      "required": ["id", "name", "surname", "title", "email", "ecNumber", "status"]
+    },
+    "schoolClass": {
+      "title": "SchoolClass",
+      "description": "Form class stream at Dadaya High School",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "maxLength": 100 },
+        "formLevel": { "type": "string", "enum": ["Form 1", "Form 2", "Form 3", "Form 4", "Lower 6", "Upper 6"] },
+        "stream": { "type": "string", "maxLength": 50 },
+        "academicYear": { "type": "string", "maxLength": 20 },
+        "status": { "type": "string", "enum": ["Active", "Archived"] }
+      },
+      "required": ["id", "name", "formLevel", "stream", "academicYear", "status"]
+    },
+    "subject": {
+      "title": "Subject",
+      "description": "Academic course subject at Dadaya High School",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "code": { "type": "string", "maxLength": 20 },
+        "name": { "type": "string", "maxLength": 100 },
+        "department": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["Active", "Inactive"] }
+      },
+      "required": ["id", "code", "name", "department", "status"]
+    },
+    "mark": {
+      "title": "Mark",
+      "description": "Subject performance mark and percentage score",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "studentId": { "type": "string", "maxLength": 32, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "surname": { "type": "string", "maxLength": 100 },
+        "classId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "subjectId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "subjectName": { "type": "string", "maxLength": 100 },
+        "teacherId": { "type": "string", "maxLength": 64 },
+        "teacherName": { "type": "string", "maxLength": 100 },
+        "term": { "type": "string", "enum": ["Term 1", "Term 2", "Term 3"] },
+        "academicYear": { "type": "string", "maxLength": 20 },
+        "grade": { "type": "string", "maxLength": 5 },
+        "remark": { "type": "string", "maxLength": 255 },
+        "status": { "type": "string", "enum": ["Saved", "Pending", "Submitted", "Approved"] }
+      },
+      "required": ["id", "studentId", "classId", "subjectId", "term", "academicYear", "status"]
+    },
+    "activityLog": {
+      "title": "ActivityLog",
+      "description": "Audit event log for Dadaya portal operations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "user": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "action": { "type": "string", "maxLength": 200 },
+        "details": { "type": "string", "maxLength": 500 },
+        "timestamp": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "user", "role", "action", "timestamp"]
+    },
+    "schoolSettings": {
+      "title": "SchoolSettings",
+      "description": "School institutional portal configuration",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string", "maxLength": 100 },
+        "motto": { "type": "string", "maxLength": 100 },
+        "currentTerm": { "type": "string", "enum": ["Term 1", "Term 2", "Term 3"] },
+        "currentAcademicYear": { "type": "string", "maxLength": 20 },
+        "headmasterName": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 255 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["schoolName", "motto", "currentTerm", "currentAcademicYear"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/student" },
+      "description": "Student academic rosters"
+    },
+    "/teachers/{teacherId}": {
+      "schema": { "$ref": "#/entities/teacher" },
+      "description": "Faculty staff profiles"
+    },
+    "/classes/{classId}": {
+      "schema": { "$ref": "#/entities/schoolClass" },
+      "description": "Class streams"
+    },
+    "/subjects/{subjectId}": {
+      "schema": { "$ref": "#/entities/subject" },
+      "description": "Curriculum subjects"
+    },
+    "/marks/{markId}": {
+      "schema": { "$ref": "#/entities/mark" },
+      "description": "Academic marks and performance scores"
+    },
+    "/activityLogs/{logId}": {
+      "schema": { "$ref": "#/entities/activityLog" },
+      "description": "System activity logs"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/schoolSettings" },
+      "description": "Institutional configuration"
+    }
+  }
+}
