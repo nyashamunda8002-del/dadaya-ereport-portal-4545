@@ -111,23 +111,23 @@ export const AdminClassesView: React.FC = () => {
               {formClasses.map((cls) => (
                 <div
                   key={cls.id}
-                  className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-400 transition-colors flex flex-col justify-between"
+                  className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-800 transition-colors flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-slate-900">{cls.name}</span>
-                      <span className="text-[10px] uppercase font-bold text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+                      <span className="text-sm font-semibold text-stone-900">{cls.name}</span>
+                      <span className="text-[10px] font-mono uppercase font-bold text-emerald-800 tracking-wider">
                         {cls.stream}
                       </span>
                     </div>
 
-                    <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+                    <div className="mt-3 flex items-center justify-between text-xs text-stone-500 font-mono">
                       <div className="flex items-center gap-1.5">
-                        <Users className="w-4 h-4 text-emerald-600" />
-                        <span className="font-semibold text-slate-800">{cls.studentCount ?? 0}</span>
-                        <span>Enrolled</span>
+                        <Users className="w-3.5 h-3.5 text-emerald-800" />
+                        <span className="font-bold text-stone-900 tabular-nums">{cls.studentCount ?? 0}</span>
+                        <span>Candidates</span>
                       </div>
-                      <span className="text-emerald-700 font-semibold">{cls.status}</span>
+                      <span className="text-emerald-800 font-medium">{cls.status}</span>
                     </div>
                   </div>
 

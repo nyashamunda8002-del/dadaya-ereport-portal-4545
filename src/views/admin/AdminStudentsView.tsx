@@ -187,70 +187,75 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({ onOpenRepo
         </div>
       </div>
 
-      {/* Student Roster Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      {/* Student Roster Table - Academic Register */}
+      <div className="bg-white rounded-md border border-stone-200 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-[11px] font-bold">
+              <tr className="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase text-[10px] font-mono tracking-wider">
                 <th className="py-3 px-4 w-12 text-center">#</th>
-                <th className="py-3 px-4">Student ID</th>
-                <th className="py-3 px-4">Name & Surname</th>
-                <th className="py-3 px-4">Class</th>
+                <th className="py-3 px-4">Candidate ID</th>
+                <th className="py-3 px-4">Full Name</th>
+                <th className="py-3 px-4">Assigned Stream</th>
                 <th className="py-3 px-4">Date of Birth</th>
                 <th className="py-3 px-4">Gender</th>
                 <th className="py-3 px-4 text-center">Status</th>
                 <th className="py-3 px-4 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-stone-100 font-mono">
               {students.length > 0 ? (
                 students.map((st, idx) => (
-                  <tr key={st.id} className="hover:bg-emerald-50/20 transition-colors">
-                    <td className="py-3.5 px-4 text-center font-mono text-slate-400">{idx + 1}</td>
-                    <td className="py-3.5 px-4 font-mono font-bold text-emerald-950">{st.id}</td>
-                    <td className="py-3.5 px-4 font-semibold text-slate-900">
+                  <tr key={st.id} className="hover:bg-stone-50/70 transition-colors">
+                    <td className="py-2.5 px-4 text-center text-stone-400 tabular-nums">{idx + 1}</td>
+                    <td className="py-2.5 px-4 font-bold text-emerald-950">{st.id}</td>
+                    <td className="py-2.5 px-4 font-sans font-semibold text-stone-900">
                       {st.name} {st.surname}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-700">{st.className}</td>
-                    <td className="py-3.5 px-4 text-slate-500">{st.dob}</td>
-                    <td className="py-3.5 px-4 text-slate-600">{st.gender}</td>
-                    <td className="py-3.5 px-4 text-center">
+                    <td className="py-2.5 px-4 font-sans text-stone-700">{st.className}</td>
+                    <td className="py-2.5 px-4 text-stone-500 tabular-nums">{st.dob}</td>
+                    <td className="py-2.5 px-4 font-sans text-stone-600">{st.gender}</td>
+                    <td className="py-2.5 px-4 text-center">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
-                          st.status === 'Active'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-slate-100 text-slate-600'
+                        className={`inline-flex items-center gap-1.5 text-xs font-medium ${
+                          st.status === 'Active' ? 'text-emerald-800' : 'text-stone-500'
                         }`}
                       >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            st.status === 'Active' ? 'bg-emerald-600' : 'bg-stone-300'
+                          }`}
+                        />
                         {st.status}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-center">
-                      <div className="flex items-center justify-center gap-1.5">
+                    <td className="py-2.5 px-4 text-center">
+                      <div className="flex items-center justify-center gap-2 font-mono">
                         <button
                           type="button"
                           onClick={() => onOpenReportCard(st.id)}
-                          className="p-1.5 text-emerald-700 hover:text-emerald-900 hover:bg-emerald-50 rounded-lg transition-colors"
+                          className="text-xs text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
                           title="Generate Report Card"
                         >
-                          <Award className="w-4 h-4" />
+                          Report
                         </button>
+                        <span className="text-stone-300">·</span>
                         <button
                           type="button"
                           onClick={() => handleOpenEdit(st)}
-                          className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                          className="text-xs text-stone-600 hover:text-stone-900 hover:underline cursor-pointer"
                           title="Edit Student"
                         >
-                          <Edit2 className="w-4 h-4" />
+                          Edit
                         </button>
+                        <span className="text-stone-300">·</span>
                         <button
                           type="button"
                           onClick={() => setDeletingStudent(st)}
-                          className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                          className="text-xs text-red-600 hover:text-red-800 hover:underline cursor-pointer"
                           title="Deactivate / Delete Student"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          Remove
                         </button>
                       </div>
                     </td>
@@ -258,7 +263,7 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({ onOpenRepo
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-slate-400 italic">
+                  <td colSpan={8} className="py-12 text-center text-stone-400 font-sans italic">
                     No student records found matching the search criteria.
                   </td>
                 </tr>
@@ -266,9 +271,9 @@ export const AdminStudentsView: React.FC<AdminStudentsViewProps> = ({ onOpenRepo
             </tbody>
           </table>
         </div>
-        <div className="p-3.5 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
-          <span>Total Records: {students.length} students</span>
-          <span className="font-medium">Dadaya High School Academic Registry</span>
+        <div className="p-3 bg-stone-50 border-t border-stone-200 text-xs font-mono text-stone-500 flex justify-between items-center">
+          <span>Total Records: {students.length} candidates</span>
+          <span className="font-medium text-stone-600">Dadaya High School Academic Registry</span>
         </div>
       </div>
 

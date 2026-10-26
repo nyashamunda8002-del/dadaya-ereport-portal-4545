@@ -87,11 +87,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Sidebar Container */}
       <aside
-        className={`no-print fixed lg:static top-18 bottom-0 left-0 z-30 w-64 bg-[#032317] text-slate-200 border-r border-emerald-900/60 p-4 transition-transform duration-300 ease-in-out flex flex-col justify-between shrink-0 ${
+        className={`no-print fixed lg:static top-18 bottom-0 left-0 z-30 w-64 bg-[#032015] text-stone-200 border-r border-emerald-900/50 p-4 transition-transform duration-300 ease-in-out flex flex-col justify-between shrink-0 ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="space-y-1.5 overflow-y-auto">
+        <div className="space-y-1 overflow-y-auto">
+          <div className="px-3 pb-2 pt-1 text-[10px] font-mono tracking-widest text-emerald-400/80 uppercase">
+            Navigation Menu
+          </div>
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentTab === item.id;
@@ -100,13 +103,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => handleItemClick(item.id)}
-                className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all duration-150 ${
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-medium transition-colors text-left ${
                   isActive
-                    ? 'bg-emerald-600 text-white font-semibold shadow-md shadow-emerald-950/40 ring-1 ring-emerald-400/40'
-                    : 'text-emerald-100/80 hover:bg-emerald-900/40 hover:text-white'
+                    ? 'bg-emerald-800/90 text-white font-semibold border-l-2 border-emerald-400 pl-2.5'
+                    : 'text-emerald-100/70 hover:bg-emerald-900/50 hover:text-white'
                 }`}
               >
-                <Icon className={`w-4.5 h-4.5 shrink-0 ${isActive ? 'text-white' : 'text-emerald-400'}`} />
+                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-emerald-300' : 'text-emerald-500/80'}`} />
                 <span className="truncate">{item.label}</span>
               </button>
             );
@@ -114,12 +117,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* School Motto / Footer note in sidebar */}
-        <div className="pt-4 mt-4 border-t border-emerald-900/60 text-center">
-          <div className="text-[11px] font-serif-school text-emerald-300 font-bold uppercase tracking-widest">
+        <div className="pt-4 mt-4 border-t border-emerald-900/50 px-2">
+          <div className="text-[11px] font-serif-school text-emerald-200 font-bold uppercase tracking-wider">
             Dadaya High School
           </div>
-          <div className="text-[10px] text-emerald-200/60 mt-0.5 font-medium">
-            Discipline • Excellence • Future
+          <div className="text-[10px] text-emerald-300/60 mt-0.5 font-mono">
+            Est. 1934 · Zvishavane, Zimbabwe
+          </div>
+          <div className="text-[9px] text-emerald-400/50 mt-1 uppercase tracking-widest">
+            Discipline · Excellence · Future
           </div>
         </div>
       </aside>

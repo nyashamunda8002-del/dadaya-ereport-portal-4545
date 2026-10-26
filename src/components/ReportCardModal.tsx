@@ -109,8 +109,8 @@ export const ReportCardModal: React.FC<ReportCardModalProps> = ({
                 <span className="font-semibold text-slate-900">{reportCard.surname}</span>
               </div>
               <div className="flex items-baseline">
-                <span className="w-28 font-bold text-slate-700">Student ID:</span>
-                <span className="font-mono font-semibold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="w-28 font-bold text-slate-700">Candidate ID:</span>
+                <span className="font-mono font-bold text-emerald-950 tracking-wider">
                   {reportCard.studentId}
                 </span>
               </div>

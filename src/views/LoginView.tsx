@@ -1,32 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { DadayaCrest } from '../components/DadayaLogo';
+import { DadayaCrest, DadayaLogo } from '../components/DadayaLogo';
 import dataService from '../services/dataService';
 import { Student } from '../types';
 import {
   FileText,
-  TrendingUp,
-  Edit3,
-  FileSpreadsheet,
   User,
   GraduationCap,
-  Calendar,
-  CreditCard,
-  Mail,
   Lock,
   Eye,
   EyeOff,
   LogIn,
-  ArrowRight,
-  Shield,
   AlertCircle,
-  Sparkles,
   UserPlus,
-  Phone,
-  CheckCircle2,
   Wifi,
   WifiOff,
   RefreshCw,
+  Mail,
+  Shield,
+  BookOpen,
+  Building2,
+  Calendar,
 } from 'lucide-react';
 
 export const LoginView: React.FC = () => {
@@ -69,7 +63,7 @@ export const LoginView: React.FC = () => {
     const result = await dataService.syncPendingOfflineQueue();
     setIsSyncing(false);
     if (result.synced > 0) {
-      setSuccessMsg(`Successfully uploaded ${result.synced} offline student record(s) to Cloud Firestore!`);
+      setSuccessMsg(`Synchronized ${result.synced} offline student record(s) to Cloud Firestore.`);
       setTimeout(() => setSuccessMsg(null), 4000);
     }
   };
@@ -118,11 +112,11 @@ export const LoginView: React.FC = () => {
     setSuccessMsg(null);
 
     if (!studentForm.name.trim() || !studentForm.surname.trim()) {
-      setErrorMsg('Please enter your First Name and Surname.');
+      setErrorMsg('Please enter your first name and surname.');
       return;
     }
     if (!studentForm.password) {
-      setErrorMsg('Please enter your password.');
+      setErrorMsg('Please enter your candidate password.');
       return;
     }
 
@@ -144,19 +138,19 @@ export const LoginView: React.FC = () => {
     setSuccessMsg(null);
 
     if (!registerForm.name.trim() || !registerForm.surname.trim()) {
-      setErrorMsg('Please enter student First Name and Surname.');
+      setErrorMsg('Please enter the candidate first name and surname.');
       return;
     }
     if (!registerForm.classId) {
-      setErrorMsg('Please choose a class to enroll in.');
+      setErrorMsg('Please select an academic class stream.');
       return;
     }
     if (!registerForm.password || registerForm.password.length < 4) {
-      setErrorMsg('Password must be at least 4 characters long.');
+      setErrorMsg('Password must contain at least 4 characters.');
       return;
     }
     if (registerForm.password !== registerForm.confirmPassword) {
-      setErrorMsg('Passwords do not match. Please re-enter.');
+      setErrorMsg('Passwords do not match. Please verify.');
       return;
     }
 
@@ -166,7 +160,7 @@ export const LoginView: React.FC = () => {
       classId: registerForm.classId,
       password: registerForm.password,
       gender: registerForm.gender,
-      autoLogin: false, // Single-PC mode: record saved to database without entering portal
+      autoLogin: false, // Consecutive queue: do not enter portal, stay on enrollment page
     });
 
     if (res.success && res.student) {
@@ -175,10 +169,10 @@ export const LoginView: React.FC = () => {
       setEnrolledCount((prev) => prev + 1);
       setSuccessMsg(
         isOnline
-          ? `Student "${student.name} ${student.surname}" (${student.id}) enrolled successfully in ${student.className}! Ready for next student.`
-          : `Student "${student.name} ${student.surname}" (${student.id}) enrolled in Offline Mode! Stored on this PC & queued for Cloud Firestore sync.`
+          ? `Candidate ${student.name} ${student.surname} (${student.id}) enrolled into ${student.className}. Record saved to institutional database.`
+          : `Candidate ${student.name} ${student.surname} (${student.id}) enrolled in offline mode. Saved locally and queued for cloud sync.`
       );
-      // Clear form immediately so the next student can type their info
+      // Reset form so next candidate can immediately be enrolled
       setRegisterForm((prev) => ({
         name: '',
         surname: '',
@@ -191,7 +185,6 @@ export const LoginView: React.FC = () => {
       setErrorMsg(res.error);
     }
   };
-
 
   const handleTeacherSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,265 +205,164 @@ export const LoginView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4.5rem)] flex flex-col justify-between bg-emerald-950 relative overflow-hidden select-none">
-      {/* Background Ambience in Green */}
-      <div className="absolute inset-0 bg-radial from-emerald-900/50 via-[#032317] to-black pointer-events-none" />
-
-      {/* Top Portal Switcher Bar */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full px-4 pt-4 sm:pt-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 bg-[#064e3b]/85 backdrop-blur-md p-1 rounded-xl border border-emerald-700/60 shadow-lg">
-          <button
-            type="button"
-            onClick={() => {
-              setActivePortal('student');
-              setErrorMsg(null);
-            }}
-            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-              activePortal === 'student'
-                ? 'bg-emerald-600 text-white shadow-md'
-                : 'text-emerald-100 hover:text-white hover:bg-emerald-800/40'
-            }`}
-          >
-            Student Portal
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActivePortal('teacher');
-              setErrorMsg(null);
-            }}
-            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-              activePortal === 'teacher'
-                ? 'bg-emerald-600 text-white shadow-md'
-                : 'text-emerald-100 hover:text-white hover:bg-emerald-800/40'
-            }`}
-          >
-            Teacher Portal
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActivePortal('admin');
-              setErrorMsg(null);
-            }}
-            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-              activePortal === 'admin'
-                ? 'bg-amber-600 text-white shadow-md'
-                : 'text-amber-200 hover:text-white hover:bg-amber-950/40'
-            }`}
-          >
-            Admin Portal
-          </button>
-        </div>
-
-        {/* Demo Fast Login Pills */}
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-emerald-300 font-medium hidden sm:inline">1-Click Test:</span>
-          <button
-            type="button"
-            onClick={() => quickLogin('student', 'DHS001')}
-            className="px-2.5 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-200 hover:text-white transition-colors"
-          >
-            Student (Tinashe)
-          </button>
-          <button
-            type="button"
-            onClick={() => quickLogin('teacher', 'tch-moyo')}
-            className="px-2.5 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-300 hover:text-white transition-colors"
-          >
-            Teacher (Mr. Moyo)
-          </button>
-          <button
-            type="button"
-            onClick={() => quickLogin('admin')}
-            className="px-2.5 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/60 text-amber-300 hover:text-white transition-colors"
-          >
-            Administrator
-          </button>
-        </div>
-      </div>
-
-      {/* Main Split Layout */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-1">
-        {/* Left Side: Hero Info */}
-        <div className="lg:col-span-7 text-white space-y-6">
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen flex flex-col bg-[#052319] text-stone-100 selection:bg-emerald-700 selection:text-white">
+      {/* 1. Header Bar: Formal Institutional Identity */}
+      <header className="border-b border-emerald-900/60 bg-[#031d14]/90 backdrop-blur-md sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3.5">
             <DadayaCrest sizeClass="w-12 h-12" inverted={true} />
-            <div className="inline-block text-xs uppercase tracking-widest text-emerald-300 font-bold bg-emerald-950/70 border border-emerald-700/80 px-3 py-1.5 rounded-full">
-              Dadaya High School • E-Report Portal
+            <div>
+              <div className="font-serif-school font-bold text-base sm:text-lg text-white tracking-wider leading-tight">
+                DADAYA HIGH SCHOOL
+              </div>
+              <div className="text-[11px] text-emerald-300/80 font-medium tracking-widest uppercase">
+                Academic Registrar & Continuous Assessment Portal
+              </div>
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            {activePortal === 'student' && (
-              <>
-                <span className="text-emerald-400">Student</span> E-Report Portal
-              </>
-            )}
-            {activePortal === 'teacher' && (
-              <>
-                <span className="text-emerald-400">Teacher</span> E-Report Portal
-              </>
-            )}
-            {activePortal === 'admin' && (
-              <>
-                <span className="text-amber-400">Administrator</span> Control Center
-              </>
-            )}
-          </h1>
-
-          <p className="text-emerald-100/90 text-sm sm:text-base max-w-xl leading-relaxed">
-            {activePortal === 'student' &&
-              'Access your academic results, track your progress, inspect report cards and build a brighter future with Dadaya High School.'}
-            {activePortal === 'teacher' &&
-              'Manage your classes, feed marks, monitor academic trends, generate official student report cards and support student excellence.'}
-            {activePortal === 'admin' &&
-              'Complete institutional control over student rosters, teacher credentials, class streams, grading boundaries, and academic audits.'}
-          </p>
-
-          {/* Feature Highlight Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl pt-2">
-            {activePortal === 'student' ? (
-              <>
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-900/40 border border-emerald-700/50 backdrop-blur-xs">
-                  <div className="p-2.5 rounded-lg bg-emerald-600/40 text-emerald-300">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-white">View Results</h4>
-                    <p className="text-xs text-emerald-100/80 mt-1">
-                      Check your latest results, report cards and academic records.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-900/40 border border-emerald-700/50 backdrop-blur-xs">
-                  <div className="p-2.5 rounded-lg bg-emerald-600/40 text-emerald-300">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-white">Track Academic Progress</h4>
-                    <p className="text-xs text-emerald-100/80 mt-1">
-                      Monitor your performance, grades, and subject achievements.
-                    </p>
-                  </div>
-                </div>
-              </>
-            ) : activePortal === 'teacher' ? (
-              <>
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-900/40 border border-emerald-700/50 backdrop-blur-xs">
-                  <div className="p-2.5 rounded-lg bg-emerald-600/40 text-emerald-300">
-                    <Edit3 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-white">Record Marks</h4>
-                    <p className="text-xs text-emerald-100/80 mt-1">
-                      Enter and manage student marks easily with real-time validation.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-900/40 border border-emerald-700/50 backdrop-blur-xs">
-                  <div className="p-2.5 rounded-lg bg-emerald-600/40 text-emerald-300">
-                    <FileSpreadsheet className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-white">View Reports</h4>
-                    <p className="text-xs text-emerald-100/80 mt-1">
-                      Access class rosters and generate official term report cards.
-                    </p>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-950/40 border border-amber-800/40 backdrop-blur-xs">
-                  <div className="p-2.5 rounded-lg bg-amber-600/30 text-amber-300">
-                    <Shield className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-white">System Governance</h4>
-                    <p className="text-xs text-slate-300 mt-1">
-                      Full access to student, teacher, and curricular databases.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-950/40 border border-amber-800/40 backdrop-blur-xs">
-                  <div className="p-2.5 rounded-lg bg-amber-600/30 text-amber-300">
-                    <Sparkles className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-white">Curriculum & Terms</h4>
-                    <p className="text-xs text-slate-300 mt-1">
-                      Configure grading boundaries, term dates, and batch approvals.
-                    </p>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Cursive Tagline */}
-          <div className="pt-4 flex items-center justify-between">
-            <div className="font-cursive-tagline text-2xl sm:text-3xl text-emerald-300 italic font-medium">
-              Your Progress Our Priority
-            </div>
-          </div>
+          {/* Portal Switcher Tabs */}
+          <nav className="flex items-center border border-emerald-800/80 rounded-lg p-1 bg-[#021810]">
+            <button
+              type="button"
+              onClick={() => {
+                setActivePortal('student');
+                setErrorMsg(null);
+              }}
+              className={`px-3 sm:px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                activePortal === 'student'
+                  ? 'bg-emerald-800 text-white shadow-xs'
+                  : 'text-stone-300 hover:text-white'
+              }`}
+            >
+              Student Portal
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActivePortal('teacher');
+                setErrorMsg(null);
+              }}
+              className={`px-3 sm:px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                activePortal === 'teacher'
+                  ? 'bg-emerald-800 text-white shadow-xs'
+                  : 'text-stone-300 hover:text-white'
+              }`}
+            >
+              Teacher Portal
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActivePortal('admin');
+                setErrorMsg(null);
+              }}
+              className={`px-3 sm:px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                activePortal === 'admin'
+                  ? 'bg-amber-900/90 text-amber-100 shadow-xs'
+                  : 'text-stone-300 hover:text-white'
+              }`}
+            >
+              Administration
+            </button>
+          </nav>
         </div>
+      </header>
 
-        {/* Right Side: Elevated Login Card */}
-        <div className="lg:col-span-5">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 text-slate-900 border border-slate-100 relative">
-            <div className="flex flex-col items-center text-center pb-4">
-              <DadayaCrest sizeClass="w-14 h-14" />
-              <h2 className="text-xl sm:text-2xl font-black text-[#064e3b] mt-2">
-                {activePortal === 'student' &&
-                  (studentMode === 'signin' ? 'Student Login' : 'Class Enrollment & Registration')}
-                {activePortal === 'teacher' && 'Teacher Login'}
-                {activePortal === 'admin' && 'Administrator Login'}
-              </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {activePortal === 'student' &&
-                  (studentMode === 'signin'
-                    ? 'Enter your credentials to access your academic e-report.'
-                    : 'Enter student details to enroll into any class (including newly created classes).')}
-                {activePortal === 'teacher' && 'Sign in to your teacher account.'}
-                {activePortal === 'admin' && 'Enter administrative credentials.'}
-              </p>
+      {/* 2. Main Body Split */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        {/* Left Column: Academic Institution Prospectus & Streams */}
+        <section className="lg:col-span-7 space-y-6">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-300 tracking-wider uppercase">
+              <span>Zvishavane, Zimbabwe</span>
+              <span aria-hidden="true">·</span>
+              <span>Founded 1934</span>
+              <span aria-hidden="true">·</span>
+              <span>Motto: Alere Flammam</span>
             </div>
 
-            {errorMsg && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-start gap-2 animate-in fade-in">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <span>{errorMsg}</span>
-                  {activePortal === 'student' && studentMode === 'signin' && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setStudentMode('register');
-                        setErrorMsg(null);
-                      }}
-                      className="block mt-1 font-bold text-emerald-800 underline hover:text-emerald-950"
-                    >
-                      Click here to enroll this student into an added class now →
-                    </button>
-                  )}
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+              {activePortal === 'student' && 'Student Performance & Enrollment Registry'}
+              {activePortal === 'teacher' && 'Academic Staff & Continuous Assessment'}
+              {activePortal === 'admin' && 'Institutional Governance & Records'}
+            </h1>
+
+            <p className="text-sm sm:text-base text-stone-300 leading-relaxed max-w-2xl">
+              Welcome to the official electronic records system of Dadaya High School. Candidates, academic staff, and administration can verify term assessments, continuous performance metrics, and official ZIMSEC candidate standing.
+            </p>
+          </div>
+
+          {/* Academic Streams Overview for Lower Six */}
+          <div className="border border-emerald-800/70 rounded-xl bg-[#031d14]/70 p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-emerald-800/60 pb-3">
+              <div className="flex items-center gap-2 text-white font-bold text-sm">
+                <BookOpen className="w-4 h-4 text-emerald-400" />
+                <span>Lower Six Academic Disciplines (Advanced Level)</span>
+              </div>
+              <span className="text-[11px] text-emerald-300 font-mono">Form 5 Curriculum</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+              <div className="bg-[#021810]/70 border border-emerald-900/80 rounded-lg p-3 space-y-1.5">
+                <div className="font-bold text-emerald-200">Sciences Stream</div>
+                <div className="text-[11px] text-stone-300 leading-normal">
+                  Pure Mathematics, Physics, Chemistry, Biology & Computer Science.
                 </div>
               </div>
-            )}
 
-            {successMsg && (
-              <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl flex items-center gap-2 animate-in fade-in">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{successMsg}</span>
+              <div className="bg-[#021810]/70 border border-emerald-900/80 rounded-lg p-3 space-y-1.5">
+                <div className="font-bold text-emerald-200">Commercials Stream</div>
+                <div className="text-[11px] text-stone-300 leading-normal">
+                  Accounting, Economics, Business Studies & Statistics.
+                </div>
               </div>
-            )}
 
-            {/* Sub-mode toggle for Student Portal */}
+              <div className="bg-[#021810]/70 border border-emerald-900/80 rounded-lg p-3 space-y-1.5">
+                <div className="font-bold text-emerald-200">Arts Stream</div>
+                <div className="text-[11px] text-stone-300 leading-normal">
+                  Literature in English, History, Divinity & Geography.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Operational Station Notice */}
+          <div className="border border-emerald-900 bg-[#02160f]/60 rounded-xl p-4 text-xs space-y-2">
+            <div className="flex items-center justify-between text-stone-300">
+              <span className="font-semibold text-white">Desk Registration Station</span>
+              <span className="text-stone-400 font-mono">Sequential Mode Active</span>
+            </div>
+            <p className="text-[12px] text-stone-300 leading-relaxed">
+              This terminal is optimized for continuous candidate enrollment. Submitting an enrollment stores the student record directly to the database and preserves the active screen so subsequent candidates can register without interruption.
+            </p>
+            <div className="pt-1 flex items-center justify-between text-[11px] text-emerald-300/90 border-t border-emerald-900/60">
+              <span>{isOnline ? 'Network: Online · Cloud Firestore connected' : 'Network: Offline · Local station storage active'}</span>
+              {pendingSyncCount > 0 && <span>{pendingSyncCount} record(s) queued for sync</span>}
+            </div>
+          </div>
+        </section>
+
+        {/* Right Column: Formal Institutional Form Card */}
+        <section className="lg:col-span-5">
+          <div className="bg-stone-50 text-stone-900 rounded-xl border border-stone-200 shadow-xl p-6 sm:p-7 space-y-5">
+            {/* Header of the Card */}
+            <div className="border-b border-stone-200 pb-3">
+              <div className="text-xs uppercase tracking-wider text-stone-500 font-bold">
+                {activePortal === 'student' && 'Candidate Portal'}
+                {activePortal === 'teacher' && 'Academic Faculty'}
+                {activePortal === 'admin' && 'School Administration'}
+              </div>
+              <h2 className="text-xl font-bold text-[#064e3b] mt-0.5">
+                {activePortal === 'student' && (studentMode === 'signin' ? 'Sign In to Report Card' : 'Enroll New Candidate')}
+                {activePortal === 'teacher' && 'Staff Authentication'}
+                {activePortal === 'admin' && 'Administrative Console'}
+              </h2>
+            </div>
+
+            {/* Sub-mode selector for student portal */}
             {activePortal === 'student' && (
-              <div className="flex items-center p-1 bg-slate-100 rounded-xl mb-4 border border-slate-200">
+              <div className="grid grid-cols-2 p-1 bg-stone-200/70 rounded-lg text-xs font-semibold">
                 <button
                   type="button"
                   onClick={() => {
@@ -478,14 +370,13 @@ export const LoginView: React.FC = () => {
                     setErrorMsg(null);
                     setSuccessMsg(null);
                   }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                  className={`py-1.5 rounded-md text-center transition-colors ${
                     studentMode === 'signin'
-                      ? 'bg-[#064e3b] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white text-stone-900 shadow-xs'
+                      : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>Existing Student Sign In</span>
+                  Candidate Sign In
                 </button>
                 <button
                   type="button"
@@ -494,88 +385,191 @@ export const LoginView: React.FC = () => {
                     setErrorMsg(null);
                     setSuccessMsg(null);
                   }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                  className={`py-1.5 rounded-md text-center transition-colors ${
                     studentMode === 'register'
-                      ? 'bg-[#064e3b] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white text-stone-900 shadow-xs'
+                      : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
-                  <UserPlus className="w-3.5 h-3.5 text-emerald-300" />
-                  <span>Enroll in Class</span>
+                  Candidate Enrollment
                 </button>
               </div>
             )}
 
-            {/* 1A. STUDENT SIGN IN FORM */}
+            {/* Offline notice bar if offline or pending items */}
+            {(!isOnline || pendingSyncCount > 0) && (
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <WifiOff className="w-4 h-4 text-amber-700 shrink-0" />
+                  <div>
+                    <span className="font-bold block">
+                      {isOnline ? 'Pending Cloud Sync' : 'Offline Mode Active'}
+                    </span>
+                    <span className="text-[11px] text-amber-800">
+                      {isOnline
+                        ? `${pendingSyncCount} enrollment(s) waiting to upload to cloud.`
+                        : 'Enrollments are saved on this computer and auto-sync when connected.'}
+                    </span>
+                  </div>
+                </div>
+                {isOnline && pendingSyncCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleManualSync}
+                    disabled={isSyncing}
+                    className="px-2.5 py-1 bg-amber-800 text-white rounded text-[11px] font-bold hover:bg-amber-900 transition-colors shrink-0"
+                  >
+                    {isSyncing ? 'Syncing...' : 'Sync Now'}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Feedback Banners */}
+            {errorMsg && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-900 text-xs rounded-lg flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-700 shrink-0 mt-0.5" />
+                <span className="flex-1">{errorMsg}</span>
+              </div>
+            )}
+
+            {successMsg && !lastEnrolledStudent && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs rounded-lg">
+                {successMsg}
+              </div>
+            )}
+
+            {/* Official Candidate Admission Slip (Single-PC Desk Confirmation) */}
+            {activePortal === 'student' && studentMode === 'register' && lastEnrolledStudent && (
+              <div className="border border-emerald-600 bg-emerald-50/60 rounded-lg p-4 space-y-3">
+                <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
+                  <span className="text-xs font-bold text-emerald-950 uppercase tracking-wider">
+                    Official Candidate Admission Slip
+                  </span>
+                  <span className="text-[11px] font-mono text-emerald-800 font-semibold">
+                    Slip #{enrolledCount}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs bg-white p-3 rounded border border-emerald-200">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-stone-400 block">Candidate Name</span>
+                    <span className="font-bold text-stone-900">{lastEnrolledStudent.name} {lastEnrolledStudent.surname}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-stone-400 block">Candidate ID</span>
+                    <span className="font-mono font-bold text-emerald-800 text-sm">{lastEnrolledStudent.id}</span>
+                  </div>
+                  <div className="col-span-2 pt-1">
+                    <span className="text-[10px] uppercase font-bold text-stone-400 block">Stream Allocated</span>
+                    <span className="font-semibold text-stone-800">{lastEnrolledStudent.className}</span>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-emerald-900">
+                  Record successfully added to the school database. The form below has been cleared for the next student.
+                </p>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLastEnrolledStudent(null);
+                      setSuccessMsg(null);
+                    }}
+                    className="flex-1 py-1.5 px-3 bg-[#064e3b] text-white rounded font-bold text-xs hover:bg-emerald-800 transition-colors text-center"
+                  >
+                    Enroll Next Candidate
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStudentForm({
+                        name: lastEnrolledStudent.name,
+                        surname: lastEnrolledStudent.surname,
+                        classId: lastEnrolledStudent.classId,
+                        password: '',
+                      });
+                      setStudentMode('signin');
+                      setLastEnrolledStudent(null);
+                      setSuccessMsg(null);
+                    }}
+                    className="py-1.5 px-3 border border-stone-300 text-stone-800 rounded font-semibold text-xs hover:bg-white transition-colors"
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* FORM 1A: Student Sign In */}
             {activePortal === 'student' && studentMode === 'signin' && (
               <form onSubmit={handleStudentSubmit} className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Name</label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="Enter your name"
-                      value={studentForm.name}
-                      onChange={(e) => setStudentForm({ ...studentForm, name: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                    />
-                  </div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Farai"
+                    value={studentForm.name}
+                    onChange={(e) => setStudentForm({ ...studentForm, name: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700"
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Surname</label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="Enter your surname"
-                      value={studentForm.surname}
-                      onChange={(e) => setStudentForm({ ...studentForm, surname: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                    />
-                  </div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Surname
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Mutasa"
+                    value={studentForm.surname}
+                    onChange={(e) => setStudentForm({ ...studentForm, surname: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700"
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Class</label>
-                  <div className="relative">
-                    <GraduationCap className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
-                    <select
-                      value={studentForm.classId}
-                      onChange={(e) => setStudentForm({ ...studentForm, classId: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                    >
-                      <option value="">Select your class</option>
-                      {classes.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {c.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Academic Class
+                  </label>
+                  <select
+                    value={studentForm.classId}
+                    onChange={(e) => setStudentForm({ ...studentForm, classId: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700 font-medium"
+                  >
+                    {classes.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} ({c.stream})
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Candidate Password
+                  </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
-                      placeholder="Enter your password"
+                      placeholder="Enter password"
                       value={studentForm.password}
                       onChange={(e) => setStudentForm({ ...studentForm, password: e.target.value })}
-                      className="w-full pl-10 pr-10 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
+                      className="w-full pl-3 pr-9 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-2.5 text-slate-400 hover:text-slate-600"
+                      className="absolute right-2.5 top-2.5 text-stone-400 hover:text-stone-700"
                     >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                 </div>
@@ -583,229 +577,87 @@ export const LoginView: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full mt-2 py-2.5 px-4 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-50"
+                  className="w-full mt-2 py-2.5 px-4 bg-[#064e3b] hover:bg-emerald-800 text-white rounded font-bold text-xs transition-colors shadow-xs disabled:opacity-50"
                 >
-                  <LogIn className="w-4 h-4" />
-                  <span>{isLoading ? 'Verifying Student...' : 'Log In'}</span>
+                  {isLoading ? 'Verifying Candidate...' : 'Sign In to Student Portal'}
                 </button>
 
-                {/* Helpful Callout for newly added classes */}
-                <div className="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200/80 text-xs flex items-center justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="font-bold text-emerald-950 block">Joining a newly added class?</span>
-                    <span className="text-[11px] text-emerald-700">Enter your student details to register immediately.</span>
-                  </div>
+                <div className="pt-2 text-center text-xs text-stone-500">
+                  New candidate seeking admission?{' '}
                   <button
                     type="button"
                     onClick={() => {
                       setStudentMode('register');
                       setErrorMsg(null);
                     }}
-                    className="shrink-0 px-2.5 py-1.5 bg-[#064e3b] hover:bg-emerald-800 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1 shadow-xs"
+                    className="text-emerald-800 font-semibold hover:underline"
                   >
-                    <span>Enroll Now</span>
-                    <ArrowRight className="w-3 h-3" />
+                    Enroll here
                   </button>
-                </div>
-
-                <div className="text-center pt-1 text-xs text-slate-500">
-                  <span>Need help? </span>
-                  <a
-                    href="#admin"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActivePortal('admin');
-                    }}
-                    className="text-emerald-700 font-semibold hover:underline"
-                  >
-                    Contact your school administrator.
-                  </a>
                 </div>
               </form>
             )}
 
-            {/* 1B. STUDENT ENROLLMENT / REGISTRATION FORM FOR ADDED CLASSES */}
+            {/* FORM 1B: Student Enrollment (Single-PC Desk Queue) */}
             {activePortal === 'student' && studentMode === 'register' && (
-              <form onSubmit={handleStudentRegister} className="space-y-3">
-                {/* Offline / Online Network Status Bar */}
-                <div
-                  className={`p-2.5 rounded-xl border flex items-center justify-between gap-2 text-xs transition-all ${
-                    isOnline
-                      ? 'bg-emerald-50/90 border-emerald-200 text-emerald-900'
-                      : 'bg-amber-50/95 border-amber-300 text-amber-950 shadow-2xs'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    {isOnline ? (
-                      <div className="relative flex h-2.5 w-2.5 shrink-0">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                      </div>
-                    ) : (
-                      <div className="p-1 bg-amber-200/80 rounded-md text-amber-900 shrink-0">
-                        <WifiOff className="w-3.5 h-3.5" />
-                      </div>
-                    )}
-                    <div className="truncate">
-                      <div className="font-bold flex items-center gap-1.5">
-                        <span>{isOnline ? 'Online • Cloud Firestore Live' : 'Offline Mode Active'}</span>
-                        {!isOnline && (
-                          <span className="px-1.5 py-0.2 bg-amber-200 text-amber-900 text-[9px] font-extrabold uppercase rounded">
-                            Offline Ready
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-[11px] opacity-80 block truncate">
-                        {isOnline
-                          ? pendingSyncCount > 0
-                            ? `${pendingSyncCount} offline enrollment(s) pending sync`
-                            : 'Single-PC enrollment active. Instant cloud auto-sync.'
-                          : 'You can enroll students without internet! Records save to this PC & auto-sync when online.'}
-                      </span>
-                    </div>
-                  </div>
-
-                  {pendingSyncCount > 0 && isOnline && (
-                    <button
-                      type="button"
-                      onClick={handleManualSync}
-                      disabled={isSyncing}
-                      className="shrink-0 px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-bold text-[11px] flex items-center gap-1 shadow-xs transition-all disabled:opacity-50"
-                    >
-                      <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
-                      <span>{isSyncing ? 'Syncing...' : `Sync (${pendingSyncCount})`}</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* Last Enrolled Student Receipt Card (Single-PC Desk Confirmation) */}
-                {lastEnrolledStudent && (
-                  <div className="p-3.5 bg-emerald-50/95 border-2 border-emerald-500 rounded-2xl shadow-sm space-y-2.5">
-                    <div className="flex items-center justify-between gap-2 border-b border-emerald-200/80 pb-2">
-                      <div className="flex items-center gap-1.5 text-emerald-950 font-bold text-xs sm:text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span>Enrolled Successfully!</span>
-                      </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-200 text-emerald-900 rounded-full">
-                        #{enrolledCount} on this PC
-                      </span>
-                    </div>
-
-                    <div className="bg-white p-2.5 rounded-xl border border-emerald-200 grid grid-cols-2 gap-2 text-xs">
-                      <div>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Student</span>
-                        <span className="font-bold text-slate-900 text-xs">
-                          {lastEnrolledStudent.name} {lastEnrolledStudent.surname}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Assigned ID</span>
-                        <span className="font-mono font-bold text-emerald-700 text-xs">
-                          {lastEnrolledStudent.id}
-                        </span>
-                      </div>
-                      <div className="col-span-2">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Enrolled Class</span>
-                        <span className="font-semibold text-slate-700 text-xs">
-                          {lastEnrolledStudent.className}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 pt-0.5">
-                      <span className="text-[11px] text-emerald-800 font-medium">
-                        ✨ Form cleared below for next student.
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setStudentForm({
-                            name: lastEnrolledStudent.name,
-                            surname: lastEnrolledStudent.surname,
-                            classId: lastEnrolledStudent.classId,
-                            password: '',
-                          });
-                          setStudentMode('signin');
-                          setLastEnrolledStudent(null);
-                        }}
-                        className="px-2.5 py-1 bg-white border border-emerald-300 hover:bg-emerald-100 text-emerald-900 rounded-lg font-semibold text-[11px] flex items-center gap-1 transition-all shrink-0"
-                      >
-                        <LogIn className="w-3 h-3 text-emerald-700" />
-                        <span>Sign In Now</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={handleStudentRegister} className="space-y-3.5">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      First Name <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 mb-1">
+                      First Name <span className="text-rose-600">*</span>
                     </label>
-                    <div className="relative">
-                      <User className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Farai"
-                        value={registerForm.name}
-                        onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Tendai"
+                      value={registerForm.name}
+                      onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
+                      className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700"
+                    />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Surname <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 mb-1">
+                      Surname <span className="text-rose-600">*</span>
                     </label>
-                    <div className="relative">
-                      <User className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Mutasa"
-                        value={registerForm.surname}
-                        onChange={(e) => setRegisterForm({ ...registerForm, surname: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Moyo"
+                      value={registerForm.surname}
+                      onChange={(e) => setRegisterForm({ ...registerForm, surname: e.target.value })}
+                      className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700"
+                    />
                   </div>
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-xs font-semibold text-slate-700">
-                      Select Class <span className="text-red-500">*</span>
-                    </label>
-                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100/70 px-1.5 py-0.5 rounded">
-                      {classes.length} classes available
-                    </span>
-                  </div>
-                  <div className="relative">
-                    <GraduationCap className="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
-                    <select
-                      required
-                      value={registerForm.classId}
-                      onChange={(e) => setRegisterForm({ ...registerForm, classId: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 bg-white font-medium text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                    >
-                      {classes.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {c.name} ({c.formLevel} • {c.stream})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Academic Class Stream <span className="text-rose-600">*</span>
+                  </label>
+                  <select
+                    required
+                    value={registerForm.classId}
+                    onChange={(e) => setRegisterForm({ ...registerForm, classId: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700 focus:border-emerald-700 font-medium text-stone-900"
+                  >
+                    {classes.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} ({c.stream})
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Gender</label>
+                    <label className="block text-xs font-semibold text-stone-700 mb-1">
+                      Gender
+                    </label>
                     <select
                       value={registerForm.gender}
                       onChange={(e) => setRegisterForm({ ...registerForm, gender: e.target.value as any })}
-                      className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
+                      className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700"
                     >
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
@@ -813,264 +665,184 @@ export const LoginView: React.FC = () => {
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-semibold text-slate-700">Student ID</label>
-                      <span className="text-[10px] text-emerald-700 font-medium">Auto-assigned</span>
-                    </div>
-                    <div className="px-3 py-2 text-xs rounded-xl border border-dashed border-emerald-300 bg-emerald-50/50 text-emerald-900 font-mono font-medium">
-                      Generated on enrollment
+                    <label className="block text-xs font-semibold text-stone-700 mb-1">
+                      Candidate ID
+                    </label>
+                    <div className="px-3 py-2 text-xs rounded border border-stone-300 bg-stone-100 font-mono text-stone-600">
+                      Auto-generated (DHS)
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Create Password <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 mb-1">
+                      Passcode <span className="text-rose-600">*</span>
                     </label>
-                    <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        required
-                        placeholder="At least 4 characters"
-                        value={registerForm.password}
-                        onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
-                        className="w-full pl-9 pr-9 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"
-                      >
-                        {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                      </button>
-                    </div>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="Min. 4 characters"
+                      value={registerForm.password}
+                      onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
+                      className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700"
+                    />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Confirm Password <span className="text-red-500">*</span>
+                    <label className="block text-xs font-semibold text-stone-700 mb-1">
+                      Confirm Passcode <span className="text-rose-600">*</span>
                     </label>
-                    <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        required
-                        placeholder="Re-enter password"
-                        value={registerForm.confirmPassword}
-                        onChange={(e) => setRegisterForm({ ...registerForm, confirmPassword: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                      />
-                    </div>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="Re-enter password"
+                      value={registerForm.confirmPassword}
+                      onChange={(e) => setRegisterForm({ ...registerForm, confirmPassword: e.target.value })}
+                      className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700"
+                    />
                   </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full mt-2 py-2.5 px-4 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-50"
+                  className="w-full mt-2 py-2.5 px-4 bg-[#064e3b] hover:bg-emerald-800 text-white rounded font-bold text-xs transition-colors shadow-xs disabled:opacity-50"
                 >
-                  <UserPlus className="w-4 h-4 text-emerald-300" />
-                  <span>
-                    {isLoading
-                      ? 'Saving Student Record...'
-                      : isOnline
-                      ? 'Complete Enrollment'
-                      : 'Complete Enrollment (Offline Mode)'}
-                  </span>
+                  {isLoading
+                    ? 'Processing Enrollment...'
+                    : isOnline
+                    ? 'Enroll Candidate'
+                    : 'Enroll Candidate (Offline)'}
                 </button>
 
-                <div className="flex items-center justify-center gap-1.5 text-[11px] text-emerald-700 font-medium text-center pt-0.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>
-                    {isOnline
-                      ? 'Single-PC Mode: Does not enter portal • Ready for next student'
-                      : 'Works Offline: Saves on this PC without internet • Syncs when online'}
-                  </span>
-                </div>
-
-
-
-                <div className="text-center pt-1 text-xs text-slate-500">
-                  <span>Already enrolled? </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStudentMode('signin');
-                      setErrorMsg(null);
-                    }}
-                    className="text-emerald-700 font-semibold hover:underline"
-                  >
-                    Switch back to Sign In.
-                  </button>
+                <div className="text-[11px] text-stone-500 text-center leading-normal">
+                  Desk Station: Submitting creates the student profile and keeps this registration desk open for the next candidate.
                 </div>
               </form>
             )}
 
-            {/* 2. TEACHER LOGIN FORM */}
+            {/* FORM 2: Teacher Login */}
             {activePortal === 'teacher' && (
-              <form onSubmit={handleTeacherSubmit} className="space-y-4">
+              <form onSubmit={handleTeacherSubmit} className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Email</label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Enter your email address"
-                      value={teacherForm.email}
-                      onChange={(e) => setTeacherForm({ ...teacherForm, email: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      placeholder="Enter your password"
-                      value={teacherForm.password}
-                      onChange={(e) => setTeacherForm({ ...teacherForm, password: e.target.value })}
-                      className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:border-transparent transition-all"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                      className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                    />
-                    <span>Remember me</span>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Staff Email
                   </label>
-                  <button
-                    type="button"
-                    onClick={() => alert('Please contact Dadaya High School Administration for password resets.')}
-                    className="text-emerald-700 hover:underline"
-                  >
-                    Forgot password?
-                  </button>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. moyo@dadaya.ac.zw"
+                    value={teacherForm.email}
+                    onChange={(e) => setTeacherForm({ ...teacherForm, email: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Password
+                  </label>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    placeholder="Enter staff password"
+                    value={teacherForm.password}
+                    onChange={(e) => setTeacherForm({ ...teacherForm, password: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-700"
+                  />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-2.5 px-4 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-50"
+                  className="w-full mt-2 py-2.5 px-4 bg-[#064e3b] hover:bg-emerald-800 text-white rounded font-bold text-xs transition-colors shadow-xs disabled:opacity-50"
                 >
-                  <LogIn className="w-4 h-4" />
-                  <span>{isLoading ? 'Signing In...' : 'Log In'}</span>
-                </button>
-
-                <div className="relative my-4">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-200"></div>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-slate-400 font-semibold">OR</span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setActivePortal('student')}
-                  className="w-full py-2 px-4 border border-emerald-300 hover:bg-emerald-50 text-emerald-800 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
-                >
-                  <GraduationCap className="w-4 h-4 text-emerald-700" />
-                  <span>Switch to Student Portal</span>
+                  {isLoading ? 'Authenticating...' : 'Sign In to Faculty Portal'}
                 </button>
               </form>
             )}
 
-            {/* 3. ADMIN LOGIN FORM */}
+            {/* FORM 3: Admin Login */}
             {activePortal === 'admin' && (
-              <form onSubmit={handleAdminSubmit} className="space-y-4">
-                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs">
-                  Administrative access is restricted to authorized Dadaya High School staff.
+              <form onSubmit={handleAdminSubmit} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Administrator Email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="admin@dadaya.ac.zw"
+                    value={adminForm.email}
+                    onChange={(e) => setAdminForm({ ...adminForm, email: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-amber-700"
+                  />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Admin Email</label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type="email"
-                      required
-                      placeholder="admin@dadaya.ac.zw"
-                      value={adminForm.email}
-                      onChange={(e) => setAdminForm({ ...adminForm, email: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      placeholder="Enter admin password"
-                      value={adminForm.password}
-                      onChange={(e) => setAdminForm({ ...adminForm, password: e.target.value })}
-                      className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Security Passkey
+                  </label>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    placeholder="Enter admin passkey"
+                    value={adminForm.password}
+                    onChange={(e) => setAdminForm({ ...adminForm, password: e.target.value })}
+                    className="w-full px-3 py-2 text-xs rounded border border-stone-300 bg-white focus:outline-hidden focus:ring-1 focus:ring-amber-700"
+                  />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-2.5 px-4 bg-amber-700 hover:bg-amber-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-50"
+                  className="w-full mt-2 py-2.5 px-4 bg-amber-800 hover:bg-amber-900 text-white rounded font-bold text-xs transition-colors shadow-xs disabled:opacity-50"
                 >
-                  <Shield className="w-4 h-4" />
-                  <span>{isLoading ? 'Verifying Access...' : 'Access Admin Console'}</span>
+                  {isLoading ? 'Verifying...' : 'Access Administration Console'}
                 </button>
-
-                <div className="text-center pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setActivePortal('student')}
-                    className="text-xs text-slate-500 hover:text-emerald-700 hover:underline"
-                  >
-                    Return to Student Portal
-                  </button>
-                </div>
               </form>
             )}
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
-      {/* Footer bar */}
-      <footer className="relative z-10 border-t border-emerald-900 bg-black/50 text-emerald-200/80 py-3 px-4 text-center text-xs flex flex-wrap items-center justify-between max-w-7xl mx-auto w-full">
-        <div>© 2026 Dadaya High School. All Rights Reserved.</div>
-        <div className="flex items-center gap-4 text-emerald-200/80">
-          <span>Discipline • Excellence • Future</span>
-          <span className="hidden sm:inline">|</span>
-          <span>Official E-Report System</span>
+      {/* 3. Understated Footer */}
+      <footer className="border-t border-emerald-900/60 bg-[#021810] text-stone-400 py-4 px-4 text-xs">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span>© 2026 Dadaya High School</span>
+            <span aria-hidden="true">·</span>
+            <span>Ministry of Primary & Secondary Education, Zimbabwe</span>
+          </div>
+
+          {/* Quiet developer & staff test shortcuts */}
+          <div className="flex items-center gap-3 text-[11px] text-stone-400">
+            <span className="text-stone-500">Quick Access:</span>
+            <button
+              type="button"
+              onClick={() => quickLogin('student', 'DHS001')}
+              className="hover:text-emerald-300 transition-colors"
+            >
+              Student
+            </button>
+            <span aria-hidden="true">·</span>
+            <button
+              type="button"
+              onClick={() => quickLogin('teacher', 'tch-moyo')}
+              className="hover:text-emerald-300 transition-colors"
+            >
+              Teacher (Mr. Moyo)
+            </button>
+            <span aria-hidden="true">·</span>
+            <button
+              type="button"
+              onClick={() => quickLogin('admin')}
+              className="hover:text-amber-300 transition-colors"
+            >
+              Admin
+            </button>
+          </div>
         </div>
       </footer>
     </div>

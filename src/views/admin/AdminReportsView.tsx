@@ -163,8 +163,9 @@ export const AdminReportsView: React.FC<{ onOpenReportCard: (id: string) => void
                       {s.passRate}%
                     </span>
                   </td>
-                  <td className="py-3.5 px-4 text-center">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                  <td className="py-2.5 px-4 text-center">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-emerald-800">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                       Standard Met
                     </span>
                   </td>
@@ -202,8 +203,9 @@ export const AdminReportsView: React.FC<{ onOpenReportCard: (id: string) => void
                   <td className="py-3.5 px-4 text-center font-mono font-bold text-emerald-950">
                     {c.average > 0 ? `${c.average}%` : '—'}
                   </td>
-                  <td className="py-3.5 px-4 text-center">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                  <td className="py-2.5 px-4 text-center">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-emerald-800">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                       Active Cohort
                     </span>
                   </td>

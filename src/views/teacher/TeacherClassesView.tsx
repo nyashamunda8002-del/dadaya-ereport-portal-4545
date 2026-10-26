@@ -308,14 +308,14 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                   }`}
                 >
                   <div>
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start justify-between gap-2 pb-2 border-b border-stone-100">
                       <div>
-                        <span className="text-[10px] uppercase font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        <span className="text-[10px] font-mono uppercase font-bold text-emerald-800 tracking-wider">
                           {cls.formLevel}
                         </span>
-                        <h3 className="text-base font-extrabold text-slate-900 mt-1.5">{cls.name}</h3>
+                        <h3 className="text-base font-bold text-stone-900 mt-0.5">{cls.name}</h3>
                       </div>
-                      <span className="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                      <span className="text-xs font-mono text-stone-500">
                         {cls.academicYear}
                       </span>
                     </div>
@@ -522,8 +522,9 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                             {st.id}
                           </td>
                           <td className="py-3.5 px-4 text-slate-600">{st.className}</td>
-                          <td className="py-3.5 px-4 text-center">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                          <td className="py-2.5 px-4 text-center">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-emerald-800">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
                               {st.status}
                             </span>
                           </td>

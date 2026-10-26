@@ -196,34 +196,34 @@ export const AdminMarksView: React.FC = () => {
         </div>
       </div>
 
-      {/* Marks Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      {/* Marks Table - Continuous Assessment Ledger */}
+      <div className="bg-white rounded-md border border-stone-200 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-[11px] font-bold">
+              <tr className="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase text-[10px] font-mono tracking-wider">
                 <th className="py-3 px-4 w-12 text-center">#</th>
-                <th className="py-3 px-4">Student</th>
-                <th className="py-3 px-4">ID</th>
-                <th className="py-3 px-4">Subject</th>
+                <th className="py-3 px-4">Candidate</th>
+                <th className="py-3 px-4">Candidate ID</th>
+                <th className="py-3 px-4">Curriculum Subject</th>
                 <th className="py-3 px-4 text-center">Score (%)</th>
                 <th className="py-3 px-4 text-center">Grade</th>
-                <th className="py-3 px-4">Assigned Teacher</th>
-                <th className="py-3 px-4 text-center">Status</th>
+                <th className="py-3 px-4">Instructor</th>
+                <th className="py-3 px-4 text-center">Audit Status</th>
                 <th className="py-3 px-4 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-stone-100 font-mono">
               {marks.length > 0 ? (
                 marks.map((m, idx) => (
-                  <tr key={m.id} className="hover:bg-emerald-50/20 transition-colors">
-                    <td className="py-3 px-4 text-center font-mono text-slate-400">{idx + 1}</td>
-                    <td className="py-3 px-4 font-semibold text-slate-900">
+                  <tr key={m.id} className="hover:bg-stone-50/70 transition-colors">
+                    <td className="py-2.5 px-4 text-center text-stone-400 tabular-nums">{idx + 1}</td>
+                    <td className="py-2.5 px-4 font-sans font-semibold text-stone-900">
                       {m.studentName} {m.surname}
                     </td>
-                    <td className="py-3 px-4 font-mono font-medium text-emerald-950">{m.studentId}</td>
-                    <td className="py-3 px-4 text-slate-700">{m.subjectName}</td>
-                    <td className="py-3 px-4 text-center font-mono font-bold text-emerald-950">
+                    <td className="py-2.5 px-4 font-mono font-medium text-emerald-950">{m.studentId}</td>
+                    <td className="py-2.5 px-4 font-sans text-stone-700">{m.subjectName}</td>
+                    <td className="py-2.5 px-4 text-center font-bold text-stone-900 tabular-nums">
                       {editingMark?.id === m.id ? (
                         <input
                           type="number"
@@ -231,24 +231,33 @@ export const AdminMarksView: React.FC = () => {
                           max="100"
                           value={editValue}
                           onChange={(e) => setEditValue(e.target.value)}
-                          className="w-14 px-1 py-0.5 text-center border border-emerald-500 rounded font-bold"
+                          className="w-14 px-1 py-0.5 text-center border border-emerald-700 rounded-sm font-bold"
                         />
                       ) : (
                         `${m.percentage}%`
                       )}
                     </td>
-                    <td className="py-3 px-4 text-center font-bold">{m.grade}</td>
-                    <td className="py-3 px-4 text-slate-500 text-xs">{m.teacherName}</td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-2.5 px-4 text-center font-bold">{m.grade}</td>
+                    <td className="py-2.5 px-4 font-sans text-stone-500 text-xs">{m.teacherName}</td>
+                    <td className="py-2.5 px-4 text-center">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                        className={`inline-flex items-center gap-1.5 text-xs font-mono ${
                           m.status === 'Approved'
-                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            ? 'text-emerald-800 font-semibold'
                             : m.status === 'Submitted'
-                            ? 'bg-teal-100 text-teal-800 border border-teal-200'
-                            : 'bg-amber-100 text-amber-800 border border-amber-200'
+                            ? 'text-teal-800 font-medium'
+                            : 'text-amber-800'
                         }`}
                       >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            m.status === 'Approved'
+                              ? 'bg-emerald-600'
+                              : m.status === 'Submitted'
+                              ? 'bg-teal-600'
+                              : 'bg-amber-600'
+                          }`}
+                        />
                         {m.status}
                       </span>
                     </td>

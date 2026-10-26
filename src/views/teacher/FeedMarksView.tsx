@@ -260,72 +260,83 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
         </div>
       )}
 
-      {/* Student Marks Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      {/* Student Marks Table - Authentic Academic Ledger */}
+      <div className="bg-white rounded-md border border-stone-200 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-[11px] tracking-wider font-bold">
-                <th className="py-3.5 px-4 w-12 text-center">#</th>
-                <th className="py-3.5 px-4">Name</th>
-                <th className="py-3.5 px-4">Surname</th>
-                <th className="py-3.5 px-4">Student ID</th>
-                <th className="py-3.5 px-4 w-44">Mark / Percentage</th>
-                <th className="py-3.5 px-4 w-28 text-center">Status</th>
-                <th className="py-3.5 px-4 w-24 text-center">Action</th>
+              <tr className="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase text-[10px] font-mono tracking-wider">
+                <th className="py-3 px-3 w-10 text-center">#</th>
+                <th className="py-3 px-3">Candidate Name</th>
+                <th className="py-3 px-3">Surname</th>
+                <th className="py-3 px-3">Candidate ID</th>
+                <th className="py-3 px-3 w-40">Mark Percentage</th>
+                <th className="py-3 px-3 w-28 text-center">Status</th>
+                <th className="py-3 px-3 w-20 text-center">Record</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-stone-100 font-mono">
               {classStudents.length > 0 ? (
                 classStudents.map((st, index) => {
                   const draft = marksDraft[st.id] || { mark: '', status: 'Pending' };
 
                   return (
-                    <tr key={st.id} className="hover:bg-emerald-50/30 transition-colors">
-                      <td className="py-3.5 px-4 text-center font-mono text-slate-400 font-semibold">
+                    <tr key={st.id} className="hover:bg-stone-50/70 transition-colors">
+                      <td className="py-2.5 px-3 text-center text-stone-400 tabular-nums">
                         {index + 1}
                       </td>
-                      <td className="py-3.5 px-4 font-semibold text-slate-800">{st.name}</td>
-                      <td className="py-3.5 px-4 text-slate-700">{st.surname}</td>
-                      <td className="py-3.5 px-4 font-mono font-medium text-emerald-950">
+                      <td className="py-2.5 px-3 font-sans font-semibold text-stone-900">{st.name}</td>
+                      <td className="py-2.5 px-3 font-sans text-stone-700">{st.surname}</td>
+                      <td className="py-2.5 px-3 font-mono font-medium text-emerald-950">
                         {st.id}
                       </td>
-                      <td className="py-3.5 px-4">
+                      <td className="py-2.5 px-3">
                         <div className="flex items-center gap-1.5 w-32">
                           <input
                             type="text"
                             maxLength={3}
                             value={draft.mark}
                             onChange={(e) => handleMarkChange(st.id, e.target.value)}
-                            placeholder="0 - 100"
-                            className="w-16 px-2.5 py-1.5 text-center font-bold font-mono text-slate-900 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                            placeholder="0–100"
+                            className="w-16 px-2 py-1 text-center font-bold font-mono text-stone-900 border border-stone-300 rounded-sm focus:border-emerald-700 focus:outline-hidden tabular-nums"
                           />
-                          <span className="text-slate-500 font-bold text-xs">%</span>
+                          <span className="text-stone-500 font-mono text-xs">%</span>
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 text-center">
+                      <td className="py-2.5 px-3 text-center">
                         <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                          className={`inline-flex items-center gap-1.5 text-xs font-mono ${
                             draft.status === 'Approved'
-                              ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+                              ? 'text-emerald-800 font-semibold'
                               : draft.status === 'Submitted'
-                              ? 'bg-teal-100 text-teal-800 border border-teal-200'
+                              ? 'text-teal-800 font-medium'
                               : draft.status === 'Saved'
-                              ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
-                              : 'bg-slate-100 text-slate-600 border border-slate-200'
+                              ? 'text-stone-700'
+                              : 'text-stone-400'
                           }`}
                         >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              draft.status === 'Approved'
+                                ? 'bg-emerald-600'
+                                : draft.status === 'Submitted'
+                                ? 'bg-teal-600'
+                                : draft.status === 'Saved'
+                                ? 'bg-stone-500'
+                                : 'bg-stone-300'
+                            }`}
+                          />
                           {draft.status}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-center">
+                      <td className="py-2.5 px-3 text-center">
                         <button
                           type="button"
                           onClick={() => onOpenReportCard && onOpenReportCard(st.id)}
-                          className="p-1.5 text-emerald-700 hover:text-emerald-950 hover:bg-emerald-50 rounded-lg transition-colors"
+                          className="px-2 py-1 text-xs font-mono text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
                           title="View Student Report Card"
                         >
-                          <Edit2 className="w-4 h-4" />
+                          View
                         </button>
                       </td>
                     </tr>
@@ -333,8 +344,8 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-slate-400">
-                    No students currently enrolled in this class.
+                  <td colSpan={7} className="py-12 text-center text-stone-400 font-sans italic">
+                    No candidates currently registered in this stream.
                   </td>
                 </tr>
               )}
@@ -343,30 +354,30 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
         </div>
 
         {/* Footer Bar */}
-        <div className="p-4 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-xs font-bold text-slate-600">
-            {classStudents.length} students
+        <div className="p-3.5 bg-stone-50 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-xs">
+          <div className="text-stone-500">
+            Total Enrolled: <span className="font-semibold text-stone-900">{classStudents.length}</span> candidates
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               disabled={isSubmitting || classStudents.length === 0}
               onClick={() => handleSaveMarks('Submitted')}
-              className="px-4 py-2 border border-emerald-400 hover:bg-emerald-50 text-emerald-900 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors disabled:opacity-50"
+              className="px-3.5 py-1.5 border border-stone-300 hover:border-emerald-700 hover:bg-stone-100 text-stone-800 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5" />
-              <span>Submit for Admin Approval</span>
+              <Send className="w-3.5 h-3.5 text-stone-600" />
+              <span>Submit for Verification</span>
             </button>
 
             <button
               type="button"
               disabled={isSubmitting || classStudents.length === 0}
               onClick={() => handleSaveMarks('Saved')}
-              className="px-5 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-md transition-all active:scale-[0.99] disabled:opacity-50"
+              className="px-4 py-1.5 bg-[#064e3b] hover:bg-emerald-900 text-white rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer"
             >
-              <Save className="w-4 h-4" />
-              <span>{isSubmitting ? 'Saving Marks...' : 'Save Marks'}</span>
+              <Save className="w-3.5 h-3.5" />
+              <span>{isSubmitting ? 'Recording...' : 'Save Draft'}</span>
             </button>
           </div>
         </div>

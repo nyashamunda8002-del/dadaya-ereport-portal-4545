@@ -263,24 +263,24 @@ export const AdminSettingsView: React.FC = () => {
       </form>
 
       {/* Firebase Database Connection Card */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Database className="w-4 h-4 text-emerald-600" />
-            <span>Firebase Cloud Firestore Database</span>
+      <div className="bg-white rounded-md p-6 border border-stone-200 space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-200">
+          <h2 className="text-xs font-mono font-bold text-stone-800 uppercase tracking-wider flex items-center gap-2">
+            <Database className="w-4 h-4 text-emerald-800" />
+            <span>Cloud Firestore Database Connection</span>
           </h2>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200 self-start sm:self-auto">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Cloud Database Active</span>
-          </span>
+          <div className="flex items-center gap-1.5 text-xs font-mono text-emerald-800 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-700"></span>
+            <span>Cloud Firestore Synchronized</span>
+          </div>
         </div>
 
         {/* Database direct links banner */}
-        <div className="bg-gradient-to-r from-emerald-950 to-slate-900 rounded-xl p-4 sm:p-5 text-white space-y-3">
+        <div className="bg-[#032015] border border-emerald-900/60 rounded-md p-4 sm:p-5 text-white space-y-3 font-mono">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-emerald-400">Database ID</div>
-              <div className="font-mono text-sm sm:text-base font-bold text-white break-all">
+              <div className="text-[10px] uppercase tracking-wider text-emerald-400">Database Identifier</div>
+              <div className="text-xs sm:text-sm font-bold text-white break-all">
                 ai-studio-dadayahighschool-fc9a791d-1c21-4ba8-8ebb-e831db4a52bb
               </div>
             </div>
@@ -367,46 +367,40 @@ export const AdminSettingsView: React.FC = () => {
       </div>
 
       {/* Offline Persistence & Synchronization Queue Card */}
-      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <HardDrive className="w-4 h-4 text-emerald-600" />
-            <span>Offline Enrollment & Synchronization Queue</span>
+      <div className="bg-white rounded-md p-6 border border-stone-200 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-200">
+          <h2 className="text-xs font-mono font-bold text-stone-800 uppercase tracking-wider flex items-center gap-2">
+            <HardDrive className="w-4 h-4 text-emerald-800" />
+            <span>Continuous Offline Ledger & Sync Queue</span>
           </h2>
-          <span
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${
-              isOnline
-                ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
-                : 'bg-amber-100 text-amber-900 border-amber-300'
-            }`}
-          >
+          <div className="flex items-center gap-1.5 text-xs font-mono font-medium">
             {isOnline ? (
               <>
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>Online (Live Sync)</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                <span className="text-emerald-800">Station Connected · Live Sync</span>
               </>
             ) : (
               <>
-                <WifiOff className="w-3.5 h-3.5 text-amber-700" />
-                <span>Offline Mode Active</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                <span className="text-amber-800">Station Offline · Local Ledger</span>
               </>
             )}
-          </span>
+          </div>
         </div>
 
-        <p className="text-xs text-slate-600 leading-relaxed">
+        <p className="text-xs text-stone-600 leading-relaxed font-sans">
           The Dadaya High School portal is Progressive Web App (PWA) and offline-enabled. When internet connectivity is unavailable, students can continue enrolling without disruption. Records are saved locally in persistent offline storage (IndexedDB & LocalStorage) with assigned candidate numbers and will automatically upload to Cloud Firestore as soon as internet reconnects.
         </p>
 
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-stone-50 rounded-md p-4 border border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs">
           <div className="space-y-1">
-            <div className="text-xs font-bold text-slate-900 flex items-center gap-2">
+            <div className="text-xs font-bold text-stone-900 flex items-center gap-2">
               <span>Pending Offline Records:</span>
-              <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
+              <span className="text-xs font-bold text-emerald-950 tabular-nums">
                 {pendingSyncCount} record{pendingSyncCount === 1 ? '' : 's'}
               </span>
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-stone-500 font-sans">
               {pendingSyncCount === 0
                 ? 'All student enrollments and system records are fully synced with the cloud.'
                 : `${pendingSyncCount} student record(s) queued on this machine awaiting cloud sync.`}

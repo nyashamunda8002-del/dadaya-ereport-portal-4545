@@ -54,46 +54,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome }) => {
           </div>
 
           <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border transition-colors ${
+            className={`hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold border transition-colors ${
               isOnline
-                ? 'bg-emerald-950/70 border-emerald-700/70 text-emerald-300'
-                : 'bg-amber-950/90 border-amber-500/80 text-amber-300'
+                ? 'bg-[#021810] border-emerald-800 text-emerald-300'
+                : 'bg-amber-950/80 border-amber-800 text-amber-200'
             }`}
-            title={
-              isOnline
-                ? 'Online: Cloud Firestore active'
-                : 'Offline: Local storage active, enrollments will auto-sync when internet reconnects'
-            }
           >
             {isOnline ? (
-              <>
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Online</span>
-              </>
+              <span>Online · Cloud Synced</span>
             ) : (
-              <>
-                <WifiOff className="w-3 h-3 text-amber-400" />
-                <span>Offline {pendingSyncCount > 0 ? `(${pendingSyncCount} queued)` : ''}</span>
-              </>
+              <span>Offline · Local Queue {pendingSyncCount > 0 ? `(${pendingSyncCount})` : ''}</span>
             )}
           </div>
         </div>
 
         {/* Right Navigation */}
-        <div className="flex items-center space-x-3 sm:space-x-5">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           {currentUser ? (
             <>
-              {/* Quick Demo Switcher Button */}
+              {/* Role Switcher Button */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700/60 text-xs font-medium text-emerald-200 transition-colors"
+                  className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#021810] hover:bg-emerald-900/60 border border-emerald-800/80 text-xs font-medium text-emerald-200 transition-colors"
                   title="Switch between Teacher, Student, and Administrator test accounts"
                 >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Role: <span className="capitalize text-white font-semibold">{role}</span>
-                  <ChevronDown className="w-3.5 h-3.5 opacity-80" />
+                  <span className="text-stone-400">Portal:</span>
+                  <span className="capitalize text-white font-semibold">{role}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
                 </button>
 
                 {showRoleSwitcher && (
@@ -147,33 +136,33 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome }) => {
                 )}
               </div>
 
-              {/* User Profile Pill */}
-              <div className="flex items-center gap-2.5 pl-2 sm:pl-3">
-                <div className="w-9 h-9 rounded-full bg-emerald-800/80 border border-emerald-400/50 flex items-center justify-center text-emerald-200 font-bold text-sm shadow-inner">
+              {/* User Profile Identity */}
+              <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-emerald-800/60">
+                <div className="w-8 h-8 rounded bg-emerald-900/90 border border-emerald-700/80 flex items-center justify-center text-white font-bold text-xs">
                   {currentUser.displayName.charAt(0)}
                 </div>
                 <div className="hidden sm:flex flex-col text-left">
-                  <span className="text-sm font-semibold text-white leading-tight">
+                  <span className="text-xs font-semibold text-white leading-tight">
                     {currentUser.displayName}
                   </span>
-                  <span className="text-[11px] text-emerald-300 font-medium capitalize">
+                  <span className="text-[10px] text-emerald-300/80 capitalize">
                     {currentUser.role}
                   </span>
                 </div>
               </div>
 
-              {/* Notification Bell with Badge */}
+              {/* Notification Activity */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className="relative p-2 rounded-full text-emerald-100 hover:text-white hover:bg-emerald-800 transition-colors"
-                  aria-label="Notifications"
+                  className="relative p-1.5 rounded text-stone-300 hover:text-white hover:bg-emerald-900/60 transition-colors"
+                  aria-label="System Activity"
                 >
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs">
-                    {recentLogs.length > 5 ? 5 : recentLogs.length}
-                  </span>
+                  <Bell className="w-4.5 h-4.5" />
+                  {recentLogs.length > 0 && (
+                    <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
+                  )}
                 </button>
 
                 {showNotifications && (

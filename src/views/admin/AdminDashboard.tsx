@@ -42,233 +42,224 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   return (
     <div className="space-y-6">
       {/* Title */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
-            Administrator Dashboard
+          <h1 className="font-serif-school text-xl sm:text-2xl font-black text-[#064e3b] tracking-wide uppercase">
+            Administrative Control Panel
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            System overview for {settings.schoolName} • {settings.currentTerm} ({settings.currentAcademicYear})
+          <p className="text-xs text-stone-500 font-mono mt-0.5">
+            {settings.schoolName} · {settings.currentTerm} · Academic Year {settings.currentAcademicYear}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => onNavigate('admin-students')}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#064e3b] hover:bg-emerald-900 text-white rounded-md text-xs font-semibold transition-colors cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Add Student</span>
+            <span>Enroll Student</span>
           </button>
           <button
             type="button"
             onClick={() => onNavigate('admin-marks')}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-900 text-white rounded-md text-xs font-semibold transition-colors cursor-pointer"
           >
             <FileCheck2 className="w-3.5 h-3.5" />
-            <span>Review Marks</span>
+            <span>Audit Marks</span>
           </button>
         </div>
       </div>
 
-      {/* Metric Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-3.5 sm:gap-4">
+      {/* Metric Cards - Institutional Registrar Style */}
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
         <div
           onClick={() => onNavigate('admin-students')}
-          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-300 cursor-pointer transition-all"
+          className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-700 cursor-pointer transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Students</span>
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
-              <GraduationCap className="w-4 h-4" />
-            </div>
+          <div className="flex items-center justify-between text-stone-500">
+            <span className="text-[10px] font-mono uppercase tracking-wider">Students</span>
+            <GraduationCap className="w-4 h-4 text-emerald-800" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-stone-900 mt-2">
             {students.length}
           </div>
-          <span className="text-[10px] text-emerald-600 font-semibold mt-1 block">Active Rosters</span>
+          <span className="text-[10px] text-stone-500 font-mono mt-1 block">Active Registers</span>
         </div>
 
         <div
           onClick={() => onNavigate('admin-teachers')}
-          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-300 cursor-pointer transition-all"
+          className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-700 cursor-pointer transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Teachers</span>
-            <div className="p-2 rounded-lg bg-teal-50 text-teal-700">
-              <Briefcase className="w-4 h-4" />
-            </div>
+          <div className="flex items-center justify-between text-stone-500">
+            <span className="text-[10px] font-mono uppercase tracking-wider">Faculty</span>
+            <Briefcase className="w-4 h-4 text-emerald-800" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-stone-900 mt-2">
             {teachers.length}
           </div>
-          <span className="text-[10px] text-emerald-600 font-semibold mt-1 block">Faculty Staff</span>
+          <span className="text-[10px] text-stone-500 font-mono mt-1 block">Teaching Staff</span>
         </div>
 
         <div
           onClick={() => onNavigate('admin-classes')}
-          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-300 cursor-pointer transition-all"
+          className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-700 cursor-pointer transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Classes</span>
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-800">
-              <Building2 className="w-4 h-4" />
-            </div>
+          <div className="flex items-center justify-between text-stone-500">
+            <span className="text-[10px] font-mono uppercase tracking-wider">Forms</span>
+            <Building2 className="w-4 h-4 text-emerald-800" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-stone-900 mt-2">
             {classes.length}
           </div>
-          <span className="text-[10px] text-emerald-700 font-semibold mt-1 block">Form 1 - A Level</span>
+          <span className="text-[10px] text-stone-500 font-mono mt-1 block">Lower 6 & O-Level</span>
         </div>
 
         <div
           onClick={() => onNavigate('admin-subjects')}
-          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-300 cursor-pointer transition-all"
+          className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-700 cursor-pointer transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Subjects</span>
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
-              <BookOpen className="w-4 h-4" />
-            </div>
+          <div className="flex items-center justify-between text-stone-500">
+            <span className="text-[10px] font-mono uppercase tracking-wider">Subjects</span>
+            <BookOpen className="w-4 h-4 text-emerald-800" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-slate-900 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-stone-900 mt-2">
             {subjects.length}
           </div>
-          <span className="text-[10px] text-slate-400 font-medium mt-1 block">Curriculum</span>
+          <span className="text-[10px] text-stone-500 font-mono mt-1 block">ZIMSEC Syllabus</span>
         </div>
 
         <div
           onClick={() => onNavigate('admin-marks')}
-          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-300 cursor-pointer transition-all"
+          className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-700 cursor-pointer transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Submitted</span>
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
+          <div className="flex items-center justify-between text-stone-500">
+            <span className="text-[10px] font-mono uppercase tracking-wider">Approved</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-700" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-emerald-600 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-emerald-800 mt-2">
             {submittedMarks.length}
           </div>
-          <span className="text-[10px] text-emerald-600 font-semibold mt-1 block">Ready / Approved</span>
+          <span className="text-[10px] text-stone-500 font-mono mt-1 block">Verified Marks</span>
         </div>
 
         <div
           onClick={() => onNavigate('admin-marks')}
-          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-emerald-300 cursor-pointer transition-all"
+          className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-700 cursor-pointer transition-colors"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Pending</span>
-            <div className="p-2 rounded-lg bg-amber-50 text-amber-700">
-              <Clock className="w-4 h-4" />
-            </div>
+          <div className="flex items-center justify-between text-stone-500">
+            <span className="text-[10px] font-mono uppercase tracking-wider">Pending</span>
+            <Clock className="w-4 h-4 text-amber-700" />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-amber-600 mt-2">
+          <div className="text-2xl font-bold font-mono tabular-nums text-amber-800 mt-2">
             {pendingMarks.length}
           </div>
-          <span className="text-[10px] text-amber-600 font-semibold mt-1 block">Saved drafts</span>
+          <span className="text-[10px] text-stone-500 font-mono mt-1 block">Awaiting Entry</span>
         </div>
       </div>
 
-      {/* Two Column Layout: Quick Actions & Live Activity */}
+      {/* Two Column Layout: Activity Stream & Operations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* System Activity Stream */}
-        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-slate-900 text-base">Real-time Activity Stream</h3>
+        <div className="bg-white rounded-md p-5 border border-stone-200">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-200">
+            <h3 className="font-serif-school text-sm font-bold text-stone-900 tracking-wide uppercase">
+              Registrar Activity Journal
+            </h3>
             <button
               onClick={() => onNavigate('admin-logs')}
-              className="text-xs font-semibold text-emerald-700 hover:underline"
+              className="text-xs font-mono text-emerald-800 hover:underline"
             >
-              View Full Audit Log →
+              Full Audit Log →
             </button>
           </div>
 
-          <div className="space-y-3">
+          <div className="divide-y divide-stone-100">
             {logs.map((log) => (
-              <div
-                key={log.id}
-                className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3 text-xs"
-              >
-                <div className="p-1 rounded-full bg-emerald-100 text-emerald-800 shrink-0 mt-0.5">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-800">{log.action}</span>
-                    <span className="text-[10px] text-slate-400">{log.timestamp}</span>
+              <div key={log.id} className="py-2.5 flex items-start justify-between gap-3 text-xs">
+                <div>
+                  <div className="font-semibold text-stone-900">{log.action}</div>
+                  <p className="text-stone-600 mt-0.5">{log.details}</p>
+                  <div className="text-[11px] text-stone-400 font-mono mt-1">
+                    Recorded by <span className="text-stone-700 font-medium">{log.user}</span> · {log.role}
                   </div>
-                  <p className="text-slate-500 mt-0.5">{log.details}</p>
-                  <span className="inline-block mt-1 text-[10px] font-medium text-emerald-950 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
-                    By {log.user} ({log.role})
-                  </span>
                 </div>
+                <span className="text-[10px] font-mono text-stone-400 shrink-0">
+                  {log.timestamp}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Quick Administration Operations */}
-        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs space-y-4">
-          <h3 className="font-bold text-slate-900 text-base">Administrative Operations</h3>
+        <div className="bg-white rounded-md p-5 border border-stone-200 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-200">
+              <h3 className="font-serif-school text-sm font-bold text-stone-900 tracking-wide uppercase">
+                Administrative Actions
+              </h3>
+              <span className="text-[10px] font-mono text-stone-400">Authorized Personnel</span>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <button
-              type="button"
-              onClick={() => onNavigate('admin-students')}
-              className="p-3.5 rounded-xl border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/40 text-left transition-all"
-            >
-              <div className="font-bold text-slate-900 flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-emerald-600" />
-                <span>Enroll Student</span>
-              </div>
-              <p className="text-slate-500 mt-1">Register new student and assign to form stream.</p>
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <button
+                type="button"
+                onClick={() => onNavigate('admin-students')}
+                className="p-3 rounded-md border border-stone-200 hover:border-emerald-700 text-left transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-stone-900 flex items-center gap-2 group-hover:text-emerald-900">
+                  <GraduationCap className="w-4 h-4 text-emerald-800" />
+                  <span>Student Enrollment</span>
+                </div>
+                <p className="text-stone-500 text-[11px] mt-1">Register candidates into Form 6 streams or Form 1-4 classes.</p>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => onNavigate('admin-teachers')}
-              className="p-3.5 rounded-xl border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/40 text-left transition-all"
-            >
-              <div className="font-bold text-slate-900 flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-teal-600" />
-                <span>Create Teacher</span>
-              </div>
-              <p className="text-slate-500 mt-1">Issue EC Number and assign classes & subjects.</p>
-            </button>
+              <button
+                type="button"
+                onClick={() => onNavigate('admin-teachers')}
+                className="p-3 rounded-md border border-stone-200 hover:border-emerald-700 text-left transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-stone-900 flex items-center gap-2 group-hover:text-emerald-900">
+                  <Briefcase className="w-4 h-4 text-emerald-800" />
+                  <span>Faculty Directory</span>
+                </div>
+                <p className="text-stone-500 text-[11px] mt-1">Issue EC Number and assign subject curricula.</p>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => onNavigate('admin-marks')}
-              className="p-3.5 rounded-xl border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/40 text-left transition-all"
-            >
-              <div className="font-bold text-slate-900 flex items-center gap-2">
-                <FileCheck2 className="w-4 h-4 text-emerald-600" />
-                <span>Marks Approvals</span>
-              </div>
-              <p className="text-slate-500 mt-1">Review and approve teacher term submissions.</p>
-            </button>
+              <button
+                type="button"
+                onClick={() => onNavigate('admin-marks')}
+                className="p-3 rounded-md border border-stone-200 hover:border-emerald-700 text-left transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-stone-900 flex items-center gap-2 group-hover:text-emerald-900">
+                  <FileCheck2 className="w-4 h-4 text-emerald-800" />
+                  <span>Marks Auditing</span>
+                </div>
+                <p className="text-stone-500 text-[11px] mt-1">Review teacher grade submissions prior to printing.</p>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => onOpenReportCard('DHS001')}
-              className="p-3.5 rounded-xl border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/40 text-left transition-all"
-            >
-              <div className="font-bold text-slate-900 flex items-center gap-2">
-                <Award className="w-4 h-4 text-emerald-700" />
-                <span>Sample Report Card</span>
-              </div>
-              <p className="text-slate-500 mt-1">Inspect official printable A4 report format.</p>
-            </button>
+              <button
+                type="button"
+                onClick={() => onOpenReportCard('DHS001')}
+                className="p-3 rounded-md border border-stone-200 hover:border-emerald-700 text-left transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-stone-900 flex items-center gap-2 group-hover:text-emerald-900">
+                  <Award className="w-4 h-4 text-emerald-800" />
+                  <span>Printable Certificate</span>
+                </div>
+                <p className="text-stone-500 text-[11px] mt-1">Preview official ZIMSEC format continuous assessment card.</p>
+              </button>
+            </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>Database Mode: Real Persistent Firestore/Local Sync</span>
+          <div className="pt-4 mt-4 border-t border-stone-200 flex items-center justify-between text-xs text-stone-500 font-mono">
+            <span>Persistence: Firestore & Offline IndexedDB Sync</span>
             <button
               onClick={() => onNavigate('admin-settings')}
-              className="text-emerald-700 font-semibold hover:underline"
+              className="text-emerald-800 font-semibold hover:underline"
             >
-              Configure Firebase →
+              System Settings →
             </button>
           </div>
         </div>
