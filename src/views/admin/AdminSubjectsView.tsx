@@ -76,7 +76,7 @@ export const AdminSubjectsView: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
             Curriculum & Subjects
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -86,7 +86,7 @@ export const AdminSubjectsView: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Subject</span>
@@ -97,12 +97,12 @@ export const AdminSubjectsView: React.FC = () => {
         {subjects.map((sub) => (
           <div
             key={sub.id}
-            className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:border-emerald-400 transition-colors flex flex-col justify-between"
+            className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:border-[#1557B0] hover:shadow-md transition-all flex flex-col justify-between"
           >
             <div>
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="font-mono text-xs font-bold text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="font-mono text-xs font-bold text-[#082B63] bg-blue-50 px-2 py-0.5 rounded border border-blue-200/80">
                     {sub.code}
                   </span>
                   <h3 className="text-base font-bold text-slate-900 mt-2">{sub.name}</h3>
@@ -110,7 +110,7 @@ export const AdminSubjectsView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleOpenEdit(sub)}
-                  className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-slate-100 rounded-lg"
+                  className="p-1.5 text-slate-400 hover:text-[#1557B0] hover:bg-blue-50 rounded-lg cursor-pointer transition-colors"
                   title="Edit Subject"
                 >
                   <Edit2 className="w-4 h-4" />
@@ -134,12 +134,12 @@ export const AdminSubjectsView: React.FC = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden">
-            <div className="bg-[#064e3b] text-white p-4 flex items-center justify-between">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 border border-slate-200">
+            <div className="bg-gradient-to-r from-[#082B63] to-[#1557B0] text-white p-4 flex items-center justify-between">
               <h3 className="font-bold text-base">
                 {editingSubject ? `Edit Subject: ${editingSubject.name}` : 'Add New Subject'}
               </h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-emerald-200 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-blue-200 hover:text-white cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -153,7 +153,7 @@ export const AdminSubjectsView: React.FC = () => {
                   placeholder="e.g. Computer Science"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 />
               </div>
 
@@ -166,7 +166,7 @@ export const AdminSubjectsView: React.FC = () => {
                     placeholder="CSC101"
                     value={formData.code}
                     onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 uppercase font-mono"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 uppercase font-mono focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
                 <div>
@@ -178,7 +178,7 @@ export const AdminSubjectsView: React.FC = () => {
                     required
                     value={formData.passMark}
                     onChange={(e) => setFormData({ ...formData, passMark: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 font-mono"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 font-mono focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -188,7 +188,7 @@ export const AdminSubjectsView: React.FC = () => {
                 <select
                   value={formData.department}
                   onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 >
                   {departments.map((d) => (
                     <option key={d} value={d}>
@@ -202,13 +202,13 @@ export const AdminSubjectsView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold"
+                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold shadow-md"
+                  className="px-5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl font-bold shadow-md cursor-pointer transition-all active:scale-[0.99]"
                 >
                   Save Subject
                 </button>

@@ -79,7 +79,7 @@ const MainAppContent: React.FC = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-emerald-950 flex flex-col">
+      <div className="min-h-screen bg-white flex flex-col">
         <Navbar />
         <main className="flex-1">
           <LoginView />
@@ -93,32 +93,23 @@ const MainAppContent: React.FC = () => {
     : null;
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#F4F7FC] flex flex-col">
       {/* Top Navbar */}
-      <Navbar onNavigateHome={() => setCurrentTab(role === 'admin' ? 'admin-dashboard' : role === 'student' ? 'my-results' : 'dashboard')} />
+      <Navbar
+        onNavigateHome={() =>
+          setCurrentTab(
+            role === 'admin'
+              ? 'admin-dashboard'
+              : role === 'student'
+              ? 'my-results'
+              : 'dashboard'
+          )
+        }
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      />
 
       {/* Main Container with Sidebar + Content */}
-      <div className="flex-1 flex max-w-7xl w-full mx-auto relative">
-        {/* Mobile menu toggle bar */}
-        <div className="lg:hidden no-print bg-[#032317] text-white px-4 py-2 flex items-center justify-between border-b border-emerald-900 w-full fixed top-18 z-30">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-1.5 rounded-lg bg-emerald-900/60 text-emerald-200 hover:text-white"
-              aria-label="Toggle navigation"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-            <span className="text-xs font-bold text-white capitalize">
-              {role} Menu
-            </span>
-          </div>
-          <span className="text-xs font-semibold text-emerald-300">
-            {currentUser.displayName}
-          </span>
-        </div>
-
+      <div className="flex-1 flex w-full relative">
         {/* Sidebar */}
         <Sidebar
           currentTab={currentTab}
@@ -134,7 +125,7 @@ const MainAppContent: React.FC = () => {
         />
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8 min-w-0 overflow-y-auto">
+        <main className="flex-1 bg-[#F4F7FC] p-4 sm:p-6 lg:p-8 min-w-0 overflow-y-auto max-w-[1600px]">
           {/* TEACHER VIEWS */}
           {role === 'teacher' && (
             <>

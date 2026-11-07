@@ -140,7 +140,7 @@ export const AdminTeachersView: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
             Teacher Management
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -150,7 +150,7 @@ export const AdminTeachersView: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Teacher</span>
@@ -158,7 +158,7 @@ export const AdminTeachersView: React.FC = () => {
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs max-w-md">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs max-w-md">
         <div className="relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
           <input
@@ -166,7 +166,7 @@ export const AdminTeachersView: React.FC = () => {
             placeholder="Search by teacher name, title, EC number, or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+            className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
           />
         </div>
       </div>
@@ -180,18 +180,18 @@ export const AdminTeachersView: React.FC = () => {
           return (
             <div
               key={tch.id}
-              className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+              className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-emerald-100 text-[#064e3b] flex items-center justify-center font-bold font-serif-school text-lg">
+                    <div className="w-11 h-11 rounded-xl bg-blue-50 text-[#1557B0] border border-blue-200/60 flex items-center justify-center font-bold font-serif-school text-lg shadow-xs">
                       {tch.name.charAt(0)}
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 text-base">{tch.title}</h3>
+                      <h3 className="font-bold text-[#082B63] text-base">{tch.title}</h3>
                       <div className="flex items-center gap-2 text-xs text-slate-500">
-                        <span className="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-[11px] font-semibold">
+                        <span className="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-[11px] font-semibold text-slate-700">
                           {tch.ecNumber}
                         </span>
                         <span>•</span>
@@ -203,7 +203,7 @@ export const AdminTeachersView: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleOpenEdit(tch)}
-                    className="p-2 text-slate-500 hover:text-emerald-700 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-2 text-slate-400 hover:text-[#1557B0] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                     title="Edit Teacher"
                   >
                     <Edit2 className="w-4 h-4" />
@@ -232,7 +232,7 @@ export const AdminTeachersView: React.FC = () => {
                     {assignedClasses.map((c) => (
                       <span
                         key={c.id}
-                        className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-950 text-[11px] font-semibold border border-emerald-200"
+                        className="px-2 py-0.5 rounded-md bg-blue-50 text-[#082B63] text-[11px] font-semibold border border-blue-200/80"
                       >
                         {c.name}
                       </span>
@@ -249,7 +249,7 @@ export const AdminTeachersView: React.FC = () => {
                     {assignedSubjects.map((s) => (
                       <span
                         key={s.id}
-                        className="px-2 py-0.5 rounded bg-teal-50 text-teal-900 text-[11px] font-semibold border border-teal-200"
+                        className="px-2 py-0.5 rounded-md bg-slate-50 text-slate-800 text-[11px] font-semibold border border-slate-200"
                       >
                         {s.name}
                       </span>
@@ -265,14 +265,14 @@ export const AdminTeachersView: React.FC = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95">
-            <div className="bg-[#064e3b] text-white p-4 flex items-center justify-between">
+          <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 border border-slate-200">
+            <div className="bg-gradient-to-r from-[#082B63] to-[#1557B0] text-white p-4 flex items-center justify-between">
               <h3 className="font-bold text-base">
                 {editingTeacher ? `Edit Faculty: ${editingTeacher.title}` : 'Add New Faculty Member'}
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-emerald-200 hover:text-white"
+                className="text-blue-200 hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -288,7 +288,7 @@ export const AdminTeachersView: React.FC = () => {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
                 <div>
@@ -298,7 +298,7 @@ export const AdminTeachersView: React.FC = () => {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
                 <div>
@@ -308,7 +308,7 @@ export const AdminTeachersView: React.FC = () => {
                     required
                     value={formData.surname}
                     onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -322,7 +322,7 @@ export const AdminTeachersView: React.FC = () => {
                     placeholder="teacher@dadaya.ac.zw"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
                 <div>
@@ -332,7 +332,7 @@ export const AdminTeachersView: React.FC = () => {
                     required
                     value={formData.ecNumber}
                     onChange={(e) => setFormData({ ...formData, ecNumber: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 font-mono focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -350,7 +350,7 @@ export const AdminTeachersView: React.FC = () => {
                         key={c.id}
                         className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer text-xs border transition-colors ${
                           isSelected
-                            ? 'bg-emerald-600 text-white border-emerald-700 font-bold'
+                            ? 'bg-[#1557B0] text-white border-[#082B63] font-bold'
                             : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
                         }`}
                       >
@@ -380,7 +380,7 @@ export const AdminTeachersView: React.FC = () => {
                         key={s.id}
                         className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer text-xs border transition-colors ${
                           isSelected
-                            ? 'bg-teal-600 text-white border-teal-700 font-bold'
+                            ? 'bg-[#082B63] text-white border-blue-900 font-bold'
                             : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
                         }`}
                       >
@@ -401,13 +401,13 @@ export const AdminTeachersView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50"
+                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold shadow-md"
+                  className="px-5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl font-bold shadow-md cursor-pointer transition-all active:scale-[0.99]"
                 >
                   {editingTeacher ? 'Save Changes' : 'Create Teacher'}
                 </button>

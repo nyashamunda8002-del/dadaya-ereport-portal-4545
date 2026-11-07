@@ -203,8 +203,8 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
       {/* Title & Top Action Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
-            Class Management & Rosters
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
+            My Class Management
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
             Manage your teaching classes, enrollments, and student registers.
@@ -219,7 +219,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
               onClick={() => setViewMode('roster')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 viewMode === 'roster'
-                  ? 'bg-white text-emerald-950 shadow-xs'
+                  ? 'bg-white text-[#082B63] shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -231,7 +231,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
               onClick={() => setViewMode('all-classes')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 viewMode === 'all-classes'
-                  ? 'bg-white text-emerald-950 shadow-xs'
+                  ? 'bg-white text-[#082B63] shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -244,7 +244,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
           <button
             type="button"
             onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all active:scale-[0.98] cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add Class</span>
@@ -391,7 +391,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                     setSelectedClassId(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="flex-1 px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                  className="flex-1 px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 >
                   {allClasses.map((cls) => (
                     <option key={cls.id} value={cls.id}>
@@ -402,7 +402,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(true)}
-                  className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition-colors flex items-center gap-1 shrink-0"
+                  className="px-3 py-2 bg-blue-50 hover:bg-blue-100 text-[#1557B0] border border-blue-200 rounded-xl text-xs font-bold transition-colors flex items-center gap-1 shrink-0 cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>New</span>
@@ -425,7 +425,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 />
               </div>
             </div>
@@ -434,11 +434,11 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
           {/* Summary Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#1557B0] flex items-center justify-center">
                 <Users className="w-6 h-6" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                <div className="text-2xl sm:text-3xl font-black text-[#082B63] tracking-tight font-mono">
                   {currentClass?.studentCount || totalStudents || 0}
                 </div>
                 <div className="text-xs text-slate-500 font-semibold">Enrolled Students</div>
@@ -446,11 +446,11 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
             </div>
 
             <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                <div className="text-2xl sm:text-3xl font-black text-[#082B63] tracking-tight font-mono">
                   {subjects.length}
                 </div>
                 <div className="text-xs text-slate-500 font-semibold">Taught Subjects</div>
@@ -458,11 +458,11 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
             </div>
 
             <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
                 <Calendar className="w-6 h-6" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                <div className="text-2xl sm:text-3xl font-black text-[#082B63] tracking-tight font-mono">
                   {settings.currentTerm}
                 </div>
                 <div className="text-xs text-slate-500 font-semibold">{settings.currentAcademicYear}</div>
@@ -471,10 +471,10 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
           </div>
 
           {/* Student Roster Table */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
             <div className="p-4 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-slate-900">
+                <span className="font-bold text-sm text-[#082B63]">
                   {currentClass?.name || 'Class'} Register
                 </span>
                 <span className="text-xs text-slate-500">
@@ -486,7 +486,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleInitiateDelete(currentClass)}
-                  className="flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-rose-700 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors border border-rose-200"
+                  className="flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-rose-700 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors border border-rose-200 cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Delete Class</span>
@@ -497,7 +497,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs sm:text-sm">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-[11px] tracking-wider font-bold">
+                  <tr className="bg-slate-50 border-b border-slate-200 text-[#082B63] uppercase text-[11px] tracking-wider font-bold">
                     <th className="py-3.5 px-4 w-12 text-center">#</th>
                     <th className="py-3.5 px-4">Name</th>
                     <th className="py-3.5 px-4">Surname</th>
@@ -512,13 +512,13 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                     paginatedStudents.map((st, idx) => {
                       const globalIdx = (currentPage - 1) * pageSize + idx + 1;
                       return (
-                        <tr key={st.id} className="hover:bg-emerald-50/30 transition-colors">
+                        <tr key={st.id} className="hover:bg-blue-50/40 transition-colors">
                           <td className="py-3.5 px-4 text-center font-mono text-slate-400 font-semibold">
                             {globalIdx}
                           </td>
-                          <td className="py-3.5 px-4 font-semibold text-slate-900">{st.name}</td>
+                          <td className="py-3.5 px-4 font-semibold text-[#082B63]">{st.name}</td>
                           <td className="py-3.5 px-4 text-slate-700">{st.surname}</td>
-                          <td className="py-3.5 px-4 font-mono font-medium text-emerald-950">
+                          <td className="py-3.5 px-4 font-mono font-medium text-[#1557B0]">
                             {st.id}
                           </td>
                           <td className="py-3.5 px-4 text-slate-600">{st.className}</td>
@@ -532,7 +532,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                             <button
                               type="button"
                               onClick={() => onOpenReportCard(st.id)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#1557B0] hover:bg-[#082B63] rounded-lg transition-colors shadow-xs cursor-pointer"
                             >
                               <FileText className="w-3.5 h-3.5" />
                               <span>Report Card</span>
@@ -611,15 +611,15 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-scaleIn">
-            <div className="bg-[#064e3b] text-white p-4 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-[#082B63] to-[#1557B0] text-white p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Plus className="w-5 h-5 text-emerald-300" />
+                <Plus className="w-5 h-5 text-blue-200" />
                 <h3 className="font-bold text-base">Add New Teaching Class</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-emerald-200 hover:text-white transition-colors"
+                className="text-blue-200 hover:text-white transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -703,7 +703,7 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold shadow-md transition-all active:scale-[0.98]"
+                  className="px-5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl font-bold shadow-md transition-all active:scale-[0.98]"
                 >
                   Create Class
                 </button>

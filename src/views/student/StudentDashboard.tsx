@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import dataService from '../../services/dataService';
-import { Mark, Student } from '../../types';
 import {
   Award,
-  Calendar,
-  CheckCircle2,
-  TrendingUp,
-  FileText,
-  Printer,
   BookOpen,
   ArrowRight,
+  TrendingUp,
 } from 'lucide-react';
 
 interface StudentDashboardProps {
@@ -33,12 +28,12 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
   if (!student) {
     return (
       <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-xs max-w-lg mx-auto mt-8">
-        <div className="w-16 h-16 rounded-full bg-emerald-100 text-[#064e3b] mx-auto flex items-center justify-center mb-4">
+        <div className="w-16 h-16 rounded-full bg-blue-50 text-[#1557B0] mx-auto flex items-center justify-center mb-4">
           <BookOpen className="w-8 h-8" />
         </div>
-        <h3 className="text-xl font-bold text-slate-900">Welcome to Dadaya High School</h3>
+        <h3 className="text-xl font-bold text-[#082B63]">Welcome to Dadaya High School</h3>
         <p className="text-sm text-slate-500 mt-2">
-          The database currently has no students enrolled. Please enroll in Lower Six (Sciences, Commercials, or Arts) on the student enrollment page.
+          The database currently has no students enrolled. Please enroll in Form 1-4 or Lower Six on the student enrollment page.
         </p>
       </div>
     );
@@ -60,13 +55,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="font-serif-school text-xl sm:text-2xl font-black text-[#064e3b] tracking-wide uppercase">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
             Candidate Academic Record
           </h1>
-          <p className="text-xs text-stone-500 font-mono mt-0.5">
-            {student.name} {student.surname} · Candidate ID: {student.id} · Form: {student.className}
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            {student.name} {student.surname} · Candidate ID: <span className="font-mono text-[#1557B0] font-bold">{student.id}</span> · Form: {student.className}
           </p>
         </div>
 
@@ -75,7 +70,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
           <select
             value={selectedTerm}
             onChange={(e) => setSelectedTerm(e.target.value as any)}
-            className="px-3 py-1.5 text-xs font-mono font-semibold rounded-md border border-stone-300 bg-white text-stone-900 focus:outline-hidden cursor-pointer"
+            className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden cursor-pointer"
           >
             <option value="Term 1">Term 1</option>
             <option value="Term 2">Term 2</option>
@@ -85,9 +80,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
           <button
             type="button"
             onClick={() => onOpenReportCard(student.id, selectedTerm)}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#064e3b] hover:bg-emerald-900 text-white rounded-md text-xs font-semibold transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
           >
-            <Award className="w-4 h-4 text-emerald-300" />
+            <Award className="w-4 h-4 text-blue-200" />
             <span>Official Report Card</span>
           </button>
         </div>
@@ -96,16 +91,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
       {/* Top 2-Column Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Overall Performance Card */}
-        <div className="lg:col-span-5 bg-white rounded-md p-5 border border-stone-200 flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-            <h3 className="font-serif-school text-sm font-bold text-stone-900 tracking-wide uppercase">
+        <div className="lg:col-span-5 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 className="text-sm font-bold text-[#082B63] uppercase tracking-wide">
               Term Standing
             </h3>
-            <span className="text-[10px] font-mono text-stone-400">Continuous Assessment</span>
+            <span className="text-[10px] text-slate-400 font-medium">Continuous Assessment</span>
           </div>
 
           <div className="my-6 flex flex-col sm:flex-row items-center justify-around gap-6">
-            {/* Circular Gauge / Donut in Emerald Green */}
+            {/* Circular Gauge / Donut in Royal Blue */}
             <div className="relative w-36 h-36 flex items-center justify-center shrink-0">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 160 160">
                 <circle
@@ -121,7 +116,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
                   cx="80"
                   cy="80"
                   r={radius}
-                  className="text-emerald-500 transition-all duration-700 ease-out"
+                  className="text-[#1557B0] transition-all duration-700 ease-out"
                   strokeWidth="14"
                   strokeDasharray={circumference}
                   strokeDashoffset={strokeDashoffset}
@@ -131,10 +126,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className="text-3xl font-black text-slate-900 tracking-tight">
+                <span className="text-3xl font-black text-[#082B63] font-mono tracking-tight">
                   {average}%
                 </span>
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Average
                 </span>
               </div>
@@ -144,18 +139,18 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
             <div className="space-y-2 text-xs font-semibold text-slate-700">
               <div className="flex items-center justify-between gap-6">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#1557B0]"></span>
                   <span>Excellent</span>
                 </div>
-                <span className="font-mono font-bold text-slate-900">{summary.categories.excellent}</span>
+                <span className="font-mono font-bold text-[#082B63]">{summary.categories.excellent}</span>
               </div>
 
               <div className="flex items-center justify-between gap-6">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
                   <span>Good</span>
                 </div>
-                <span className="font-mono font-bold text-slate-900">{summary.categories.good}</span>
+                <span className="font-mono font-bold text-[#082B63]">{summary.categories.good}</span>
               </div>
 
               <div className="flex items-center justify-between gap-6">
@@ -163,7 +158,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                   <span>Fair</span>
                 </div>
-                <span className="font-mono font-bold text-slate-900">{summary.categories.fair}</span>
+                <span className="font-mono font-bold text-[#082B63]">{summary.categories.fair}</span>
               </div>
 
               <div className="flex items-center justify-between gap-6">
@@ -171,7 +166,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
                   <span>Needs Improvement</span>
                 </div>
-                <span className="font-mono font-bold text-slate-900">
+                <span className="font-mono font-bold text-[#082B63]">
                   {summary.categories.needsImprovement}
                 </span>
               </div>
@@ -180,41 +175,41 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
 
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
             <span>Evaluated Subjects: {marks.length}</span>
-            <span className="font-semibold text-emerald-800">Class: {student.className}</span>
+            <span className="font-semibold text-[#1557B0]">Class: {student.className}</span>
           </div>
         </div>
 
         {/* Right: Subject Performance Bars */}
-        <div className="lg:col-span-7 bg-white rounded-md p-5 border border-stone-200">
-          <div className="flex items-center justify-between pb-3 mb-4 border-b border-stone-200">
-            <h3 className="font-serif-school text-sm font-bold text-stone-900 tracking-wide uppercase">
+        <div className="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+            <h3 className="text-sm font-bold text-[#082B63] uppercase tracking-wide">
               Curriculum Mark Breakdown
             </h3>
-            <span className="text-[10px] font-mono text-stone-400">{marks.length} Subjects Evaluated</span>
+            <span className="text-[10px] text-slate-400 font-semibold">{marks.length} Subjects Evaluated</span>
           </div>
 
-          <div className="space-y-3 font-mono">
+          <div className="space-y-3.5">
             {marks.length > 0 ? (
               marks.map((m, idx) => (
                 <div key={m.id || idx} className="space-y-1">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-sans font-medium text-stone-800 flex items-center gap-2">
-                      <span className="text-stone-400 font-mono text-[11px]">{idx + 1}.</span>
+                    <span className="font-medium text-slate-800 flex items-center gap-2">
+                      <span className="text-slate-400 font-mono text-[11px]">{idx + 1}.</span>
                       {m.subjectName}
                     </span>
-                    <span className="font-bold font-mono text-stone-900 tabular-nums">{m.percentage}%</span>
+                    <span className="font-bold font-mono text-[#082B63] tabular-nums">{m.percentage}%</span>
                   </div>
                   {/* Clean hairline bar */}
-                  <div className="w-full h-1.5 bg-stone-100 rounded-xs overflow-hidden">
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-xs transition-all duration-500 ${
+                      className={`h-full rounded-full transition-all duration-500 ${
                         m.percentage >= 80
-                          ? 'bg-emerald-800'
+                          ? 'bg-[#1557B0]'
                           : m.percentage >= 70
-                          ? 'bg-teal-700'
+                          ? 'bg-blue-500'
                           : m.percentage >= 50
-                          ? 'bg-amber-700'
-                          : 'bg-rose-700'
+                          ? 'bg-amber-500'
+                          : 'bg-rose-500'
                       }`}
                       style={{ width: `${Math.min(100, Math.max(0, m.percentage))}%` }}
                     />
@@ -222,7 +217,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
                 </div>
               ))
             ) : (
-              <div className="py-10 text-center text-stone-400 italic font-sans text-xs">
+              <div className="py-10 text-center text-slate-400 italic text-xs">
                 No marks recorded for {selectedTerm} yet.
               </div>
             )}
@@ -231,15 +226,15 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
       </div>
 
       {/* Bottom: Recent Results Table */}
-      <div className="bg-white rounded-md border border-stone-200 shadow-2xs overflow-hidden">
-        <div className="p-4 border-b border-stone-200 flex items-center justify-between">
-          <h3 className="font-serif-school text-sm font-bold text-stone-900 tracking-wide uppercase">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-[#082B63] uppercase tracking-wide">
             Official Continuous Assessment Summary
           </h3>
           <button
             type="button"
             onClick={() => onOpenReportCard(student.id, selectedTerm)}
-            className="flex items-center gap-1 text-xs font-mono text-emerald-800 hover:text-emerald-950 hover:underline cursor-pointer"
+            className="flex items-center gap-1 text-xs font-bold text-[#1557B0] hover:underline cursor-pointer"
           >
             <span>Full Printable Report</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -249,42 +244,49 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead>
-              <tr className="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase text-[10px] font-mono tracking-wider">
-                <th className="py-2.5 px-4">Subject</th>
-                <th className="py-2.5 px-4 text-center">Percentage</th>
-                <th className="py-2.5 px-4">Term</th>
-                <th className="py-2.5 px-4">Performance Standard</th>
+              <tr className="bg-slate-50 border-b border-slate-200 text-[#082B63] uppercase text-[11px] font-bold tracking-wider">
+                <th className="py-3 px-4">Subject</th>
+                <th className="py-3 px-4 text-center">Percentage</th>
+                <th className="py-3 px-4">Term</th>
+                <th className="py-3 px-4">Performance Standard</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-100 font-mono">
-              {marks.slice(0, 5).map((m) => {
+            <tbody className="divide-y divide-slate-100">
+              {marks.slice(0, 6).map((m) => {
                 const gradeInfo = dataService.calculateGrade(m.percentage);
                 return (
-                  <tr key={m.id} className="hover:bg-stone-50/70 transition-colors">
-                    <td className="py-2.5 px-4 font-sans font-medium text-stone-900">{m.subjectName}</td>
-                    <td className="py-2.5 px-4 text-center font-bold text-emerald-950 tabular-nums">
+                  <tr key={m.id} className="hover:bg-blue-50/40 transition-colors">
+                    <td className="py-3 px-4 font-semibold text-[#082B63]">{m.subjectName}</td>
+                    <td className="py-3 px-4 text-center font-bold text-[#1557B0] font-mono tabular-nums">
                       {m.percentage}%
                     </td>
-                    <td className="py-2.5 px-4 text-stone-600">{m.term}</td>
-                    <td className="py-2.5 px-4">
-                      <span className="inline-flex items-center gap-1.5 text-xs">
+                    <td className="py-3 px-4 text-slate-600">{m.term}</td>
+                    <td className="py-3 px-4">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-medium">
                         <span
-                          className={`w-1.5 h-1.5 rounded-full ${
+                          className={`w-2 h-2 rounded-full ${
                             gradeInfo.category === 'Excellent'
-                              ? 'bg-emerald-700'
+                              ? 'bg-[#1557B0]'
                               : gradeInfo.category === 'Good'
-                              ? 'bg-teal-700'
+                              ? 'bg-blue-400'
                               : gradeInfo.category === 'Fair'
-                              ? 'bg-amber-600'
-                              : 'bg-rose-600'
+                              ? 'bg-amber-500'
+                              : 'bg-rose-500'
                           }`}
                         />
-                        <span className="text-stone-700">{gradeInfo.category}</span>
+                        <span className="text-slate-800 font-semibold">{gradeInfo.category}</span>
                       </span>
                     </td>
                   </tr>
                 );
               })}
+              {marks.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="py-8 text-center text-slate-400 italic">
+                    No assessments recorded for {selectedTerm}.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

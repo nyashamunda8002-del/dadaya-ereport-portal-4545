@@ -47,7 +47,7 @@ export const AdminSettingsView: React.FC = () => {
 
   const [fbConfig, setFbConfig] = useState({
     apiKey: '',
-    projectId: firebaseStatus.projectId || 'dadaya-ereport-cloud',
+    projectId: firebaseStatus.projectId || 'distributed-rig-z9v0l',
     authDomain: '',
   });
 
@@ -92,7 +92,7 @@ export const AdminSettingsView: React.FC = () => {
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
             Institutional Settings & Database
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -102,7 +102,7 @@ export const AdminSettingsView: React.FC = () => {
         <button
           type="button"
           onClick={handleResetDemo}
-          className="flex items-center gap-2 px-4 py-2 border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-800 rounded-xl text-xs font-bold transition-colors self-start sm:self-auto"
+          className="flex items-center gap-2 px-4 py-2 border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-800 rounded-xl text-xs font-bold transition-colors self-start sm:self-auto cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset Demo Dataset</span>
@@ -110,17 +110,17 @@ export const AdminSettingsView: React.FC = () => {
       </div>
 
       {notification && (
-        <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm rounded-xl flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          <span>{notification}</span>
+        <div className="p-3.5 bg-blue-50 border border-blue-200 text-[#082B63] text-xs sm:text-sm rounded-xl flex items-center gap-2 shadow-xs">
+          <CheckCircle2 className="w-4 h-4 text-[#1557B0]" />
+          <span className="font-medium">{notification}</span>
         </div>
       )}
 
       {/* Form: General School Information */}
       <form onSubmit={handleSaveSettings} className="space-y-6">
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Building className="w-4 h-4 text-emerald-600" />
+        <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+          <h2 className="text-sm font-bold text-[#082B63] uppercase tracking-wider flex items-center gap-2">
+            <Building className="w-4 h-4 text-[#1557B0]" />
             <span>School Identification</span>
           </h2>
 
@@ -132,7 +132,7 @@ export const AdminSettingsView: React.FC = () => {
                 required
                 value={settings.schoolName}
                 onChange={(e) => setSettings({ ...settings, schoolName: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               />
             </div>
 
@@ -143,7 +143,7 @@ export const AdminSettingsView: React.FC = () => {
                 required
                 value={settings.motto}
                 onChange={(e) => setSettings({ ...settings, motto: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 uppercase font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 uppercase font-semibold focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               />
             </div>
 
@@ -154,7 +154,7 @@ export const AdminSettingsView: React.FC = () => {
                 required
                 value={settings.headmasterName}
                 onChange={(e) => setSettings({ ...settings, headmasterName: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               />
             </div>
 
@@ -164,7 +164,7 @@ export const AdminSettingsView: React.FC = () => {
                 type="text"
                 value={settings.address}
                 onChange={(e) => setSettings({ ...settings, address: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               />
             </div>
 
@@ -173,7 +173,7 @@ export const AdminSettingsView: React.FC = () => {
               <select
                 value={settings.currentTerm}
                 onChange={(e) => setSettings({ ...settings, currentTerm: e.target.value as any })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               >
                 <option value="Term 1">Term 1</option>
                 <option value="Term 2">Term 2</option>
@@ -187,23 +187,23 @@ export const AdminSettingsView: React.FC = () => {
                 type="text"
                 value={settings.currentAcademicYear}
                 onChange={(e) => setSettings({ ...settings, currentAcademicYear: e.target.value })}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 font-mono focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 font-mono focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               />
             </div>
           </div>
         </div>
 
         {/* Grade Boundaries Config */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-emerald-600" />
+        <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+          <h2 className="text-sm font-bold text-[#082B63] uppercase tracking-wider flex items-center gap-2">
+            <Sliders className="w-4 h-4 text-[#1557B0]" />
             <span>Grading Scale & Performance Categories</span>
           </h2>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse">
               <thead>
-                <tr className="bg-slate-50 text-slate-600 uppercase text-[11px] font-bold border-b border-slate-200">
+                <tr className="bg-slate-50/80 text-[#082B63] uppercase text-[11px] font-bold border-b border-slate-200">
                   <th className="py-2.5 px-3">Grade</th>
                   <th className="py-2.5 px-3">Min Mark</th>
                   <th className="py-2.5 px-3">Max Mark</th>
@@ -214,7 +214,7 @@ export const AdminSettingsView: React.FC = () => {
               <tbody className="divide-y divide-slate-100">
                 {settings.gradeBoundaries.map((b, idx) => (
                   <tr key={b.grade}>
-                    <td className="py-2 px-3 font-bold text-emerald-950">{b.grade}</td>
+                    <td className="py-2 px-3 font-bold text-[#082B63]">{b.grade}</td>
                     <td className="py-2 px-3">
                       <input
                         type="number"
@@ -222,7 +222,7 @@ export const AdminSettingsView: React.FC = () => {
                         max="100"
                         value={b.minMark}
                         onChange={(e) => handleBoundaryChange(idx, 'minMark', Number(e.target.value))}
-                        className="w-16 px-2 py-1 rounded border border-slate-200 font-mono"
+                        className="w-16 px-2 py-1 rounded-lg border border-slate-200 font-mono focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                       />
                     </td>
                     <td className="py-2 px-3">
@@ -232,7 +232,7 @@ export const AdminSettingsView: React.FC = () => {
                         max="100"
                         value={b.maxMark}
                         onChange={(e) => handleBoundaryChange(idx, 'maxMark', Number(e.target.value))}
-                        className="w-16 px-2 py-1 rounded border border-slate-200 font-mono"
+                        className="w-16 px-2 py-1 rounded-lg border border-slate-200 font-mono focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                       />
                     </td>
                     <td className="py-2 px-3 font-semibold text-slate-700">{b.category}</td>
@@ -241,7 +241,7 @@ export const AdminSettingsView: React.FC = () => {
                         type="text"
                         value={b.remark}
                         onChange={(e) => handleBoundaryChange(idx, 'remark', e.target.value)}
-                        className="w-full px-2 py-1 rounded border border-slate-200 text-xs"
+                        className="w-full px-2 py-1 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                       />
                     </td>
                   </tr>
@@ -253,7 +253,7 @@ export const AdminSettingsView: React.FC = () => {
           <div className="pt-2 flex justify-end">
             <button
               type="submit"
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>Save Institutional Settings</span>
@@ -263,29 +263,29 @@ export const AdminSettingsView: React.FC = () => {
       </form>
 
       {/* Firebase Database Connection Card */}
-      <div className="bg-white rounded-md p-6 border border-stone-200 space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-200">
-          <h2 className="text-xs font-mono font-bold text-stone-800 uppercase tracking-wider flex items-center gap-2">
-            <Database className="w-4 h-4 text-emerald-800" />
+      <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+          <h2 className="text-xs font-mono font-bold text-[#082B63] uppercase tracking-wider flex items-center gap-2">
+            <Database className="w-4 h-4 text-[#1557B0]" />
             <span>Cloud Firestore Database Connection</span>
           </h2>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-emerald-800 font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-700"></span>
+          <div className="flex items-center gap-1.5 text-xs font-mono text-emerald-700 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             <span>Cloud Firestore Synchronized</span>
           </div>
         </div>
 
         {/* Database direct links banner */}
-        <div className="bg-[#032015] border border-emerald-900/60 rounded-md p-4 sm:p-5 text-white space-y-3 font-mono">
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 text-slate-900 space-y-3 font-mono">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-emerald-400">Database Identifier</div>
-              <div className="text-xs sm:text-sm font-bold text-white break-all">
+              <div className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Database Identifier</div>
+              <div className="text-xs sm:text-sm font-bold text-[#082B63] break-all">
                 ai-studio-dadayahighschool-fc9a791d-1c21-4ba8-8ebb-e831db4a52bb
               </div>
             </div>
-            <div className="text-xs text-slate-300">
-              Project: <span className="font-mono text-emerald-300 font-semibold">distributed-rig-z9v0l</span>
+            <div className="text-xs text-slate-600">
+              Project: <span className="font-mono text-[#1557B0] font-semibold">distributed-rig-z9v0l</span>
             </div>
           </div>
 
@@ -294,47 +294,27 @@ export const AdminSettingsView: React.FC = () => {
               href="https://console.firebase.google.com/project/distributed-rig-z9v0l/firestore/databases/ai-studio-dadayahighschool-fc9a791d-1c21-4ba8-8ebb-e831db4a52bb/data"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-lg transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white font-bold text-xs rounded-xl transition-colors shadow-xs"
             >
               <span>Open Firebase Firestore Console</span>
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </a>
-
             <a
-              href="https://console.cloud.google.com/firestore/databases/ai-studio-dadayahighschool-fc9a791d-1c21-4ba8-8ebb-e831db4a52bb/data?project=distributed-rig-z9v0l"
+              href="https://console.firebase.google.com/project/distributed-rig-z9v0l/firestore/rules"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-lg border border-slate-700 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs rounded-xl border border-slate-200 transition-colors shadow-xs"
             >
-              <span>Google Cloud Console</span>
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-
-            <a
-              href="https://console.firebase.google.com/project/distributed-rig-z9v0l/overview"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-lg border border-slate-700 transition-colors"
-            >
-              <span>Project Overview</span>
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
+              <span>View Security Rules</span>
             </a>
           </div>
         </div>
 
-        <p className="text-xs text-slate-600 leading-relaxed">
-          The application is actively connected to Cloud Firestore database <code className="bg-slate-100 px-1 py-0.5 rounded text-emerald-950 font-mono">ai-studio-dadayahighschool-fc9a791d-1c21-4ba8-8ebb-e831db4a52bb</code> under project <code className="bg-slate-100 px-1 py-0.5 rounded text-emerald-950 font-mono">distributed-rig-z9v0l</code>.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
           <div>
-            <label className="block text-slate-500 font-semibold mb-1">Firebase Project ID</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Project ID</label>
             <input
               type="text"
               readOnly
@@ -344,7 +324,7 @@ export const AdminSettingsView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-slate-500 font-semibold mb-1">Firestore Database ID</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Database ID</label>
             <input
               type="text"
               readOnly
@@ -357,7 +337,7 @@ export const AdminSettingsView: React.FC = () => {
             <button
               type="button"
               onClick={handleTestFirebase}
-              className="w-full py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5"
+              className="w-full py-2 px-4 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl font-bold text-xs shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4" />
               <span>Verify Database Connection</span>
@@ -367,40 +347,40 @@ export const AdminSettingsView: React.FC = () => {
       </div>
 
       {/* Offline Persistence & Synchronization Queue Card */}
-      <div className="bg-white rounded-md p-6 border border-stone-200 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-200">
-          <h2 className="text-xs font-mono font-bold text-stone-800 uppercase tracking-wider flex items-center gap-2">
-            <HardDrive className="w-4 h-4 text-emerald-800" />
+      <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+          <h2 className="text-xs font-mono font-bold text-[#082B63] uppercase tracking-wider flex items-center gap-2">
+            <HardDrive className="w-4 h-4 text-[#1557B0]" />
             <span>Continuous Offline Ledger & Sync Queue</span>
           </h2>
           <div className="flex items-center gap-1.5 text-xs font-mono font-medium">
             {isOnline ? (
               <>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                <span className="text-emerald-800">Station Connected · Live Sync</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span className="text-emerald-700">Station Connected · Live Sync</span>
               </>
             ) : (
               <>
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-                <span className="text-amber-800">Station Offline · Local Ledger</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                <span className="text-amber-700">Station Offline · Local Ledger</span>
               </>
             )}
           </div>
         </div>
 
-        <p className="text-xs text-stone-600 leading-relaxed font-sans">
+        <p className="text-xs text-slate-600 leading-relaxed font-sans">
           The Dadaya High School portal is Progressive Web App (PWA) and offline-enabled. When internet connectivity is unavailable, students can continue enrolling without disruption. Records are saved locally in persistent offline storage (IndexedDB & LocalStorage) with assigned candidate numbers and will automatically upload to Cloud Firestore as soon as internet reconnects.
         </p>
 
-        <div className="bg-stone-50 rounded-md p-4 border border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs">
+        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs">
           <div className="space-y-1">
-            <div className="text-xs font-bold text-stone-900 flex items-center gap-2">
+            <div className="text-xs font-bold text-slate-900 flex items-center gap-2">
               <span>Pending Offline Records:</span>
-              <span className="text-xs font-bold text-emerald-950 tabular-nums">
+              <span className="text-xs font-bold text-[#082B63] tabular-nums">
                 {pendingSyncCount} record{pendingSyncCount === 1 ? '' : 's'}
               </span>
             </div>
-            <div className="text-[11px] text-stone-500 font-sans">
+            <div className="text-[11px] text-slate-500 font-sans">
               {pendingSyncCount === 0
                 ? 'All student enrollments and system records are fully synced with the cloud.'
                 : `${pendingSyncCount} student record(s) queued on this machine awaiting cloud sync.`}
@@ -411,7 +391,7 @@ export const AdminSettingsView: React.FC = () => {
             type="button"
             onClick={handleSyncQueue}
             disabled={isSyncing || pendingSyncCount === 0 || !isOnline}
-            className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-300 text-white rounded-xl font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-[#1557B0] hover:bg-[#082B63] disabled:bg-slate-300 text-white rounded-xl font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
             <span>{isSyncing ? 'Synchronizing Records...' : 'Synchronize Queued Records Now'}</span>

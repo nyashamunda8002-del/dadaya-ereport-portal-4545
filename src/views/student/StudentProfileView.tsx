@@ -25,9 +25,9 @@ export const StudentProfileView: React.FC<{ onOpenReportCard: (id: string) => vo
   if (!student) {
     return (
       <div className="p-12 text-center bg-white rounded-2xl border border-slate-200 shadow-xs max-w-lg mx-auto mt-8">
-        <h3 className="text-xl font-bold text-slate-900">No Student Profile Enrolled</h3>
+        <h3 className="text-xl font-bold text-[#082B63]">No Student Profile Enrolled</h3>
         <p className="text-sm text-slate-500 mt-2">
-          Please enroll into Lower Six (Sciences, Commercials, or Arts) on the sign-in page to create your student record.
+          Please enroll into your class stream on the sign-in page to create your student record.
         </p>
       </div>
     );
@@ -36,7 +36,7 @@ export const StudentProfileView: React.FC<{ onOpenReportCard: (id: string) => vo
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="border-b border-slate-200 pb-4">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
           Student Profile
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -45,27 +45,27 @@ export const StudentProfileView: React.FC<{ onOpenReportCard: (id: string) => vo
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        {/* Banner in Forest Green */}
-        <div className="bg-[#064e3b] h-32 relative flex items-end px-6 pb-4">
-          <div className="absolute top-4 right-4 opacity-20">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+        {/* Banner with clean blue gradient header */}
+        <div className="bg-gradient-to-r from-[#082B63] to-[#1557B0] relative flex items-end px-6 py-6 text-white">
+          <div className="absolute top-4 right-4 opacity-20 pointer-events-none">
             <DadayaCrest sizeClass="w-24 h-24" inverted={true} />
           </div>
-          <div className="flex items-center gap-4 text-white">
-            <div className="w-18 h-18 rounded-2xl bg-white text-[#064e3b] border-4 border-white shadow-lg flex items-center justify-center font-bold text-2xl font-serif-school">
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-16 h-16 rounded-xl bg-white text-[#082B63] flex items-center justify-center font-bold text-2xl font-serif-school shadow-md">
               {student.name.charAt(0)}
               {student.surname.charAt(0)}
             </div>
             <div>
-              <h2 className="text-xl font-bold">
+              <h2 className="text-xl sm:text-2xl font-bold text-white font-serif-school">
                 {student.name} {student.surname}
               </h2>
-              <div className="flex items-center gap-2 text-xs text-emerald-300">
-                <span className="font-mono bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-700">
+              <div className="flex items-center gap-2 text-xs text-blue-100 mt-1 font-mono">
+                <span className="font-bold text-amber-300">
                   {student.id}
                 </span>
                 <span>•</span>
-                <span>{student.className}</span>
+                <span className="font-sans font-medium text-white">{student.className}</span>
               </div>
             </div>
           </div>
@@ -75,75 +75,75 @@ export const StudentProfileView: React.FC<{ onOpenReportCard: (id: string) => vo
         <div className="p-6 sm:p-8 space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
             <div className="space-y-4">
-              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider">
                 Academic Information
               </h3>
               <div className="flex items-center gap-3 text-slate-700">
-                <GraduationCap className="w-4 h-4 text-emerald-600 shrink-0" />
+                <GraduationCap className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Class / Stream</span>
-                  <span className="font-semibold">{student.className}</span>
+                  <span className="font-semibold text-slate-900">{student.className}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <CreditCard className="w-4 h-4 text-emerald-600 shrink-0" />
+                <CreditCard className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Registration Student ID</span>
-                  <span className="font-mono font-semibold">{student.id}</span>
+                  <span className="font-mono font-bold text-[#082B63]">{student.id}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Calendar className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Date of Birth</span>
-                  <span className="font-semibold">{student.dob}</span>
+                  <span className="font-semibold text-slate-900">{student.dob}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <User className="w-4 h-4 text-emerald-600 shrink-0" />
+                <User className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Gender</span>
-                  <span className="font-semibold">{student.gender}</span>
+                  <span className="font-semibold text-slate-900">{student.gender}</span>
                 </div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider">
                 Contact & Guardian
               </h3>
               <div className="flex items-center gap-3 text-slate-700">
-                <Mail className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Mail className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Student Email</span>
-                  <span className="font-semibold">{student.email || `${student.name.toLowerCase()}@student.dadaya.ac.zw`}</span>
+                  <span className="font-semibold text-slate-900">{student.email || `${student.name.toLowerCase()}@student.dadaya.ac.zw`}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Guardian Name</span>
-                  <span className="font-semibold">{student.guardianName || 'Parent / Guardian'}</span>
+                  <span className="font-semibold text-slate-900">{student.guardianName || 'Parent / Guardian'}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <Phone className="w-4 h-4 text-emerald-600 shrink-0" />
+                <Phone className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">Guardian Phone</span>
-                  <span className="font-mono font-semibold">{student.guardianPhone || '+263 77 111 2233'}</span>
+                  <span className="font-mono font-semibold text-slate-900">{student.guardianPhone || '+263 77 111 2233'}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 text-slate-700">
-                <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
+                <MapPin className="w-4 h-4 text-[#1557B0] shrink-0" />
                 <div>
                   <span className="text-xs text-slate-400 block">School Campus</span>
-                  <span className="font-semibold">Dadaya High School, Zvishavane</span>
+                  <span className="font-semibold text-slate-900">Dadaya High School, Zvishavane</span>
                 </div>
               </div>
             </div>
@@ -153,9 +153,9 @@ export const StudentProfileView: React.FC<{ onOpenReportCard: (id: string) => vo
             <button
               type="button"
               onClick={() => onOpenReportCard(student.id)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99]"
             >
-              <Award className="w-4 h-4 text-emerald-300" />
+              <Award className="w-4 h-4 text-amber-300" />
               <span>Generate Official Report Card</span>
             </button>
           </div>

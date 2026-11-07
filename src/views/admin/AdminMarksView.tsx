@@ -96,7 +96,7 @@ export const AdminMarksView: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
             Marks Audit & Approval
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -106,7 +106,7 @@ export const AdminMarksView: React.FC = () => {
         <button
           type="button"
           onClick={handleBatchApproveAll}
-          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto cursor-pointer"
         >
           <CheckCircle2 className="w-4 h-4" />
           <span>Batch Approve Filtered Marks</span>
@@ -114,20 +114,20 @@ export const AdminMarksView: React.FC = () => {
       </div>
 
       {notification && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm rounded-xl flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          <span>{notification}</span>
+        <div className="p-3 bg-blue-50 border border-blue-200 text-[#082B63] text-xs sm:text-sm rounded-xl flex items-center gap-2 shadow-xs">
+          <CheckCircle2 className="w-4 h-4 text-[#1557B0]" />
+          <span className="font-medium">{notification}</span>
         </div>
       )}
 
       {/* Filters Bar */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         <div>
           <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">Class</label>
           <select
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white"
+            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
           >
             <option value="all">All Classes</option>
             {classes.map((c) => (
@@ -143,7 +143,7 @@ export const AdminMarksView: React.FC = () => {
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white"
+            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
           >
             <option value="all">All Subjects</option>
             {subjects.map((s) => (
@@ -159,7 +159,7 @@ export const AdminMarksView: React.FC = () => {
           <select
             value={selectedTerm}
             onChange={(e) => setSelectedTerm(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white"
+            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
           >
             <option value="Term 1">Term 1</option>
             <option value="Term 2">Term 2</option>
@@ -172,10 +172,10 @@ export const AdminMarksView: React.FC = () => {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white"
+            className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
           >
             <option value="all">All Statuses</option>
-            <option value="Saved">Saved</option>
+            <option value="Draft">Draft</option>
             <option value="Submitted">Submitted</option>
             <option value="Approved">Approved</option>
           </select>
@@ -187,21 +187,21 @@ export const AdminMarksView: React.FC = () => {
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
             <input
               type="text"
-              placeholder="Student name/ID..."
+              placeholder="Candidate..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-8 pr-2 py-1.5 text-xs rounded-xl border border-slate-200"
+              className="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
             />
           </div>
         </div>
       </div>
 
-      {/* Marks Table - Continuous Assessment Ledger */}
-      <div className="bg-white rounded-md border border-stone-200 shadow-2xs overflow-hidden">
+      {/* Marks Table */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs sm:text-sm">
+          <table className="w-full text-left text-xs sm:text-sm border-collapse">
             <thead>
-              <tr className="bg-stone-50 border-b border-stone-200 text-stone-600 uppercase text-[10px] font-mono tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-[#082B63] font-bold text-xs">
                 <th className="py-3 px-4 w-12 text-center">#</th>
                 <th className="py-3 px-4">Candidate</th>
                 <th className="py-3 px-4">Candidate ID</th>
@@ -213,17 +213,17 @@ export const AdminMarksView: React.FC = () => {
                 <th className="py-3 px-4 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-100 font-mono">
+            <tbody className="divide-y divide-slate-100 font-mono">
               {marks.length > 0 ? (
                 marks.map((m, idx) => (
-                  <tr key={m.id} className="hover:bg-stone-50/70 transition-colors">
-                    <td className="py-2.5 px-4 text-center text-stone-400 tabular-nums">{idx + 1}</td>
-                    <td className="py-2.5 px-4 font-sans font-semibold text-stone-900">
+                  <tr key={m.id} className="hover:bg-blue-50/30 transition-colors">
+                    <td className="py-2.5 px-4 text-center text-slate-400 tabular-nums">{idx + 1}</td>
+                    <td className="py-2.5 px-4 font-sans font-semibold text-slate-900">
                       {m.studentName} {m.surname}
                     </td>
-                    <td className="py-2.5 px-4 font-mono font-medium text-emerald-950">{m.studentId}</td>
-                    <td className="py-2.5 px-4 font-sans text-stone-700">{m.subjectName}</td>
-                    <td className="py-2.5 px-4 text-center font-bold text-stone-900 tabular-nums">
+                    <td className="py-2.5 px-4 font-mono font-bold text-[#082B63]">{m.studentId}</td>
+                    <td className="py-2.5 px-4 font-sans text-slate-700">{m.subjectName}</td>
+                    <td className="py-2.5 px-4 text-center font-bold text-slate-900 tabular-nums">
                       {editingMark?.id === m.id ? (
                         <input
                           type="number"
@@ -231,31 +231,31 @@ export const AdminMarksView: React.FC = () => {
                           max="100"
                           value={editValue}
                           onChange={(e) => setEditValue(e.target.value)}
-                          className="w-14 px-1 py-0.5 text-center border border-emerald-700 rounded-sm font-bold"
+                          className="w-14 px-1 py-0.5 text-center border-2 border-[#1557B0] rounded-md font-bold focus:outline-hidden"
                         />
                       ) : (
                         `${m.percentage}%`
                       )}
                     </td>
                     <td className="py-2.5 px-4 text-center font-bold">{m.grade}</td>
-                    <td className="py-2.5 px-4 font-sans text-stone-500 text-xs">{m.teacherName}</td>
+                    <td className="py-2.5 px-4 font-sans text-slate-500 text-xs">{m.teacherName}</td>
                     <td className="py-2.5 px-4 text-center">
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-mono ${
                           m.status === 'Approved'
-                            ? 'text-emerald-800 font-semibold'
+                            ? 'text-emerald-700 font-semibold'
                             : m.status === 'Submitted'
-                            ? 'text-teal-800 font-medium'
-                            : 'text-amber-800'
+                            ? 'text-blue-700 font-medium'
+                            : 'text-amber-700'
                         }`}
                       >
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
                             m.status === 'Approved'
-                              ? 'bg-emerald-600'
+                              ? 'bg-emerald-500'
                               : m.status === 'Submitted'
-                              ? 'bg-teal-600'
-                              : 'bg-amber-600'
+                              ? 'bg-[#1557B0]'
+                              : 'bg-amber-500'
                           }`}
                         />
                         {m.status}
@@ -268,7 +268,7 @@ export const AdminMarksView: React.FC = () => {
                             <button
                               type="button"
                               onClick={handleSaveEdit}
-                              className="p-1 bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                              className="p-1 bg-[#1557B0] text-white rounded hover:bg-[#082B63] cursor-pointer"
                               title="Save correction"
                             >
                               <Check className="w-3.5 h-3.5" />
@@ -276,7 +276,7 @@ export const AdminMarksView: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => setEditingMark(null)}
-                              className="p-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300"
+                              className="p-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300 cursor-pointer"
                               title="Cancel"
                             >
                               <X className="w-3.5 h-3.5" />
@@ -287,7 +287,7 @@ export const AdminMarksView: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => handleStartEdit(m)}
-                              className="p-1.5 text-slate-500 hover:text-emerald-700 hover:bg-slate-100 rounded-lg transition-colors"
+                              className="p-1.5 text-slate-400 hover:text-[#1557B0] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                               title="Edit/Correct Mark"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
@@ -296,7 +296,7 @@ export const AdminMarksView: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => handleApprove(m.id)}
-                                className="px-2 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg font-bold text-xs border border-emerald-200 transition-colors"
+                                className="px-2 py-1 bg-blue-50 text-[#1557B0] hover:bg-blue-100 rounded-lg font-bold text-xs border border-blue-200 transition-colors cursor-pointer"
                                 title="Approve Mark"
                               >
                                 Approve

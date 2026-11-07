@@ -72,7 +72,7 @@ export const AdminClassesView: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
             Class Stream Management
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -82,7 +82,7 @@ export const AdminClassesView: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all active:scale-[0.99] self-start sm:self-auto cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Class</span>
@@ -90,9 +90,9 @@ export const AdminClassesView: React.FC = () => {
       </div>
 
       {notification && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs sm:text-sm rounded-xl flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          <span>{notification}</span>
+        <div className="p-3 bg-blue-50 border border-blue-200 text-[#082B63] text-xs sm:text-sm rounded-xl flex items-center gap-2 shadow-xs">
+          <CheckCircle2 className="w-4 h-4 text-[#1557B0]" />
+          <span className="font-medium">{notification}</span>
         </div>
       )}
 
@@ -102,8 +102,8 @@ export const AdminClassesView: React.FC = () => {
 
         return (
           <div key={formLevel} className="space-y-3">
-            <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+            <h2 className="text-base font-bold text-[#082B63] flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1557B0]"></span>
               <span>{formLevel} Streams</span>
             </h2>
 
@@ -111,23 +111,23 @@ export const AdminClassesView: React.FC = () => {
               {formClasses.map((cls) => (
                 <div
                   key={cls.id}
-                  className="bg-white rounded-md p-4 border border-stone-200 hover:border-emerald-800 transition-colors flex flex-col justify-between"
+                  className="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-[#1557B0] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex items-center justify-between pb-2 border-b border-stone-100">
-                      <span className="text-sm font-semibold text-stone-900">{cls.name}</span>
-                      <span className="text-[10px] font-mono uppercase font-bold text-emerald-800 tracking-wider">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                      <span className="text-sm font-bold text-slate-900">{cls.name}</span>
+                      <span className="text-[10px] font-mono uppercase font-bold text-[#1557B0] tracking-wider bg-blue-50 px-2 py-0.5 rounded border border-blue-200/60">
                         {cls.stream}
                       </span>
                     </div>
 
-                    <div className="mt-3 flex items-center justify-between text-xs text-stone-500 font-mono">
+                    <div className="mt-3 flex items-center justify-between text-xs text-slate-600 font-mono">
                       <div className="flex items-center gap-1.5">
-                        <Users className="w-3.5 h-3.5 text-emerald-800" />
-                        <span className="font-bold text-stone-900 tabular-nums">{cls.studentCount ?? 0}</span>
+                        <Users className="w-3.5 h-3.5 text-[#1557B0]" />
+                        <span className="font-bold text-slate-900 tabular-nums">{cls.studentCount ?? 0}</span>
                         <span>Candidates</span>
                       </div>
-                      <span className="text-emerald-800 font-medium">{cls.status}</span>
+                      <span className="text-emerald-700 font-semibold">{cls.status}</span>
                     </div>
                   </div>
 
@@ -138,7 +138,7 @@ export const AdminClassesView: React.FC = () => {
                         setClassToDelete(cls);
                         setIsDeleteModalOpen(true);
                       }}
-                      className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-rose-600 hover:bg-rose-50 px-2 py-1 rounded-lg transition-colors"
+                      className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-rose-600 hover:bg-rose-50 px-2 py-1 rounded-lg transition-colors cursor-pointer"
                       title={`Delete ${cls.name}`}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -155,10 +155,10 @@ export const AdminClassesView: React.FC = () => {
       {/* Modal: Create Class */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-scaleIn">
-            <div className="bg-[#064e3b] text-white p-4 flex items-center justify-between">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 border border-slate-200">
+            <div className="bg-gradient-to-r from-[#082B63] to-[#1557B0] text-white p-4 flex items-center justify-between">
               <h3 className="font-bold text-base">Create Class Stream</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-emerald-200 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-blue-200 hover:text-white cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -176,7 +176,7 @@ export const AdminClassesView: React.FC = () => {
                       name: `${fl} ${formData.stream}`,
                     });
                   }}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 >
                   {forms.map((f) => (
                     <option key={f} value={f}>
@@ -201,7 +201,7 @@ export const AdminClassesView: React.FC = () => {
                       name: `${formData.formLevel} ${st}`,
                     });
                   }}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 />
               </div>
 
@@ -212,7 +212,7 @@ export const AdminClassesView: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 font-semibold"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 font-semibold focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
                 />
               </div>
 
@@ -220,13 +220,13 @@ export const AdminClassesView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold"
+                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl font-bold shadow-md"
+                  className="px-5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl font-bold shadow-md cursor-pointer transition-all active:scale-[0.99]"
                 >
                   Create Class
                 </button>
@@ -239,7 +239,7 @@ export const AdminClassesView: React.FC = () => {
       {/* Modal: Delete Confirmation */}
       {isDeleteModalOpen && classToDelete && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-scaleIn">
+          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 border border-slate-200">
             <div className="bg-rose-700 text-white p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-rose-200" />
@@ -248,7 +248,7 @@ export const AdminClassesView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(false)}
-                className="text-rose-200 hover:text-white"
+                className="text-rose-200 hover:text-white cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -267,14 +267,14 @@ export const AdminClassesView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsDeleteModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold"
+                  className="px-4 py-2 border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleConfirmDelete}
-                  className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold shadow-md flex items-center gap-1.5"
+                  className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold shadow-md flex items-center gap-1.5 cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>Confirm Delete</span>

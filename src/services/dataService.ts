@@ -83,21 +83,34 @@ class DataService {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.students && parsed.classes && parsed.marks) {
-          // Verify if parsed classes have lower-six-sciences, lower-six-commercials, lower-six-arts
-          const hasStreams = ['lower-six-sciences', 'lower-six-commercials', 'lower-six-arts'].every(
-            (id) => (parsed.classes as SchoolClass[]).some((c) => c.id === id)
-          );
-          if (hasStreams) {
-            // De-duplicate classes to prevent any duplicate key errors
-            const seen = new Set<string>();
-            parsed.classes = (parsed.classes as SchoolClass[]).filter((c) => {
-              if (!c || !c.id || seen.has(c.id)) return false;
-              seen.add(c.id);
-              return true;
-            });
-            return parsed;
+        if (parsed.students && parsed.classes) {
+          // De-duplicate and ensure all required classes exist
+          const existingClassIds = new Set((parsed.classes as SchoolClass[]).map((c) => c.id));
+          for (const initCls of initialClasses) {
+            if (!existingClassIds.has(initCls.id)) {
+              parsed.classes.push(initCls);
+              existingClassIds.add(initCls.id);
+            }
           }
+
+          // Ensure all initial teachers exist
+          if (!parsed.teachers || parsed.teachers.length === 0) {
+            parsed.teachers = initialTeachers;
+          } else {
+            const existingTeacherIds = new Set((parsed.teachers as Teacher[]).map((t) => t.id));
+            for (const initTch of initialTeachers) {
+              if (!existingTeacherIds.has(initTch.id)) {
+                parsed.teachers.push(initTch);
+                existingTeacherIds.add(initTch.id);
+              }
+            }
+          }
+
+          if (!parsed.subjects || parsed.subjects.length === 0) {
+            parsed.subjects = initialSubjects;
+          }
+
+          return parsed;
         }
       }
     } catch {

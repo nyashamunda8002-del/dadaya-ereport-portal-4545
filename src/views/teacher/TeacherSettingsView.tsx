@@ -24,7 +24,7 @@ export const TeacherSettingsView: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="border-b border-slate-200 pb-4">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#064e3b] tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
           Teacher Settings & Profile
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -33,22 +33,22 @@ export const TeacherSettingsView: React.FC = () => {
       </div>
 
       {success && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm rounded-xl flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+        <div className="p-3.5 bg-blue-50 border border-blue-200 text-[#082B63] text-xs sm:text-sm rounded-xl flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#1557B0]" />
           <span>Profile changes saved successfully.</span>
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 sm:p-8 space-y-6">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8 space-y-6">
         <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
-          <div className="w-16 h-16 rounded-2xl bg-[#064e3b] text-white flex items-center justify-center font-bold text-2xl font-serif-school">
+          <div className="w-16 h-16 rounded-2xl bg-[#082B63] text-white flex items-center justify-center font-bold text-2xl font-serif-school shadow-xs">
             {teacher.name.charAt(0)}
             {teacher.surname.charAt(0)}
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-900">{teacher.title}</h2>
+            <h2 className="text-xl font-bold text-[#082B63]">{teacher.title}</h2>
             <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
-              <span className="font-mono bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+              <span className="font-mono bg-slate-100 px-2 py-0.5 rounded border border-slate-200 text-[#1557B0] font-bold">
                 {teacher.ecNumber}
               </span>
               <span>•</span>
@@ -65,7 +65,7 @@ export const TeacherSettingsView: React.FC = () => {
                 type="text"
                 disabled
                 value={teacher.email}
-                className="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-500"
+                className="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-500 font-mono"
               />
             </div>
             <div>
@@ -74,20 +74,20 @@ export const TeacherSettingsView: React.FC = () => {
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:outline-hidden"
+                className="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
               />
             </div>
           </div>
 
           <div className="pt-4 border-t border-slate-100">
-            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider mb-2">
               Assigned Classes
             </h3>
             <div className="flex flex-wrap gap-2">
               {classes.map((c) => (
                 <span
                   key={c.id}
-                  className="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-950 text-xs font-semibold border border-emerald-200"
+                  className="px-3 py-1 rounded-lg bg-blue-50 text-[#1557B0] text-xs font-bold border border-blue-200"
                 >
                   {c.name}
                 </span>
@@ -96,14 +96,14 @@ export const TeacherSettingsView: React.FC = () => {
           </div>
 
           <div className="pt-4 border-t border-slate-100">
-            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider mb-2">
               Assigned Subjects
             </h3>
             <div className="flex flex-wrap gap-2">
               {subjects.map((s) => (
                 <span
                   key={s.id}
-                  className="px-3 py-1 rounded-lg bg-teal-50 text-teal-900 text-xs font-semibold border border-teal-200"
+                  className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold border border-slate-200"
                 >
                   {s.name} ({s.code})
                 </span>
@@ -114,10 +114,10 @@ export const TeacherSettingsView: React.FC = () => {
           <div className="pt-4 flex justify-end">
             <button
               type="submit"
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#064e3b] hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
             >
               <Save className="w-4 h-4" />
-              <span>Save Changes</span>
+              <span>Save Profile Changes</span>
             </button>
           </div>
         </form>

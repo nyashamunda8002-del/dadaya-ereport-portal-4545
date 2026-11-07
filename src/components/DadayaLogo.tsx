@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const DADAYA_REAL_LOGO_URL = '/assets/aistudio/Screenshot_2026-08-11_160504_e18d926d.png';
+export const DADAYA_REAL_LOGO_URL = '/assets/aistudio/dadaya_crest_transparent.png';
 
 interface DadayaLogoProps {
   className?: string;
@@ -16,28 +16,27 @@ export const DadayaCrest: React.FC<{
   className?: string;
 }> = ({ sizeClass = 'w-12 h-12', inverted = false, className = '' }) => {
   if (inverted) {
-    // When on dark green/colored backgrounds, enclose in an elegant circular medallion badge
     return (
       <div
-        className={`relative flex items-center justify-center shrink-0 rounded-full bg-white p-1 shadow-md border-2 border-emerald-400/80 ring-2 ring-emerald-950/40 ${sizeClass} ${className}`}
+        className={`relative flex items-center justify-center shrink-0 ${sizeClass} ${className}`}
       >
         <img
           src={DADAYA_REAL_LOGO_URL}
           alt="Dadaya High School Official Crest"
-          className="w-full h-full object-contain select-none"
+          className="w-full h-full object-contain select-none filter drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] transition-transform hover:scale-105"
           loading="eager"
         />
       </div>
     );
   }
 
-  // When on light backgrounds (white report card, cards), mix-blend-multiply dissolves any off-white boundary
+  // When on light backgrounds
   return (
     <div className={`relative flex items-center justify-center shrink-0 ${sizeClass} ${className}`}>
       <img
         src={DADAYA_REAL_LOGO_URL}
         alt="Dadaya High School Official Crest"
-        className="w-full h-full object-contain mix-blend-multiply filter drop-shadow-xs select-none"
+        className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.12)] select-none transition-transform hover:scale-105"
         loading="eager"
       />
     </div>
@@ -49,7 +48,7 @@ export const DadayaLogo: React.FC<DadayaLogoProps> = ({
   size = 'md',
   showText = true,
   inverted = false,
-  subtextColor = 'text-emerald-200',
+  subtextColor = 'text-blue-200',
 }) => {
   const sizeMap = {
     sm: { crest: 'w-8 h-8', title: 'text-sm', sub: 'text-[8.5px]' },
@@ -67,14 +66,14 @@ export const DadayaLogo: React.FC<DadayaLogoProps> = ({
         <div className="flex flex-col">
           <span
             className={`font-serif-school font-black tracking-wider leading-tight ${
-              inverted ? 'text-white' : 'text-[#064e3b]'
+              inverted ? 'text-white' : 'text-[#082B63]'
             } ${currentSize.title}`}
           >
             DADAYA HIGH SCHOOL
           </span>
           <span
-            className={`font-semibold tracking-[0.18em] uppercase leading-none mt-0.5 ${currentSize.sub} ${
-              inverted ? subtextColor : 'text-emerald-800'
+            className={`font-semibold tracking-[0.16em] uppercase leading-none mt-0.5 ${currentSize.sub} ${
+              inverted ? subtextColor : 'text-[#1557B0]'
             }`}
           >
             EDUCATION FOR LIFE • IMFUNDO YEMPILO
