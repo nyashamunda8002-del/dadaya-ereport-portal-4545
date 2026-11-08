@@ -73,78 +73,39 @@ export const StudentProfileView: React.FC<{ onOpenReportCard: (id: string) => vo
 
         {/* Content Details */}
         <div className="p-6 sm:p-8 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
-            <div className="space-y-4">
-              <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider">
-                Academic Information
-              </h3>
-              <div className="flex items-center gap-3 text-slate-700">
-                <GraduationCap className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Class / Stream</span>
-                  <span className="font-semibold text-slate-900">{student.className}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-700">
-                <CreditCard className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Registration Student ID</span>
-                  <span className="font-mono font-bold text-[#082B63]">{student.id}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-700">
-                <Calendar className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Date of Birth</span>
-                  <span className="font-semibold text-slate-900">{student.dob}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-700">
-                <User className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Gender</span>
-                  <span className="font-semibold text-slate-900">{student.gender}</span>
-                </div>
+          <div className="max-w-md space-y-4 text-sm">
+            <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider">
+              Academic Information
+            </h3>
+            <div className="flex items-center gap-3 text-slate-700">
+              <GraduationCap className="w-4 h-4 text-[#1557B0] shrink-0" />
+              <div>
+                <span className="text-xs text-slate-400 block">Class / Stream</span>
+                <span className="font-semibold text-slate-900">{student.className}</span>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-xs font-bold text-[#082B63] uppercase tracking-wider">
-                Contact & Guardian
-              </h3>
-              <div className="flex items-center gap-3 text-slate-700">
-                <Mail className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Student Email</span>
-                  <span className="font-semibold text-slate-900">{student.email || `${student.name.toLowerCase()}@student.dadaya.ac.zw`}</span>
-                </div>
+            <div className="flex items-center gap-3 text-slate-700">
+              <CreditCard className="w-4 h-4 text-[#1557B0] shrink-0" />
+              <div>
+                <span className="text-xs text-slate-400 block">Registration Student ID</span>
+                <span className="font-mono font-bold text-[#082B63]">{student.id}</span>
               </div>
+            </div>
 
-              <div className="flex items-center gap-3 text-slate-700">
-                <ShieldCheck className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Guardian Name</span>
-                  <span className="font-semibold text-slate-900">{student.guardianName || 'Parent / Guardian'}</span>
-                </div>
+            <div className="flex items-center gap-3 text-slate-700">
+              <Calendar className="w-4 h-4 text-[#1557B0] shrink-0" />
+              <div>
+                <span className="text-xs text-slate-400 block">Date of Birth</span>
+                <span className="font-semibold text-slate-900">{student.dob || '2008-05-14'}</span>
               </div>
+            </div>
 
-              <div className="flex items-center gap-3 text-slate-700">
-                <Phone className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">Guardian Phone</span>
-                  <span className="font-mono font-semibold text-slate-900">{student.guardianPhone || '+263 77 111 2233'}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-slate-700">
-                <MapPin className="w-4 h-4 text-[#1557B0] shrink-0" />
-                <div>
-                  <span className="text-xs text-slate-400 block">School Campus</span>
-                  <span className="font-semibold text-slate-900">Dadaya High School, Zvishavane</span>
-                </div>
+            <div className="flex items-center gap-3 text-slate-700">
+              <MapPin className="w-4 h-4 text-[#1557B0] shrink-0" />
+              <div>
+                <span className="text-xs text-slate-400 block">School Campus</span>
+                <span className="font-semibold text-slate-900">Dadaya High School, Zvishavane</span>
               </div>
             </div>
           </div>

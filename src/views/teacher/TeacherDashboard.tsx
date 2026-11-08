@@ -39,14 +39,13 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     return dataService.subscribe(() => setRefreshCount((c) => c + 1));
   }, []);
 
-  const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Ahmed';
+  const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Moyo';
 
   // Compute real metrics from database
   const allClasses = dataService.getClasses();
   const allStudents = dataService.getStudents();
   const allSubjects = dataService.getSubjects();
   const allMarks = dataService.getMarks();
-  const recentLogs = dataService.getActivityLogs(6);
 
   // Teacher classes
   const assignedClassIds = currentTeacher?.assignedClassIds || [
@@ -79,7 +78,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
   // Subject performance calculation from real marks
   const subjectAverages = useMemo(() => {
-    const mathMarks = allMarks.filter((m) => m.subjectId === 'maths');
+    const mathMarks = allMarks.filter((m) => m.subjectId === 'maths' || m.subjectId === 'pure-maths');
     const physMarks = allMarks.filter((m) => m.subjectId === 'physics');
     const csMarks = allMarks.filter((m) => m.subjectId === 'ict');
 
@@ -220,10 +219,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
         </div>
       </div>
 
-      {/* 3. MIDDLE ROW: Class Performance Overview, Subject Performance, Announcements & Quick Actions */}
+      {/* 3. MIDDLE ROW: Class Performance Overview & Subject Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Class Performance Overview (5 cols on lg) */}
-        <div className="lg:col-span-5 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        {/* Class Performance Overview (7 cols on lg) */}
+        <div className="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -286,7 +285,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
 
             {/* High fidelity SVG Line Chart */}
-            <div className="mt-4 h-48 w-full">
+            <div className="mt-4 h-56 w-full">
               <svg viewBox="0 0 450 180" className="w-full h-full overflow-visible font-mono text-[10px] text-slate-400">
                 {/* Horizontal Grid lines */}
                 <line x1="40" y1="20" x2="430" y2="20" stroke="#E2E8F0" strokeDasharray="3 3" />
@@ -369,8 +368,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </div>
         </div>
 
-        {/* Subject Performance Donut Card (3 cols on lg) */}
-        <div className="lg:col-span-3 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        {/* Subject Performance Donut Card (5 cols on lg) */}
+        <div className="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
             <Award className="w-4.5 h-4.5 text-[#1557B0]" />
             <h3 className="font-bold text-sm sm:text-base text-[#082B63]">
@@ -379,8 +378,8 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </div>
 
           {/* Donut Chart */}
-          <div className="flex flex-col items-center justify-center my-3">
-            <div className="relative w-36 h-36 flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center my-4">
+            <div className="relative w-40 h-40 flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -431,21 +430,21 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               </svg>
               {/* Inner Center Text */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className="text-2xl font-black text-[#082B63] font-mono leading-none">
+                <span className="text-3xl font-black text-[#082B63] font-mono leading-none">
                   {subjectAverages.overallAvg}%
                 </span>
-                <span className="text-[11px] font-semibold text-slate-400 mt-0.5">
+                <span className="text-xs font-semibold text-slate-400 mt-1">
                   Overall
                 </span>
               </div>
             </div>
 
             {/* Subject breakdown list */}
-            <div className="w-full space-y-2 mt-3 pt-3 border-t border-slate-100 text-xs">
+            <div className="w-full space-y-2.5 mt-4 pt-3 border-t border-slate-100 text-xs">
               <div className="flex items-center justify-between font-medium">
                 <span className="inline-flex items-center gap-2 text-slate-700">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#1557B0]" />
-                  Mathematics
+                  Mathematics / Pure Maths
                 </span>
                 <span className="font-mono font-bold text-[#082B63]">{subjectAverages.mathAvg}%</span>
               </div>
@@ -466,217 +465,31 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
         </div>
-
-        {/* Right Stack: Announcements & Quick Actions (4 cols on lg) */}
-        <div className="lg:col-span-4 space-y-4 flex flex-col justify-between">
-          {/* Latest Announcements */}
-          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs">
-            <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <Megaphone className="w-4 h-4 text-[#1557B0]" />
-                <h3 className="font-bold text-xs sm:text-sm text-[#082B63] uppercase tracking-wide">
-                  Latest Announcements
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => onNavigate('feed-marks')}
-                className="text-[11px] font-bold text-[#1557B0] hover:underline cursor-pointer"
-              >
-                View All →
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              <div className="text-xs">
-                <div className="flex items-center gap-1.5 font-bold text-[#082B63]">
-                  <span className="w-2 h-2 rounded-full bg-[#1557B0]" />
-                  Mid-Term Results Released
-                </div>
-                <p className="text-[11px] text-slate-500 pl-3.5 mt-0.5">
-                  Check your results on the portal.
-                </p>
-                <p className="text-[10px] text-slate-400 pl-3.5 mt-0.5 flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /> Nov 1, 2026
-                </p>
-              </div>
-
-              <div className="text-xs pt-2 border-t border-slate-100">
-                <div className="flex items-center gap-1.5 font-bold text-[#082B63]">
-                  <span className="w-2 h-2 rounded-full bg-[#1557B0]" />
-                  School Fees Reminder
-                </div>
-                <p className="text-[11px] text-slate-500 pl-3.5 mt-0.5">
-                  Ensure fees are up to date.
-                </p>
-                <p className="text-[10px] text-slate-400 pl-3.5 mt-0.5 flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /> Oct 28, 2026
-                </p>
-              </div>
-
-              <div className="text-xs pt-2 border-t border-slate-100">
-                <div className="flex items-center gap-1.5 font-bold text-[#082B63]">
-                  <span className="w-2 h-2 rounded-full bg-[#1557B0]" />
-                  Parent-Teacher Meeting
-                </div>
-                <p className="text-[11px] text-slate-500 pl-3.5 mt-0.5">
-                  Scheduled for 15 Nov 2026.
-                </p>
-                <p className="text-[10px] text-slate-400 pl-3.5 mt-0.5 flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /> Oct 25, 2026
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-xs">
-            <h3 className="font-bold text-xs sm:text-sm text-[#082B63] uppercase tracking-wide mb-3 flex items-center gap-2">
-              <span className="text-[#1557B0]">⚡</span> Quick Actions
-            </h3>
-
-            <div className="grid grid-cols-4 gap-2">
-              {/* Action 1: View Reports */}
-              <button
-                type="button"
-                onClick={() => onNavigate('report-cards')}
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-blue-50/80 hover:bg-[#1557B0] text-[#1557B0] hover:text-white transition-all group cursor-pointer text-center"
-              >
-                <FileText className="w-5 h-5 mb-1 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] font-bold leading-tight">View Reports</span>
-              </button>
-
-              {/* Action 2: Enter Marks */}
-              <button
-                type="button"
-                onClick={() => onNavigate('feed-marks')}
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-sky-50/80 hover:bg-sky-600 text-sky-700 hover:text-white transition-all group cursor-pointer text-center"
-              >
-                <BarChart3 className="w-5 h-5 mb-1 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] font-bold leading-tight">Enter Marks</span>
-              </button>
-
-              {/* Action 3: Print Report */}
-              <button
-                type="button"
-                onClick={() => onOpenReportCard(allStudents[0]?.id || 'DHS001')}
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-purple-50/80 hover:bg-purple-600 text-purple-700 hover:text-white transition-all group cursor-pointer text-center"
-              >
-                <Printer className="w-5 h-5 mb-1 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] font-bold leading-tight">Print Report</span>
-              </button>
-
-              {/* Action 4: Settings */}
-              <button
-                type="button"
-                onClick={() => onNavigate('settings')}
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-emerald-50/80 hover:bg-emerald-600 text-emerald-700 hover:text-white transition-all group cursor-pointer text-center"
-              >
-                <Settings className="w-5 h-5 mb-1 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] font-bold leading-tight">Settings</span>
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* 4. BOTTOM ROW: Recent Activity Feed & Motivational Banner */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Recent Activity (7 cols on lg) */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-            <div className="flex items-center gap-2">
-              <Clock className="w-4.5 h-4.5 text-[#1557B0]" />
-              <h3 className="font-bold text-sm sm:text-base text-[#082B63]">
-                Recent Activity
-              </h3>
-            </div>
-            <button
-              type="button"
-              onClick={() => onNavigate('report-cards')}
-              className="text-xs font-bold text-[#1557B0] hover:underline cursor-pointer"
-            >
-              View All →
-            </button>
+      {/* 4. Motivational Banner Card (Full Width) */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50 via-white to-blue-50 border border-blue-200/80 p-6 shadow-xs flex items-center justify-between">
+        {/* Dark Navy curve overlay */}
+        <div className="absolute right-0 bottom-0 top-1/2 w-48 bg-[#082B63] rounded-tl-full opacity-90 pointer-events-none" />
+
+        {/* Left Gold Trophy */}
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-amber-500 flex items-center justify-center text-3xl shadow-sm shrink-0">
+            🏆
           </div>
-
-          <div className="divide-y divide-slate-100">
-            <div className="py-2.5 flex items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                  <CheckCircle2 className="w-4 h-4" />
-                </span>
-                <span className="font-semibold text-slate-800 truncate">
-                  Marks submitted for Form 2 Green – Mathematics
-                </span>
-              </div>
-              <span className="text-[11px] font-mono text-slate-400 shrink-0">2 hours ago</span>
-            </div>
-
-            <div className="py-2.5 flex items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="w-6 h-6 rounded-full bg-blue-100 text-[#1557B0] flex items-center justify-center shrink-0">
-                  <Info className="w-4 h-4" />
-                </span>
-                <span className="font-semibold text-slate-800 truncate">
-                  Report generated for Form 1 Red
-                </span>
-              </div>
-              <span className="text-[11px] font-mono text-slate-400 shrink-0">1 day ago</span>
-            </div>
-
-            <div className="py-2.5 flex items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
-                  <UserCheck className="w-4 h-4" />
-                </span>
-                <span className="font-semibold text-slate-800 truncate">
-                  New class assignment: Form 3 Sciences 1
-                </span>
-              </div>
-              <span className="text-[11px] font-mono text-slate-400 shrink-0">2 days ago</span>
-            </div>
-
-            {recentLogs.slice(0, 2).map((log) => (
-              <div key={log.id} className="py-2.5 flex items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-                  </span>
-                  <span className="font-medium text-slate-700 truncate">
-                    {log.action} {log.details ? `— ${log.details}` : ''}
-                  </span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400 shrink-0">{log.timestamp}</span>
-              </div>
-            ))}
+          <div>
+            <p className="text-base sm:text-lg font-bold italic text-[#082B63] leading-snug">
+              “Striving for Excellence Together”
+            </p>
+            <p className="text-xs text-slate-500 mt-1 font-medium">
+              Dadaya High School Continuous Assessment
+            </p>
           </div>
         </div>
 
-        {/* Motivational Banner Card (5 cols on lg) */}
-        <div className="lg:col-span-5 relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50 via-white to-blue-50 border border-blue-200/80 p-5 shadow-xs flex items-center justify-between">
-          {/* Dark Navy bottom curve overlay */}
-          <div className="absolute right-0 bottom-0 top-1/2 w-48 bg-[#082B63] rounded-tl-full opacity-90 pointer-events-none" />
-
-          {/* Left Gold Trophy */}
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-amber-500 flex items-center justify-center text-3xl shadow-sm shrink-0">
-              🏆
-            </div>
-            <div>
-              <p className="text-base sm:text-lg font-bold italic text-[#082B63] font-cursive-tagline leading-snug">
-                “Striving for Excellence Together”
-              </p>
-              <p className="text-[11px] text-slate-500 mt-1 font-medium">
-                Dadaya High School Continuous Assessment
-              </p>
-            </div>
-          </div>
-
-          {/* Right Mortarboard & Books icon graphic */}
-          <div className="relative z-10 text-4xl pr-2 text-white">
-            🎓
-          </div>
+        {/* Right Mortarboard & Books icon graphic */}
+        <div className="relative z-10 text-4xl pr-4 text-white">
+          🎓
         </div>
       </div>
     </div>

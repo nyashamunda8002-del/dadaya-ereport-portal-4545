@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import ReportCardModal from './components/ReportCardModal';
 import LoginView from './views/LoginView';
+import GundaDigitalsFloatingBadge from './components/GundaDigitalsFloatingBadge';
 
 // Teacher Views
 import TeacherDashboard from './views/teacher/TeacherDashboard';
@@ -185,10 +186,7 @@ const MainAppContent: React.FC = () => {
               {currentTab === 'admin-classes' && <AdminClassesView />}
               {currentTab === 'admin-subjects' && <AdminSubjectsView />}
               {currentTab === 'admin-marks' && <AdminMarksView />}
-              {currentTab === 'admin-report-cards' && (
-                <TeacherReportCardsView onOpenReportCard={handleOpenReportCard} />
-              )}
-              {currentTab === 'admin-reports' && (
+              {(currentTab === 'admin-report-cards' || currentTab === 'admin-reports') && (
                 <AdminReportsView onOpenReportCard={handleOpenReportCard} />
               )}
               {currentTab === 'admin-logs' && <AdminActivityLogsView />}
@@ -212,6 +210,7 @@ export default function App() {
   return (
     <AuthProvider>
       <MainAppContent />
+      <GundaDigitalsFloatingBadge />
     </AuthProvider>
   );
 }

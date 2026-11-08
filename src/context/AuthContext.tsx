@@ -9,11 +9,12 @@ interface AuthContextType {
   currentTeacher: Teacher | null;
   isLoading: boolean;
   loginAsStudent: (data: {
-    name: string;
-    surname: string;
-    classId: string;
-    password?: string;
+    schoolId?: string;
     dob?: string;
+    name?: string;
+    surname?: string;
+    classId?: string;
+    password?: string;
     studentId?: string;
   }) => Promise<{ success: boolean; error?: string }>;
   registerStudent: (data: {
@@ -80,41 +81,61 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const loginAsStudent = async (data: {
-    name: string;
-    surname: string;
-    classId: string;
-    password?: string;
+    schoolId?: string;
     dob?: string;
+    name?: string;
+    surname?: string;
+    classId?: string;
+    password?: string;
     studentId?: string;
   }): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 400)); // Smooth realistic loading
 
-    const cleanName = data.name.trim().toLowerCase();
-    const cleanSurname = data.surname.trim().toLowerCase();
-    const cleanPassword = data.password?.trim() || '';
+    const targetSchoolId = (data.schoolId || data.studentId || '').trim().toUpperCase();
+    const cleanDob = (data.dob || '').trim();
+    const cleanName = (data.name || '').trim().toLowerCase();
+    const cleanSurname = (data.surname || '').trim().toLowerCase();
 
-    if (!cleanName || !cleanSurname) {
-      setIsLoading(false);
-      return {
-        success: false,
-        error: 'Please enter your First Name and Surname.',
-      };
+    const allStudents = dataService.getStudents();
+    let student: Student | undefined;
+
+    // 1. Primary lookup by School ID
+    if (targetSchoolId) {
+      student = allStudents.find((s) => s.id.toUpperCase() === targetSchoolId);
     }
 
-    // Verify against database by name, surname and class
-    const student = dataService.getStudents().find((s) => {
-      const nameMatch = s.name.trim().toLowerCase() === cleanName;
-      const surnameMatch = s.surname.trim().toLowerCase() === cleanSurname;
-      const classMatch = !data.classId || s.classId === data.classId;
-      return nameMatch && surnameMatch && classMatch;
-    });
+    // 2. Fallback lookup by Name & Surname if provided
+    if (!student && cleanName && cleanSurname) {
+      student = allStudents.find((s) => {
+        const nameMatch = s.name.trim().toLowerCase() === cleanName;
+        const surnameMatch = s.surname.trim().toLowerCase() === cleanSurname;
+        const classMatch = !data.classId || s.classId === data.classId;
+        return nameMatch && surnameMatch && classMatch;
+      });
+    }
+
+    // 3. Fallback to default student if nothing exists yet
+    if (!student && targetSchoolId === 'DHS001') {
+      student = dataService.addStudent({
+        id: 'DHS001',
+        name: 'Tendai',
+        surname: 'Shumba',
+        classId: 'lower-six-sciences',
+        dob: '2008-05-14',
+        gender: 'Male',
+        status: 'Active',
+        email: 'tendai.shumba@student.dadaya.ac.zw',
+      });
+    }
 
     if (!student) {
       setIsLoading(false);
       return {
         success: false,
-        error: `Student "${data.name} ${data.surname}" not found in this class. Please enroll below to create your account.`,
+        error: targetSchoolId
+          ? `Candidate with School ID "${targetSchoolId}" not found. Please verify your School ID.`
+          : 'Candidate record not found. Please verify your details.',
       };
     }
 
@@ -122,17 +143,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(false);
       return {
         success: false,
-        error: 'This student account has been deactivated. Please contact the school administration.',
+        error: 'This candidate account has been deactivated. Please contact the school administration.',
       };
     }
 
-    // Password verification: if student has a password registered, it must match
-    if (student.password && cleanPassword && student.password !== cleanPassword) {
-      setIsLoading(false);
-      return {
-        success: false,
-        error: 'Incorrect password. Please verify your password and try again.',
-      };
+    // Optional DOB validation if candidate record has a DOB and user provided one
+    if (cleanDob && student.dob) {
+      // Normalize dates: compare YYYY-MM-DD
+      const normInput = cleanDob.replace(/[/]/g, '-');
+      const normSaved = student.dob.replace(/[/]/g, '-');
+      if (normInput !== normSaved) {
+        // If they differ significantly, check day/month/year components
+        const inputParts = normInput.split('-').sort().join('-');
+        const savedParts = normSaved.split('-').sort().join('-');
+        if (inputParts !== savedParts) {
+          setIsLoading(false);
+          return {
+            success: false,
+            error: 'Date of birth does not match school candidate records. Please verify your birth date.',
+          };
+        }
+      }
+    } else if (cleanDob && !student.dob) {
+      // If student had no DOB registered, register it now
+      student.dob = cleanDob;
     }
 
     const user: User = {

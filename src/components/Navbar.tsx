@@ -108,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome, onToggleMobileMe
 
                     <button
                       onClick={() => {
-                        quickLogin('teacher', 'tch-ahmed');
+                        quickLogin('teacher', 'tch-moyo');
                         setShowRoleSwitcher(false);
                         onNavigateHome?.();
                       }}
@@ -116,14 +116,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome, onToggleMobileMe
                     >
                       <Briefcase className="w-4 h-4 text-[#1557B0]" />
                       <div>
-                        <div className="font-bold text-slate-900">Mr. Ahmed</div>
-                        <div className="text-[10px] text-slate-500">Teacher • Mathematics & Physics</div>
+                        <div className="font-bold text-slate-900">Mr. Moyo</div>
+                        <div className="text-[10px] text-slate-500">Teacher • Pure Sciences</div>
                       </div>
                     </button>
 
                     <button
                       onClick={() => {
-                        quickLogin('teacher', 'tch-moyo');
+                        quickLogin('teacher', 'tch-sibanda');
                         setShowRoleSwitcher(false);
                         onNavigateHome?.();
                       }}
@@ -131,8 +131,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome, onToggleMobileMe
                     >
                       <Briefcase className="w-4 h-4 text-[#1557B0]" />
                       <div>
-                        <div className="font-bold text-slate-900">Mr. Moyo</div>
-                        <div className="text-[10px] text-slate-500">Teacher • Pure Sciences</div>
+                        <div className="font-bold text-slate-900">Mrs. Sibanda</div>
+                        <div className="text-[10px] text-slate-500">Teacher • Arts & Humanities</div>
                       </div>
                     </button>
 
@@ -169,85 +169,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome, onToggleMobileMe
                 )}
               </div>
 
-              {/* Online Indicator */}
-              <div className="hidden sm:flex items-center gap-1.5 px-3 border-r border-blue-400/30 text-xs font-medium text-white/90">
-                <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-400 ring-2 ring-emerald-400/30' : 'bg-amber-400'}`} />
-                <span className="text-[11px] font-medium">{isOnline ? 'Online' : 'Offline'}</span>
-              </div>
-
-              {/* Notification Bell with Badge */}
-              <div className="relative px-2">
-                <button
-                  type="button"
-                  onClick={() => setShowNotifications(!showNotifications)}
-                  className="relative p-1.5 text-white/80 hover:text-white transition-colors cursor-pointer"
-                  aria-label="Notifications"
-                >
-                  <Bell className="w-4.5 h-4.5" />
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white rounded-full text-[9px] font-black flex items-center justify-center ring-2 ring-[#082B63]">
-                    3
-                  </span>
-                </button>
-
-                {showNotifications && (
-                  <div className="absolute right-0 mt-3 w-80 bg-white text-slate-900 rounded-xl shadow-2xl border border-slate-200 z-50 overflow-hidden animate-in fade-in">
-                    <div className="bg-[#082B63] text-white px-4 py-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Bell className="w-4 h-4 text-blue-300" />
-                        <span className="font-bold text-xs uppercase tracking-wider">
-                          Notifications & Announcements
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => setShowNotifications(false)}
-                        className="text-white/60 hover:text-white cursor-pointer"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                    <div className="max-h-72 overflow-y-auto divide-y divide-slate-100 p-1">
-                      <div className="p-3 hover:bg-blue-50/50 transition-colors text-xs">
-                        <p className="font-bold text-slate-900">Mid-Term Results Released</p>
-                        <p className="text-slate-500 text-[11px] mt-0.5">Check and confirm Form 1 to Form 4 marks entry.</p>
-                        <p className="text-[10px] text-blue-600 font-semibold mt-1">Nov 1, 2026</p>
-                      </div>
-                      <div className="p-3 hover:bg-blue-50/50 transition-colors text-xs">
-                        <p className="font-bold text-slate-900">School Fees Reminder</p>
-                        <p className="text-slate-500 text-[11px] mt-0.5">Ensure school accounts and candidate clearance.</p>
-                        <p className="text-[10px] text-blue-600 font-semibold mt-1">Oct 28, 2026</p>
-                      </div>
-                      {recentLogs.slice(0, 3).map((log) => (
-                        <div key={log.id} className="p-3 hover:bg-slate-50 transition-colors text-xs">
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-semibold text-slate-800">{log.action}</p>
-                              <p className="text-[10px] text-slate-400 mt-0.5">{log.timestamp}</p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
               {/* User Avatar & Name */}
-              <div className="flex items-center gap-2 pl-2">
+              <div className="flex items-center gap-2 pl-3">
                 <div className="w-8 h-8 rounded-full bg-blue-600 ring-2 ring-white/80 overflow-hidden flex items-center justify-center text-white font-bold text-xs shadow-inner">
-                  {currentUser.displayName ? currentUser.displayName.charAt(0) : 'A'}
+                  {currentUser.displayName ? currentUser.displayName.charAt(0) : 'M'}
                 </div>
                 <span className="hidden md:inline text-xs font-semibold text-white pr-2">
                   {currentUser.displayName}
                 </span>
               </div>
             </div>
-          ) : (
-            <div className="text-xs font-bold text-[#1557B0] bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200">
-              E-REPORT Portal
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

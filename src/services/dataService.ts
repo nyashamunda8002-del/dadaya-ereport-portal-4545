@@ -106,9 +106,21 @@ class DataService {
             }
           }
 
+          // Ensure all initial subjects exist
           if (!parsed.subjects || parsed.subjects.length === 0) {
             parsed.subjects = initialSubjects;
+          } else {
+            const existingSubjectIds = new Set((parsed.subjects as Subject[]).map((s) => s.id));
+            for (const initSub of initialSubjects) {
+              if (!existingSubjectIds.has(initSub.id)) {
+                parsed.subjects.push(initSub);
+                existingSubjectIds.add(initSub.id);
+              }
+            }
           }
+
+          // Purge removed teachers (such as tch-ahmed)
+          parsed.teachers = (parsed.teachers as Teacher[]).filter((t) => t.id !== 'tch-ahmed');
 
           return parsed;
         }
@@ -899,6 +911,55 @@ class DataService {
     return true;
   }
 
+  // --- Student Attendance Summary ---
+  public getAttendanceSummary(studentId: string) {
+    const totalDays = 65;
+    const num = parseInt(studentId.replace(/\D/g, ''), 10) || 1;
+    const presentDays = Math.min(totalDays, 60 + (num % 6));
+    const rate = Math.round((presentDays / totalDays) * 1000) / 10;
+    return {
+      present: presentDays,
+      total: totalDays,
+      rate: `${rate}%`,
+    };
+  }
+
+  // --- Dynamic Class Position Calculation ---
+  public calculateClassPosition(
+    studentId: string,
+    classId: string,
+    term: 'Term 1' | 'Term 2' | 'Term 3' = this.state.settings.currentTerm,
+    academicYear: string = this.state.settings.currentAcademicYear
+  ): { position: number; total: number; label: string } {
+    const classmates = this.getStudents({ classId, status: 'Active' });
+    if (classmates.length === 0) return { position: 0, total: 0, label: '—' };
+
+    const scored = classmates
+      .map((st) => {
+        const summary = this.getStudentPerformanceSummary(st.id, term, academicYear);
+        return {
+          studentId: st.id,
+          average: summary.average,
+          count: summary.subjectCount,
+        };
+      })
+      .filter((s) => s.count > 0);
+
+    if (scored.length === 0) return { position: 0, total: classmates.length, label: '—' };
+
+    scored.sort((a, b) => b.average - a.average);
+    const rankIndex = scored.findIndex((s) => s.studentId === studentId);
+    if (rankIndex === -1) {
+      return { position: 0, total: classmates.length, label: '—' };
+    }
+    const rank = rankIndex + 1;
+    return {
+      position: rank,
+      total: classmates.length,
+      label: `${rank} of ${classmates.length}`,
+    };
+  }
+
   // --- Dynamic Report Card Generator ---
   public generateReportCard(
     studentId: string,
@@ -943,6 +1004,12 @@ class DataService {
         ? 'Satisfactory term. Encourage greater focus in subsequent terms.'
         : 'More commitment required to achieve school standards.';
 
+    const positionInfo = this.calculateClassPosition(student.id, student.classId, term, academicYear);
+    const attendance = this.getAttendanceSummary(student.id);
+
+    const classTeacher = this.getTeachers().find((t) => t.assignedClassIds.includes(student.classId));
+    const classTeacherName = classTeacher ? `${classTeacher.title}` : 'Mr. Moyo / Mrs. Sibanda';
+
     return {
       id: `rc-${student.id}-${term.replace(/\s+/g, '')}-${academicYear.replace(/[/]/g, '-')}`,
       studentId: student.id,
@@ -963,6 +1030,66 @@ class DataService {
         year: 'numeric',
       }),
       status: 'Published',
+      classPosition: positionInfo.label,
+      rank: positionInfo.position,
+      cohortTotal: positionInfo.total,
+      attendancePresent: attendance.present,
+      attendanceTotal: attendance.total,
+      attendanceRate: attendance.rate,
+      classTeacherName,
+      headmasterName: this.state.settings.headmasterName || 'Dr. C. G. Mugabe',
+      schoolMotto: 'Education for Life • Imfundo Yempilo • Dzidzo Youpenyu',
+      isComplete: subjectRecords.length >= 3,
+    };
+  }
+
+  // --- Reports Dashboard Statistics ---
+  public getReportsDashboardStats(filter?: {
+    classId?: string;
+    term?: 'Term 1' | 'Term 2' | 'Term 3';
+    academicYear?: string;
+    assignedClassIds?: string[];
+  }) {
+    const currentTerm = filter?.term || this.state.settings.currentTerm;
+    const currentYear = filter?.academicYear || this.state.settings.currentAcademicYear;
+
+    let targetStudents = this.getStudents({ status: 'Active' });
+    if (filter?.classId && filter.classId !== 'all') {
+      targetStudents = targetStudents.filter((s) => s.classId === filter.classId);
+    } else if (filter?.assignedClassIds && filter.assignedClassIds.length > 0) {
+      targetStudents = targetStudents.filter((s) => filter.assignedClassIds!.includes(s.classId));
+    }
+
+    const allMarks = this.getMarks({ term: currentTerm, academicYear: currentYear });
+
+    let completedCount = 0;
+    let pendingCount = 0;
+    let awaitingApprovalCount = 0;
+
+    targetStudents.forEach((st) => {
+      const stMarks = allMarks.filter((m) => m.studentId === st.id);
+      if (stMarks.length === 0) {
+        pendingCount++;
+      } else {
+        const hasUnapproved = stMarks.some((m) => m.status !== 'Approved');
+        if (hasUnapproved) {
+          awaitingApprovalCount++;
+        }
+        if (stMarks.length >= 3) {
+          completedCount++;
+        } else {
+          pendingCount++;
+        }
+      }
+    });
+
+    return {
+      totalReports: targetStudents.length,
+      completedReports: completedCount,
+      pendingReports: pendingCount,
+      awaitingApproval: awaitingApprovalCount,
+      term: currentTerm,
+      academicYear: currentYear,
     };
   }
 

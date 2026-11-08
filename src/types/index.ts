@@ -107,6 +107,16 @@ export interface ReportCard {
   headmasterRemarks: string;
   generatedDate: string;
   status: 'Draft' | 'Published';
+  classPosition?: string;
+  rank?: number;
+  cohortTotal?: number;
+  attendancePresent?: number;
+  attendanceTotal?: number;
+  attendanceRate?: string;
+  classTeacherName?: string;
+  headmasterName?: string;
+  schoolMotto?: string;
+  isComplete?: boolean;
 }
 
 export interface ActivityLog {
