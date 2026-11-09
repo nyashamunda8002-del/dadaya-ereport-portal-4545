@@ -13,7 +13,7 @@ export const GundaDigitalsFloatingBadge: React.FC = () => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-3 pl-2 pr-4 py-2 bg-white/95 hover:bg-white text-slate-800 rounded-full shadow-xl hover:shadow-2xl border-2 border-slate-200/90 backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
+        className="no-print fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-30 flex items-center gap-2.5 sm:gap-3 pl-1.5 sm:pl-2 pr-3 sm:pr-4 py-1.5 sm:py-2 bg-white/95 hover:bg-white text-slate-800 rounded-full shadow-xl hover:shadow-2xl border-2 border-slate-200/90 backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
         title="Official Development Credit · Gunda Digitals"
         aria-label="Gunda Digitals"
       >

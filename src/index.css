@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 @layer base {
-  body {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+    box-sizing: border-box;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  *, *:before, *:after {
+    box-sizing: border-box;
   }
 }
 
@@ -14,12 +22,25 @@
   font-family: 'Playfair Display', Georgia, cursive;
 }
 
+/* Ensure isolated horizontal scroll areas do not trigger whole page horizontal scroll */
+.table-scroll-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
 @media print {
-  body {
+  html, body {
     background: white !important;
     color: black !important;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+    overflow: visible !important;
   }
 
   .no-print {
@@ -33,7 +54,7 @@
   .print-page {
     box-shadow: none !important;
     margin: 0 !important;
-    padding: 1.5cm !important;
+    padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
   }

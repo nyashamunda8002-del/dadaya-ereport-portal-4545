@@ -13,6 +13,7 @@ import {
   Briefcase,
   BookOpen,
   Award,
+  X,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -93,7 +94,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
         <div className="flex flex-col flex-1 overflow-y-auto">
           {/* Top Brand Block */}
-          <div className="pt-6 pb-6 px-5 flex flex-col items-center text-center border-b border-slate-100">
+          <div className="pt-6 pb-6 px-5 flex flex-col items-center text-center border-b border-slate-100 relative">
+            {/* Mobile close button */}
+            {onCloseMobile && (
+              <button
+                type="button"
+                onClick={onCloseMobile}
+                className="lg:hidden absolute top-3 right-3 p-1.5 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
+                aria-label="Close sidebar menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
             <DadayaCrest sizeClass="w-16 h-16" />
             <h2 className="mt-2 text-base font-black tracking-wide text-[#082B63] uppercase leading-tight font-sans">
               DADAYA HIGH SCHOOL

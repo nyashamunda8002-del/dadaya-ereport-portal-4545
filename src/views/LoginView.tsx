@@ -152,20 +152,20 @@ export const LoginView: React.FC = () => {
         </div>
 
         {/* Portal Switcher Tabs */}
-        <nav className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-1 shadow-lg">
+        <nav className="flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-1 shadow-lg max-w-full">
           <button
             type="button"
             onClick={() => {
               setActivePortal('teacher');
               setErrorMsg(null);
             }}
-            className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activePortal === 'teacher'
                 ? 'bg-white text-[#082B63] shadow-md'
                 : 'text-white/80 hover:text-white hover:bg-white/10'
             }`}
           >
-            Teacher Login
+            Teacher
           </button>
           <button
             type="button"
@@ -173,13 +173,13 @@ export const LoginView: React.FC = () => {
               setActivePortal('admin');
               setErrorMsg(null);
             }}
-            className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activePortal === 'admin'
                 ? 'bg-white text-[#082B63] shadow-md'
                 : 'text-white/80 hover:text-white hover:bg-white/10'
             }`}
           >
-            Admin Login
+            Admin
           </button>
           <button
             type="button"
@@ -187,20 +187,20 @@ export const LoginView: React.FC = () => {
               setActivePortal('student');
               setErrorMsg(null);
             }}
-            className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+            className={`px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activePortal === 'student'
                 ? 'bg-white text-[#082B63] shadow-md'
                 : 'text-white/80 hover:text-white hover:bg-white/10'
             }`}
           >
-            Student Portal
+            Student
           </button>
         </nav>
       </header>
 
       {/* 3. Centered White Login Card Matching Provided Design */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
-        <div className="w-full max-w-[420px] bg-white rounded-3xl shadow-2xl p-7 sm:p-9 space-y-6 border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-3 sm:px-4 py-6 sm:py-12">
+        <div className="w-full max-w-[420px] bg-white rounded-3xl shadow-2xl p-5 sm:p-9 space-y-5 sm:space-y-6 border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
           {/* Card Header matching template screenshot */}
           <div className="border-b border-slate-100 pb-3">
             <div className="text-[11px] uppercase tracking-wider text-[#1557B0] font-bold">

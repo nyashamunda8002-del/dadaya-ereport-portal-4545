@@ -262,7 +262,96 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
 
       {/* Student Marks Table - Authentic Academic Ledger */}
       <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile Student Marks Entry Cards */}
+        <div className="sm:hidden divide-y divide-slate-100">
+          {classStudents.length > 0 ? (
+            classStudents.map((st, index) => {
+              const draft = marksDraft[st.id] || { mark: '', status: 'Pending' };
+
+              return (
+                <div key={st.id} className="p-3.5 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono text-slate-400 font-bold">
+                          #{index + 1}
+                        </span>
+                        <h4 className="font-bold text-sm text-[#082B63]">
+                          {st.name} {st.surname}
+                        </h4>
+                      </div>
+                      <span className="font-mono text-xs font-bold text-[#1557B0] mt-0.5 block">
+                        {st.id}
+                      </span>
+                    </div>
+
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-xs font-mono font-medium px-2 py-0.5 rounded-full ${
+                        draft.status === 'Approved'
+                          ? 'bg-emerald-50 text-emerald-700'
+                          : draft.status === 'Submitted'
+                          ? 'bg-blue-50 text-blue-700'
+                          : draft.status === 'Saved'
+                          ? 'bg-purple-50 text-purple-700'
+                          : 'bg-slate-100 text-slate-500'
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          draft.status === 'Approved'
+                            ? 'bg-emerald-600'
+                            : draft.status === 'Submitted'
+                            ? 'bg-blue-600'
+                            : draft.status === 'Saved'
+                            ? 'bg-purple-600'
+                            : 'bg-slate-400'
+                        }`}
+                      />
+                      {draft.status}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-3 pt-1">
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs font-bold text-slate-600">
+                        Mark:
+                      </label>
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={3}
+                          value={draft.mark}
+                          onChange={(e) => handleMarkChange(st.id, e.target.value)}
+                          placeholder="0–100"
+                          className="w-20 px-2.5 py-2 text-center text-sm font-bold font-mono text-[#082B63] border border-slate-300 rounded-xl focus:border-[#1557B0] focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden tabular-nums bg-white min-h-[40px]"
+                        />
+                        <span className="text-slate-500 font-mono text-xs font-bold">%</span>
+                      </div>
+                    </div>
+
+                    {onOpenReportCard && (
+                      <button
+                        type="button"
+                        onClick={() => onOpenReportCard(st.id)}
+                        className="px-3 py-2 text-xs font-bold text-[#1557B0] bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors cursor-pointer min-h-[40px] flex items-center gap-1"
+                      >
+                        Report Card
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="p-8 text-center text-slate-400 text-xs italic">
+              No candidates currently registered in this stream.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop & Tablet Tabular Marks Ledger */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200 text-[#082B63] uppercase text-[11px] font-bold tracking-wider">
@@ -354,17 +443,17 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
         </div>
 
         {/* Footer Bar */}
-        <div className="p-3.5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <div className="text-slate-500 font-medium">
+        <div className="p-3.5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+          <div className="text-slate-500 font-medium text-center sm:text-left">
             Total Enrolled: <span className="font-bold text-[#082B63] font-mono">{classStudents.length}</span> candidates
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <button
               type="button"
               disabled={isSubmitting || classStudents.length === 0}
               onClick={() => handleSaveMarks('Submitted')}
-              className="px-3.5 py-1.5 border border-slate-300 hover:border-[#1557B0] hover:bg-white text-[#082B63] rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer shadow-2xs"
+              className="px-3.5 py-2.5 sm:py-1.5 border border-slate-300 hover:border-[#1557B0] hover:bg-white text-[#082B63] rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer shadow-2xs min-h-[44px] sm:min-h-0"
             >
               <Send className="w-3.5 h-3.5 text-[#1557B0]" />
               <span>Submit for Verification</span>
@@ -374,7 +463,7 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
               type="button"
               disabled={isSubmitting || classStudents.length === 0}
               onClick={() => handleSaveMarks('Saved')}
-              className="px-4 py-1.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
+              className="px-4 py-2.5 sm:py-1.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer shadow-xs min-h-[44px] sm:min-h-0"
             >
               <Save className="w-3.5 h-3.5" />
               <span>{isSubmitting ? 'Recording...' : 'Save Draft'}</span>

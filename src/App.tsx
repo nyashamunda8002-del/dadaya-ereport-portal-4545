@@ -126,7 +126,7 @@ const MainAppContent: React.FC = () => {
         />
 
         {/* Main Content Area */}
-        <main className="flex-1 bg-[#F4F7FC] p-4 sm:p-6 lg:p-8 min-w-0 overflow-y-auto max-w-[1600px]">
+        <main className="flex-1 bg-[#F4F7FC] p-3 sm:p-6 lg:p-8 min-w-0 max-w-full overflow-x-hidden overflow-y-auto">
           {/* TEACHER VIEWS */}
           {role === 'teacher' && (
             <>

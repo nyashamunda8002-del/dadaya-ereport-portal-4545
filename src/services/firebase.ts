@@ -85,6 +85,7 @@ try {
       localCache: persistentLocalCache({
         tabManager: persistentMultipleTabManager(),
       }),
+      experimentalAutoDetectLongPolling: true,
     },
     firebaseConfig.firestoreDatabaseId
   );
@@ -96,22 +97,23 @@ export const db: Firestore = firestoreDb;
 // Initialize Firebase Auth
 export const auth: Auth = getAuth(app);
 
-// Test Firestore Connection as required by skill
+// Test Firestore Connection as required by skill with safe non-blocking probe
 export async function testConnection(): Promise<boolean> {
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
+    const probePromise = getDocFromServer(doc(db, 'test', 'connection'));
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('probe-timeout')), 3000)
+    );
+    await Promise.race([probePromise, timeoutPromise]);
     console.log('Firestore connected successfully to database:', firebaseConfig.firestoreDatabaseId);
     return true;
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn('Firestore offline check:', error.message);
-      return false;
-    }
-    // Any other error (like not found on doc) still confirms connection reaches server
-    return true;
+  } catch {
+    // If backend connection is delayed, Firestore operates seamlessly via persistent offline cache
+    return false;
   }
 }
 
+// Perform background non-blocking check
 testConnection();
 
 export const getFirebaseStatus = () => {

@@ -480,7 +480,101 @@ export const TeacherReportCardsView: React.FC<TeacherReportCardsViewProps> = ({
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* Mobile Candidate Cards List */}
+          <div className="sm:hidden divide-y divide-slate-100">
+            {filteredCandidates.length > 0 ? (
+              filteredCandidates.map((item) => {
+                const { student, summary, gradeInfo, positionInfo, status } = item;
+                return (
+                  <div key={student.id} className="p-3.5 space-y-2.5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-sm text-[#082B63] truncate">
+                          {student.name} {student.surname}
+                        </h4>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="font-mono text-xs font-bold text-[#1557B0]">
+                            {student.id}
+                          </span>
+                          <span className="text-slate-300">•</span>
+                          <span className="text-xs text-slate-500 font-semibold">
+                            Pos: {positionInfo.label}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Status & Grade Badges */}
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        {summary.subjectCount > 0 ? (
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-mono font-bold text-xs text-[#082B63]">
+                              {summary.average}%
+                            </span>
+                            <span className={`px-2 py-0.5 rounded text-xs font-mono font-bold ${
+                              summary.average >= 75
+                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                : summary.average >= 50
+                                ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                                : 'bg-rose-50 text-rose-800 border border-rose-200'
+                            }`}>
+                              Grade {gradeInfo.grade}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-slate-400 text-xs italic">Pending</span>
+                        )}
+
+                        {status === 'completed' ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            <CheckCircle2 className="w-3 h-3" />
+                            Ready
+                          </span>
+                        ) : status === 'awaiting' ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                            <Clock className="w-3 h-3" />
+                            Pending Approval
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                            <AlertCircle className="w-3 h-3" />
+                            Incomplete
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="pt-1 flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => onOpenReportCard(student.id, selectedTerm)}
+                        className="flex-1 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 min-h-[40px]"
+                      >
+                        <Award className="w-4 h-4 text-blue-200" />
+                        <span>View Report Card</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadSinglePDF(student.id)}
+                        className="p-2 bg-slate-100 hover:bg-slate-200 text-[#082B63] border border-slate-200 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center min-h-[40px] px-3.5"
+                        title="Download PDF"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span className="ml-1">PDF</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="p-8 text-center text-slate-400 text-xs italic">
+                No candidates match the filter criteria.
+              </div>
+            )}
+          </div>
+
+          {/* Desktop & Tablet Tabular Roster */}
+          <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm border-collapse">
               <thead>
                 <tr className="bg-slate-50/50 border-b border-slate-200 text-[#082B63] uppercase text-[11px] font-bold tracking-wider">

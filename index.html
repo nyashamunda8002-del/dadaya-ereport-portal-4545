@@ -3,6 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Allow browser extensions/interceptors to cleanly assign window.fetch
+      try {
+        if (typeof window !== 'undefined' && window.fetch) {
+          var origFetch = window.fetch;
+          var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+          if (desc && !desc.writable && !desc.set) {
+            var activeFetch = origFetch;
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return activeFetch; },
+              set: function(val) { activeFetch = val; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        }
+      } catch (e) {}
+    </script>
     <title>Dadaya High School E-Report Portal</title>
     <meta name="description" content="Official E-Report Portal for Dadaya High School: student performance, teacher marks feeding, and administrative control." />
     <meta property="og:title" content="Dadaya High School E-Report Portal" />

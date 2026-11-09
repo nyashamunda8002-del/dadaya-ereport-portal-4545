@@ -49,27 +49,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome, onToggleMobileMe
 
   return (
     <header className="no-print bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
-      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="w-full px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
         {/* Left: Dadaya High School & E-REPORT Portal Branding */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           {/* Mobile hamburger menu toggle */}
           {onToggleMobileMenu && (
             <button
               type="button"
               onClick={onToggleMobileMenu}
-              className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-[#082B63] hover:bg-slate-100 transition-colors"
-              aria-label="Open menu"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl text-slate-700 hover:text-[#082B63] hover:bg-slate-100 transition-colors shrink-0"
+              aria-label="Open navigation menu"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           )}
 
           <div
             onClick={onNavigateHome}
-            className="flex flex-col cursor-pointer select-none group"
+            className="flex flex-col cursor-pointer select-none group min-w-0"
           >
-            <div className="flex items-baseline gap-3">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-[#082B63]">
+            <div className="flex items-baseline gap-2 sm:gap-3">
+              <span className="text-base sm:text-2xl font-black tracking-tight text-[#082B63] truncate">
                 Dadaya High School
               </span>
               <span className="hidden md:inline-block text-slate-300">|</span>
@@ -77,27 +77,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateHome, onToggleMobileMe
                 Education for Life • Imfundo Yempilo
               </span>
             </div>
-            <span className="text-xs sm:text-sm font-black tracking-wide text-[#1557B0] uppercase">
+            <span className="text-[10px] sm:text-sm font-black tracking-wide text-[#1557B0] uppercase leading-tight">
               E-REPORT Portal
             </span>
           </div>
         </div>
 
         {/* Right: Curved Portal Pill Island with status & profile */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {currentUser ? (
-            <div className="flex items-center bg-[#082B63] text-white rounded-full py-1.5 pl-4 pr-1.5 shadow-md shadow-blue-950/15 border border-[#1557B0]/40">
+            <div className="flex items-center bg-[#082B63] text-white rounded-full py-1 sm:py-1.5 pl-2.5 sm:pl-4 pr-1 sm:pr-1.5 shadow-md shadow-blue-950/15 border border-[#1557B0]/40">
               {/* Portal Role Badge & Switcher */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
-                  className="flex items-center gap-2 pr-3 border-r border-blue-400/30 text-xs font-semibold text-white hover:text-blue-200 transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 sm:gap-2 pr-2 sm:pr-3 border-r border-blue-400/30 text-xs font-semibold text-white hover:text-blue-200 transition-colors cursor-pointer"
                   title="Switch Active Portal / Test Accounts"
                 >
-                  <GraduationCap className="w-4 h-4 text-blue-300" />
+                  <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-300 shrink-0" />
                   <span className="hidden sm:inline font-medium">{getPortalLabel()}</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-blue-300" />
+                  <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-300" />
                 </button>
 
                 {showRoleSwitcher && (

@@ -494,7 +494,52 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
               )}
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Mobile Student Cards List */}
+            <div className="sm:hidden divide-y divide-slate-100">
+              {paginatedStudents.length > 0 ? (
+                paginatedStudents.map((st, idx) => {
+                  const globalIdx = (currentPage - 1) * pageSize + idx + 1;
+                  return (
+                    <div key={st.id} className="p-3.5 flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono text-slate-400 font-bold">
+                            #{globalIdx}
+                          </span>
+                          <h4 className="font-bold text-sm text-[#082B63] truncate">
+                            {st.name} {st.surname}
+                          </h4>
+                        </div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="font-mono text-xs font-bold text-[#1557B0]">
+                            {st.id}
+                          </span>
+                          <span className="text-slate-300">•</span>
+                          <span className="text-xs text-slate-500 truncate">
+                            {st.className}
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => onOpenReportCard(st.id)}
+                        className="px-3 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer shrink-0 flex items-center gap-1.5 min-h-[40px]"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>Report Card</span>
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="p-8 text-center text-slate-400 text-xs italic">
+                  No students enrolled in this class stream.
+                </div>
+              )}
+            </div>
+
+            <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-left text-xs sm:text-sm">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200 text-[#082B63] uppercase text-[11px] tracking-wider font-bold">

@@ -66,11 +66,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
         </div>
 
         {/* Term Dropdown & View Report Card Button */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <select
             value={selectedTerm}
             onChange={(e) => setSelectedTerm(e.target.value as any)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden cursor-pointer"
+            className="px-3 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden cursor-pointer"
           >
             <option value="Term 1">Term 1</option>
             <option value="Term 2">Term 2</option>
@@ -80,9 +80,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
           <button
             type="button"
             onClick={() => onOpenReportCard(student.id, selectedTerm)}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1557B0] hover:bg-[#082B63] text-white rounded-xl text-xs sm:text-sm font-bold transition-colors cursor-pointer shadow-xs min-h-[44px]"
           >
-            <Award className="w-4 h-4 text-blue-200" />
+            <Award className="w-4 h-4 text-blue-200 shrink-0" />
             <span>Official Report Card</span>
           </button>
         </div>
