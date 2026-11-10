@@ -21,10 +21,12 @@ export const AdminReportsView: React.FC<{ onOpenReportCard: (id: string, term?: 
   onOpenReportCard,
 }) => {
   const classes = dataService.getClasses();
-  const subjects = dataService.getSubjects();
   const settings = dataService.getSettings();
 
   const [selectedClassId, setSelectedClassId] = useState<string>('all');
+  const availableSubjects = selectedClassId === 'all'
+    ? dataService.getSubjects()
+    : dataService.getSubjectsForClass(selectedClassId);
   const [selectedTerm, setSelectedTerm] = useState<'Term 1' | 'Term 2' | 'Term 3'>(
     (settings.currentTerm as 'Term 1' | 'Term 2' | 'Term 3') || 'Term 1'
   );
@@ -102,8 +104,12 @@ export const AdminReportsView: React.FC<{ onOpenReportCard: (id: string, term?: 
 
   // Subject Stats
   const subjectStats = useMemo(() => {
-    const marks = dataService.getMarks({ term: selectedTerm, academicYear: selectedAcademicYear });
-    return subjects.map((sub) => {
+    const marks = dataService.getMarks({
+      classId: selectedClassId,
+      term: selectedTerm,
+      academicYear: selectedAcademicYear,
+    });
+    return availableSubjects.map((sub) => {
       const subMarks = marks.filter((m) => m.subjectId === sub.id);
       const count = subMarks.length;
       const avg = count > 0 ? Math.round(subMarks.reduce((a, b) => a + b.percentage, 0) / count) : 0;
@@ -117,7 +123,7 @@ export const AdminReportsView: React.FC<{ onOpenReportCard: (id: string, term?: 
         passRate,
       };
     });
-  }, [subjects, selectedTerm, selectedAcademicYear]);
+  }, [availableSubjects, selectedClassId, selectedTerm, selectedAcademicYear]);
 
   // Class Stats
   const classStats = useMemo(() => {

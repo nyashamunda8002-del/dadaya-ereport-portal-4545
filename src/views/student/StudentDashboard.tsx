@@ -14,16 +14,28 @@ interface StudentDashboardProps {
 
 export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReportCard }) => {
   const { currentStudent, currentUser } = useAuth();
-  const [selectedTerm, setSelectedTerm] = useState<'Term 1' | 'Term 2' | 'Term 3'>('Term 1');
-  const [, setRefreshCount] = useState(0);
-
-  useEffect(() => {
-    return dataService.subscribe(() => setRefreshCount((c) => c + 1));
-  }, []);
-
   const studentId = currentStudent?.id || currentUser?.associatedId || 'DHS001';
   const student = currentStudent || dataService.getStudentById(studentId) || dataService.getStudents()[0];
   const settings = dataService.getSettings();
+
+  // Automatically determine the term of the marks entered recently
+  const mostRecentTerm = dataService.getMostRecentTerm(student?.id || studentId);
+  const [selectedTerm, setSelectedTerm] = useState<'Term 1' | 'Term 2' | 'Term 3'>(mostRecentTerm);
+  const [, setRefreshCount] = useState(0);
+
+  useEffect(() => {
+    return dataService.subscribe(() => {
+      setRefreshCount((c) => c + 1);
+      // If marks were just entered or updated, sync to that recent term
+      const updatedLatest = dataService.getMostRecentTerm(student?.id || studentId);
+      setSelectedTerm(updatedLatest);
+    });
+  }, [student?.id, studentId]);
+
+  useEffect(() => {
+    const latest = dataService.getMostRecentTerm(student?.id || studentId);
+    setSelectedTerm(latest);
+  }, [student?.id, studentId]);
 
   if (!student) {
     return (
@@ -72,9 +84,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ onOpenReport
             onChange={(e) => setSelectedTerm(e.target.value as any)}
             className="px-3 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden cursor-pointer"
           >
-            <option value="Term 1">Term 1</option>
-            <option value="Term 2">Term 2</option>
-            <option value="Term 3">Term 3</option>
+            <option value="Term 1">{mostRecentTerm === 'Term 1' ? 'Term 1 (Recent Marks)' : 'Term 1'}</option>
+            <option value="Term 2">{mostRecentTerm === 'Term 2' ? 'Term 2 (Recent Marks)' : 'Term 2'}</option>
+            <option value="Term 3">{mostRecentTerm === 'Term 3' ? 'Term 3 (Recent Marks)' : 'Term 3'}</option>
           </select>
 
           <button

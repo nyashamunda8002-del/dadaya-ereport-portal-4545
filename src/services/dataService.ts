@@ -663,6 +663,68 @@ class DataService {
     return [...this.state.subjects];
   }
 
+  /**
+   * Returns only curriculum subjects applicable to a specific class/stream
+   */
+  public getSubjectsForClass(classId: string): Subject[] {
+    const cls = this.getClassById(classId);
+    if (!cls) return this.getSubjects();
+
+    const id = cls.id.toLowerCase();
+    const stream = (cls.stream || '').toLowerCase();
+    const formLevel = (cls.formLevel || '').toLowerCase();
+
+    // A-Level Sciences (Lower 6 & Upper 6 Sciences)
+    if (
+      id.includes('six-sciences') ||
+      ((formLevel.includes('6') || formLevel.includes('six')) && stream.includes('science'))
+    ) {
+      const allowedSubjectIds = ['pure-maths', 'physics', 'chemistry', 'biology', 'ict', 'statistics', 'geography'];
+      return this.state.subjects.filter((s) => allowedSubjectIds.includes(s.id));
+    }
+
+    // A-Level Arts (Lower 6 & Upper 6 Arts)
+    if (
+      id.includes('six-arts') ||
+      ((formLevel.includes('6') || formLevel.includes('six')) && stream.includes('art'))
+    ) {
+      const allowedSubjectIds = ['literature', 'frs', 'history', 'shona', 'geography'];
+      return this.state.subjects.filter((s) => allowedSubjectIds.includes(s.id));
+    }
+
+    // A-Level Commercials (Lower 6 & Upper 6 Commercials)
+    if (
+      id.includes('six-commercials') ||
+      ((formLevel.includes('6') || formLevel.includes('six')) && stream.includes('commercial'))
+    ) {
+      const allowedSubjectIds = ['accounts', 'business', 'pure-maths', 'statistics', 'ict', 'geography'];
+      return this.state.subjects.filter((s) => allowedSubjectIds.includes(s.id));
+    }
+
+    // O-Level Form 3/4 Sciences
+    if (stream.includes('science')) {
+      const allowedSubjectIds = ['maths', 'english', 'physics', 'chemistry', 'biology', 'ict', 'geography'];
+      return this.state.subjects.filter((s) => allowedSubjectIds.includes(s.id));
+    }
+
+    // O-Level Form 3/4 Commercials
+    if (stream.includes('commercial')) {
+      const allowedSubjectIds = ['maths', 'english', 'accounts', 'business', 'ict', 'geography'];
+      return this.state.subjects.filter((s) => allowedSubjectIds.includes(s.id));
+    }
+
+    // O-Level Form 3/4 Arts / ICT
+    if (stream.includes('art') || stream.includes('ict')) {
+      const allowedSubjectIds = ['maths', 'english', 'history', 'shona', 'ict', 'geography'];
+      return this.state.subjects.filter((s) => allowedSubjectIds.includes(s.id));
+    }
+
+    // Forms 1 & 2 (General Core Curriculum)
+    const allowedJuniorIds = ['maths', 'english', 'biology', 'chemistry', 'physics', 'history', 'shona', 'geography', 'ict'];
+    const filtered = this.state.subjects.filter((s) => allowedJuniorIds.includes(s.id));
+    return filtered.length > 0 ? filtered : this.state.subjects;
+  }
+
   public getSubjectById(id: string): Subject | undefined {
     return this.state.subjects.find((s) => s.id === id);
   }
@@ -868,6 +930,9 @@ class DataService {
     }
 
     if (savedCount > 0) {
+      // Automatically synchronize current term to the term of the marks entered recently
+      this.state.settings.currentTerm = context.term;
+
       this.logActivity({
         user: context.teacherName,
         role: 'teacher',
@@ -882,6 +947,47 @@ class DataService {
       savedCount,
       errors,
     };
+  }
+
+  /**
+   * Retrieves the academic term of the most recently entered or updated marks.
+   * If a studentId is provided, checks marks for that student first.
+   */
+  public getMostRecentTerm(studentId?: string): 'Term 1' | 'Term 2' | 'Term 3' {
+    const validTerms = ['Term 1', 'Term 2', 'Term 3'];
+
+    if (studentId) {
+      const studentMarks = this.state.marks
+        .filter((m) => m.studentId === studentId && validTerms.includes(m.term))
+        .sort((a, b) => {
+          const tA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+          const tB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+          return tB - tA;
+        });
+
+      if (studentMarks.length > 0 && validTerms.includes(studentMarks[0].term)) {
+        return studentMarks[0].term as 'Term 1' | 'Term 2' | 'Term 3';
+      }
+    }
+
+    // Check all marks across all students sorted by latest entry/update timestamp
+    const allRecentMarks = [...this.state.marks]
+      .filter((m) => validTerms.includes(m.term))
+      .sort((a, b) => {
+        const tA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+        const tB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+        return tB - tA;
+      });
+
+    if (allRecentMarks.length > 0 && validTerms.includes(allRecentMarks[0].term)) {
+      return allRecentMarks[0].term as 'Term 1' | 'Term 2' | 'Term 3';
+    }
+
+    if (this.state.settings.currentTerm && validTerms.includes(this.state.settings.currentTerm)) {
+      return this.state.settings.currentTerm as 'Term 1' | 'Term 2' | 'Term 3';
+    }
+
+    return 'Term 1';
   }
 
   public updateMarkStatus(markId: string, status: MarkStatus, authorName = 'Administrator'): boolean {

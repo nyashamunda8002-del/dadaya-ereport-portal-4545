@@ -63,7 +63,7 @@ const MainAppContent: React.FC = () => {
     if (term === 'Term 1' || term === 'Term 2' || term === 'Term 3') {
       setReportModalTerm(term);
     } else {
-      setReportModalTerm(dataService.getSettings().currentTerm || 'Term 1');
+      setReportModalTerm(dataService.getMostRecentTerm(studentId));
     }
   };
 

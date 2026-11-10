@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import dataService from '../../services/dataService';
 import { SchoolClass, Subject, Student, MarkStatus } from '../../types';
@@ -28,7 +28,6 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
 
   const settings = dataService.getSettings();
   const classes = dataService.getClasses();
-  const subjects = dataService.getSubjects();
 
   const [selectedClassId, setSelectedClassId] = useState<string>(
     classes.find((c) => c.id === initialClassId)?.id || classes[0]?.id || 'lower-six-sciences'
@@ -39,7 +38,23 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
       setSelectedClassId(classes[0].id);
     }
   }, [classes, selectedClassId]);
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string>('maths');
+
+  // Subjects strictly filtered by class stream/curriculum
+  const availableSubjects = dataService.getSubjectsForClass(selectedClassId);
+
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>(() => {
+    const initSubs = dataService.getSubjectsForClass(initialClassId || 'lower-six-sciences');
+    return initSubs[0]?.id || 'physics';
+  });
+
+  // Whenever class changes, ensure selected subject belongs to the new class
+  useEffect(() => {
+    const classSubs = dataService.getSubjectsForClass(selectedClassId);
+    if (classSubs.length > 0 && !classSubs.some((s) => s.id === selectedSubjectId)) {
+      setSelectedSubjectId(classSubs[0].id);
+    }
+  }, [selectedClassId]);
+
   const [selectedTerm, setSelectedTerm] = useState<'Term 1' | 'Term 2' | 'Term 3'>(
     settings.currentTerm || 'Term 1'
   );
@@ -50,6 +65,17 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [autoSaveState, setAutoSaveState] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   const classStudents = dataService.getStudents({ classId: selectedClassId, status: 'Active' });
 
@@ -75,6 +101,51 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
     setFeedback({ type: null, message: '' });
   }, [selectedClassId, selectedSubjectId, selectedTerm]);
 
+  const performAutoSave = (studentId: string, markStr: string) => {
+    if (markStr.trim() === '') return;
+    const num = Number(markStr);
+    if (isNaN(num) || num < 0 || num > 100) return;
+
+    setAutoSaveState('saving');
+
+    const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Gunda';
+    const teacherId = currentTeacher?.id || 'tch-gunda';
+
+    const result = dataService.saveMarksBatch(
+      [
+        {
+          studentId,
+          mark: num,
+          status: 'Saved',
+        },
+      ],
+      {
+        classId: selectedClassId,
+        subjectId: selectedSubjectId,
+        term: selectedTerm,
+        academicYear: settings.currentAcademicYear,
+        teacherId,
+        teacherName,
+      }
+    );
+
+    if (result.success) {
+      setAutoSaveState('saved');
+      setLastSavedTime(
+        new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      );
+      setMarksDraft((prev) => ({
+        ...prev,
+        [studentId]: {
+          ...prev[studentId],
+          status: 'Saved',
+        },
+      }));
+    } else {
+      setAutoSaveState('idle');
+    }
+  };
+
   const handleMarkChange = (studentId: string, val: string) => {
     if (val !== '' && !/^\d+$/.test(val)) return;
 
@@ -86,6 +157,30 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
         status: val === '' ? 'Pending' : (prev[studentId]?.status || 'Saved'),
       },
     }));
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    if (val !== '') {
+      const num = Number(val);
+      if (!isNaN(num) && num >= 0 && num <= 100) {
+        setAutoSaveState('saving');
+        debounceTimerRef.current = setTimeout(() => {
+          performAutoSave(studentId, val);
+        }, 400);
+      }
+    }
+  };
+
+  const handleMarkBlur = (studentId: string) => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    const currentItem = marksDraft[studentId];
+    if (currentItem && currentItem.mark !== '') {
+      performAutoSave(studentId, currentItem.mark);
+    }
   };
 
   const handleSaveMarks = (targetStatus: MarkStatus = 'Saved') => {
@@ -171,13 +266,37 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
-          Feed Marks
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-          Enter and manage student marks for your classes.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B63] tracking-tight">
+            Feed Marks
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Enter and manage student marks for your classes.
+          </p>
+        </div>
+
+        {/* Live Auto-Save Status Indicator */}
+        <div className="flex items-center gap-2">
+          {autoSaveState === 'saving' && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 text-[#1557B0] text-xs font-bold animate-pulse border border-blue-200 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-[#1557B0] animate-ping" />
+              Saving automatically...
+            </span>
+          )}
+          {autoSaveState === 'saved' && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 shadow-2xs animate-in fade-in">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              Marks auto-saved {lastSavedTime ? `at ${lastSavedTime}` : 'live'}
+            </span>
+          )}
+          {autoSaveState === 'idle' && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium border border-slate-200">
+              <CheckCircle2 className="w-3.5 h-3.5 text-slate-400" />
+              Auto-save active
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Filter Dropdowns */}
@@ -202,14 +321,14 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Subject
+              Subject ({availableSubjects.length} for this stream)
             </label>
             <select
               value={selectedSubjectId}
               onChange={(e) => setSelectedSubjectId(e.target.value)}
               className="w-full px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
             >
-              {subjects.map((sub) => (
+              {availableSubjects.map((sub) => (
                 <option key={sub.id} value={sub.id}>
                   {sub.name} ({sub.code})
                 </option>
@@ -323,6 +442,7 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
                           maxLength={3}
                           value={draft.mark}
                           onChange={(e) => handleMarkChange(st.id, e.target.value)}
+                          onBlur={() => handleMarkBlur(st.id)}
                           placeholder="0–100"
                           className="w-20 px-2.5 py-2 text-center text-sm font-bold font-mono text-[#082B63] border border-slate-300 rounded-xl focus:border-[#1557B0] focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden tabular-nums bg-white min-h-[40px]"
                         />
@@ -386,6 +506,7 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
                             maxLength={3}
                             value={draft.mark}
                             onChange={(e) => handleMarkChange(st.id, e.target.value)}
+                            onBlur={() => handleMarkBlur(st.id)}
                             placeholder="0–100"
                             className="w-16 px-2 py-1 text-center font-bold font-mono text-[#082B63] border border-slate-300 rounded-lg focus:border-[#1557B0] focus:ring-1 focus:ring-[#1557B0] focus:outline-hidden tabular-nums"
                           />

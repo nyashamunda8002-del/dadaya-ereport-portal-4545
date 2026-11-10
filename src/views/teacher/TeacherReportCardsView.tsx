@@ -136,7 +136,7 @@ export const TeacherReportCardsView: React.FC<TeacherReportCardsViewProps> = ({
       term: selectedTerm,
       academicYear: selectedAcademicYear,
     });
-    const subjects = dataService.getSubjects();
+    const subjects = dataService.getSubjectsForClass(selectedClassId);
 
     const stats = subjects
       .map((sub) => {

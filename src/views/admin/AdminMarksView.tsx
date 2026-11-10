@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dataService from '../../services/dataService';
 import { Mark, MarkStatus } from '../../types';
 import {
@@ -16,6 +16,17 @@ export const AdminMarksView: React.FC = () => {
 
   const [selectedClass, setSelectedClass] = useState('all');
   const [selectedSubject, setSelectedSubject] = useState('all');
+
+  const availableSubjects = selectedClass === 'all'
+    ? dataService.getSubjects()
+    : dataService.getSubjectsForClass(selectedClass);
+
+  useEffect(() => {
+    if (selectedSubject !== 'all' && !availableSubjects.some((s) => s.id === selectedSubject)) {
+      setSelectedSubject('all');
+    }
+  }, [selectedClass, availableSubjects, selectedSubject]);
+
   const [selectedTerm, setSelectedTerm] = useState('Term 1');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -146,7 +157,7 @@ export const AdminMarksView: React.FC = () => {
             className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden"
           >
             <option value="all">All Subjects</option>
-            {subjects.map((s) => (
+            {availableSubjects.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}
               </option>
