@@ -410,7 +410,7 @@ export const generateReportCardPDF = (
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(100, 116, 139);
-  doc.text(reportCard.classTeacherName || 'Mr. Moyo / Mrs. Sibanda', margin + cardWidth - 3.5, y + 22.5, {
+  doc.text(reportCard.classTeacherName || 'Mr. Gunda', margin + cardWidth - 3.5, y + 22.5, {
     align: 'right',
   });
 
@@ -478,7 +478,7 @@ export const generateReportCardPDF = (
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(16, 29, 58);
-  doc.text(reportCard.classTeacherName || 'Mr. Moyo / Mrs. Sibanda', margin + 2, y + 2);
+  doc.text(reportCard.classTeacherName || 'Mr. Gunda', margin + 2, y + 2);
 
   doc.setDrawColor(148, 163, 184);
   doc.setLineWidth(0.3);

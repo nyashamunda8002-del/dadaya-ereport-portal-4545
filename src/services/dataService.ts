@@ -93,17 +93,13 @@ class DataService {
             }
           }
 
-          // Ensure all initial teachers exist
-          if (!parsed.teachers || parsed.teachers.length === 0) {
-            parsed.teachers = initialTeachers;
-          } else {
-            const existingTeacherIds = new Set((parsed.teachers as Teacher[]).map((t) => t.id));
-            for (const initTch of initialTeachers) {
-              if (!existingTeacherIds.has(initTch.id)) {
-                parsed.teachers.push(initTch);
-                existingTeacherIds.add(initTch.id);
-              }
-            }
+          // Ensure Teacher Gunda exists as official commercial faculty
+          const gundaTeacher = initialTeachers.find((t) => t.id === 'tch-gunda') || initialTeachers[0];
+          parsed.teachers = (parsed.teachers as Teacher[]).filter(
+            (t) => t.id !== 'tch-ahmed' && t.id !== 'tch-moyo' && t.id !== 'tch-sibanda' && t.id !== 'tch-nyathi' && t.id !== 'tch-dlodlo'
+          );
+          if (!parsed.teachers.some((t: Teacher) => t.id === 'tch-gunda' || t.email.toLowerCase() === 'gunda@gmail.com')) {
+            parsed.teachers.unshift(gundaTeacher);
           }
 
           // Ensure all initial subjects exist
@@ -118,9 +114,6 @@ class DataService {
               }
             }
           }
-
-          // Purge removed teachers (such as tch-ahmed)
-          parsed.teachers = (parsed.teachers as Teacher[]).filter((t) => t.id !== 'tch-ahmed');
 
           return parsed;
         }
@@ -713,14 +706,14 @@ class DataService {
     return this.state.teachers.find((t) => t.id === id);
   }
 
-  public addTeacher(teacherData: Omit<Teacher, 'id'>, authorName = 'Administrator'): Teacher {
-    const id = `tch-${teacherData.surname.toLowerCase()}-${Date.now().toString().slice(-4)}`;
+  public addTeacher(teacherData: (Omit<Teacher, 'id'> & { id?: string }) | Teacher, authorName = 'Administrator'): Teacher {
+    const id = teacherData.id || `tch-${teacherData.surname.toLowerCase()}-${Date.now().toString().slice(-4)}`;
     const newTeacher: Teacher = { ...teacherData, id, status: 'Active' };
     this.state.teachers.push(newTeacher);
     this.logActivity({
       user: authorName,
       role: 'admin',
-      action: `Teacher created - ${newTeacher.title}`,
+      action: `Teacher registered - ${newTeacher.title}`,
       details: `EC ${newTeacher.ecNumber} • Email ${newTeacher.email}`,
     });
     this.saveLocalState();
@@ -1008,7 +1001,7 @@ class DataService {
     const attendance = this.getAttendanceSummary(student.id);
 
     const classTeacher = this.getTeachers().find((t) => t.assignedClassIds.includes(student.classId));
-    const classTeacherName = classTeacher ? `${classTeacher.title}` : 'Mr. Moyo / Mrs. Sibanda';
+    const classTeacherName = classTeacher ? `${classTeacher.title}` : 'Mr. Gunda';
 
     return {
       id: `rc-${student.id}-${term.replace(/\s+/g, '')}-${academicYear.replace(/[/]/g, '-')}`,

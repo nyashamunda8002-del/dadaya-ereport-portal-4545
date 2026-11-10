@@ -129,8 +129,8 @@ export const FeedMarksView: React.FC<FeedMarksViewProps> = ({
       return;
     }
 
-    const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Moyo';
-    const teacherId = currentTeacher?.id || 'tch-moyo';
+    const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Gunda';
+    const teacherId = currentTeacher?.id || 'tch-gunda';
 
     const result = dataService.saveMarksBatch(itemsToSave, {
       classId: selectedClassId,

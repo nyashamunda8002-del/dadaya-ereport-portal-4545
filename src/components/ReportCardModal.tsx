@@ -603,7 +603,7 @@ export const ReportCardModal: React.FC<ReportCardModalProps> = ({
                   "{reportCard.teacherRemarks || 'Satisfactory academic performance and steady progress throughout the term.'}"
                 </p>
                 <div className="text-[10px] text-slate-500 text-right font-medium mt-1">
-                  {reportCard.classTeacherName || 'Mr. Moyo / Mrs. Sibanda'}
+                  {reportCard.classTeacherName || 'Mr. Gunda'}
                 </div>
               </div>
 
@@ -635,7 +635,7 @@ export const ReportCardModal: React.FC<ReportCardModalProps> = ({
             <div className="mt-3.5 pt-2.5 border-t border-slate-300 grid grid-cols-3 gap-4 text-xs text-slate-700">
               <div>
                 <div className="border-b border-slate-400 pb-0.5 mb-0.5 font-semibold text-slate-900 truncate text-[11px]">
-                  {reportCard.classTeacherName || 'Mr. Moyo / Mrs. Sibanda'}
+                  {reportCard.classTeacherName || 'Mr. Gunda'}
                 </div>
                 <div className="font-bold text-slate-500 uppercase text-[9.5px]">
                   Class Teacher's Signature

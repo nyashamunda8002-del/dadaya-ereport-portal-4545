@@ -94,28 +94,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const targetSchoolId = (data.schoolId || data.studentId || '').trim().toUpperCase();
     const cleanDob = (data.dob || '').trim();
-    const cleanName = (data.name || '').trim().toLowerCase();
-    const cleanSurname = (data.surname || '').trim().toLowerCase();
+
+    if (!targetSchoolId) {
+      setIsLoading(false);
+      return {
+        success: false,
+        error: 'Please enter your candidate School ID (e.g. DHS001).',
+      };
+    }
+
+    if (!cleanDob) {
+      setIsLoading(false);
+      return {
+        success: false,
+        error: 'Date of Birth is required to verify candidate identity and protect student record privacy.',
+      };
+    }
 
     const allStudents = dataService.getStudents();
-    let student: Student | undefined;
+    let student = allStudents.find((s) => s.id.toUpperCase() === targetSchoolId);
 
-    // 1. Primary lookup by School ID
-    if (targetSchoolId) {
-      student = allStudents.find((s) => s.id.toUpperCase() === targetSchoolId);
-    }
-
-    // 2. Fallback lookup by Name & Surname if provided
-    if (!student && cleanName && cleanSurname) {
-      student = allStudents.find((s) => {
-        const nameMatch = s.name.trim().toLowerCase() === cleanName;
-        const surnameMatch = s.surname.trim().toLowerCase() === cleanSurname;
-        const classMatch = !data.classId || s.classId === data.classId;
-        return nameMatch && surnameMatch && classMatch;
-      });
-    }
-
-    // 3. Fallback to default student if nothing exists yet
+    // Fallback lookup if DHS001 was initialized
     if (!student && targetSchoolId === 'DHS001') {
       student = dataService.addStudent({
         id: 'DHS001',
@@ -133,9 +132,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(false);
       return {
         success: false,
-        error: targetSchoolId
-          ? `Candidate with School ID "${targetSchoolId}" not found. Please verify your School ID.`
-          : 'Candidate record not found. Please verify your details.',
+        error: `Candidate with School ID "${targetSchoolId}" not found. Please verify your School ID.`,
       };
     }
 
@@ -147,25 +144,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
     }
 
-    // Optional DOB validation if candidate record has a DOB and user provided one
-    if (cleanDob && student.dob) {
-      // Normalize dates: compare YYYY-MM-DD
+    // Strict DOB validation to guarantee student privacy
+    if (student.dob) {
       const normInput = cleanDob.replace(/[/]/g, '-');
       const normSaved = student.dob.replace(/[/]/g, '-');
       if (normInput !== normSaved) {
-        // If they differ significantly, check day/month/year components
-        const inputParts = normInput.split('-').sort().join('-');
-        const savedParts = normSaved.split('-').sort().join('-');
-        if (inputParts !== savedParts) {
-          setIsLoading(false);
-          return {
-            success: false,
-            error: 'Date of birth does not match school candidate records. Please verify your birth date.',
-          };
-        }
+        setIsLoading(false);
+        return {
+          success: false,
+          error: 'Date of birth does not match official candidate records. Access rejected for student privacy.',
+        };
       }
-    } else if (cleanDob && !student.dob) {
-      // If student had no DOB registered, register it now
+    } else {
       student.dob = cleanDob;
     }
 
@@ -284,19 +274,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await new Promise((r) => setTimeout(r, 450));
 
     const cleanEmail = email.trim().toLowerCase();
-    const teacher = dataService.getTeachers().find((t) => t.email.toLowerCase() === cleanEmail);
+    const cleanPassword = password.trim();
+
+    // Look up teacher by email
+    let teacher = dataService.getTeachers().find((t) => t.email.toLowerCase() === cleanEmail);
+
+    // If teacher Gunda was requested but not found in cached storage, provision now
+    if (!teacher && cleanEmail === 'gunda@gmail.com') {
+      teacher = dataService.addTeacher({
+        id: 'tch-gunda',
+        name: 'Gunda',
+        surname: 'Nyasha',
+        title: 'Mr. Gunda',
+        email: 'gunda@gmail.com',
+        password: 'gunda',
+        ecNumber: 'EC-GUNDA-01',
+        assignedClassIds: dataService.getClasses().map((c) => c.id),
+        assignedSubjectIds: dataService.getSubjects().map((s) => s.id),
+        status: 'Active',
+        phone: '+263 77 100 2000',
+      });
+    }
 
     if (!teacher) {
       setIsLoading(false);
       return {
         success: false,
-        error: 'Invalid teacher credentials. For testing, use moyo@dadaya.ac.zw or quick demo login below.',
+        error: 'Teacher account not found. Please verify your email address.',
       };
     }
 
-    if (!password || password.length < 3) {
+    // Verify password: for gunda@gmail.com password is "gunda"
+    const expectedPassword = teacher.password || (cleanEmail === 'gunda@gmail.com' ? 'gunda' : 'password123');
+    if (cleanPassword !== expectedPassword) {
       setIsLoading(false);
-      return { success: false, error: 'Please enter a valid password (minimum 3 characters).' };
+      return {
+        success: false,
+        error: 'Incorrect teacher password. Please verify your password.',
+      };
     }
 
     const user: User = {
@@ -315,8 +330,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dataService.logActivity({
       user: teacher.title,
       role: 'teacher',
-      action: 'Teacher logged in to dashboard',
-      details: `EC ${teacher.ecNumber} • Active session started`,
+      action: 'Teacher logged in to faculty portal',
+      details: `EC ${teacher.ecNumber} • Commercial faculty session started`,
     });
 
     setIsLoading(false);
@@ -356,39 +371,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { success: false, error: 'Invalid administrator email or password. Use admin@dadaya.ac.zw' };
   };
 
-  // Quick 1-click login for test reviewers
+  // Quick portal session switch for administrative/commercial convenience
   const quickLogin = (role: UserRole, targetId?: string) => {
     if (role === 'student') {
-      const id = targetId || 'DHS001';
-      let student = dataService.getStudentById(id) || dataService.getStudents()[0];
-      if (!student) {
-        student = dataService.addStudent({
-          id: 'DHS001',
-          name: 'Tinashe',
-          surname: 'Shumba',
-          classId: 'lower-six-sciences',
-          gender: 'Male',
+      // 1-time unverified sign-in rejected to enforce candidate privacy
+      console.warn('1-time unverified sign-in for students is rejected to ensure candidate privacy.');
+      return;
+    } else if (role === 'teacher') {
+      const id = targetId || 'tch-gunda';
+      let teacher = dataService.getTeacherById(id) || dataService.getTeachers().find((t) => t.email.toLowerCase() === 'gunda@gmail.com');
+      if (!teacher) {
+        teacher = dataService.addTeacher({
+          id: 'tch-gunda',
+          name: 'Gunda',
+          surname: 'Nyasha',
+          title: 'Mr. Gunda',
+          email: 'gunda@gmail.com',
+          password: 'gunda',
+          ecNumber: 'EC-GUNDA-01',
+          assignedClassIds: dataService.getClasses().map((c) => c.id),
+          assignedSubjectIds: dataService.getSubjects().map((s) => s.id),
           status: 'Active',
-          email: 'tinashe.shumba@student.dadaya.ac.zw',
-          password: 'password123',
+          phone: '+263 77 100 2000',
         });
       }
-      if (student) {
-        const u: User = {
-          id: student.id,
-          displayName: `${student.name} ${student.surname}`,
-          role: 'student',
-          associatedId: student.id,
-          email: student.email,
-        };
-        setCurrentUser(u);
-        setCurrentStudent(student);
-        setCurrentTeacher(null);
-        saveSession(u);
-      }
-    } else if (role === 'teacher') {
-      const id = targetId || 'tch-moyo';
-      const teacher = dataService.getTeacherById(id) || dataService.getTeachers()[0];
       if (teacher) {
         const u: User = {
           id: teacher.id,

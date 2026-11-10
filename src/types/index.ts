@@ -29,8 +29,9 @@ export interface Teacher {
   id: string; // e.g. TCH001
   name: string;
   surname: string;
-  title: string; // e.g. Mr. Moyo
+  title: string; // e.g. Mr. Gunda
   email: string;
+  password?: string;
   ecNumber: string; // e.g. EC88421
   assignedClassIds: string[];
   assignedSubjectIds: string[];

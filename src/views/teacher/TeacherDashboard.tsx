@@ -39,7 +39,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     return dataService.subscribe(() => setRefreshCount((c) => c + 1));
   }, []);
 
-  const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Moyo';
+  const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Gunda';
 
   // Compute real metrics from database
   const allClasses = dataService.getClasses();

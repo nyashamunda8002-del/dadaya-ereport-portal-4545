@@ -284,7 +284,7 @@ export const AdminTeachersView: React.FC = () => {
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Title</label>
                   <input
                     type="text"
-                    placeholder="Mr. Moyo"
+                    placeholder="Mr. Gunda"
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}

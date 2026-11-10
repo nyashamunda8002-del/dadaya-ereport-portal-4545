@@ -40,8 +40,8 @@ export const TeacherClassesView: React.FC<TeacherClassesViewProps> = ({
   const allClasses = dataService.getClasses();
   const subjects = dataService.getSubjects();
 
-  const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Moyo';
-  const teacherId = currentTeacher?.id || 'tch-moyo';
+  const teacherName = currentTeacher?.title || currentUser?.displayName || 'Mr. Gunda';
+  const teacherId = currentTeacher?.id || 'tch-gunda';
 
   // State
   const [selectedClassId, setSelectedClassId] = useState<string>(

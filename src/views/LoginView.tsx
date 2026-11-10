@@ -9,6 +9,7 @@ import {
   WifiOff,
   HelpCircle,
   X,
+  ShieldCheck,
 } from 'lucide-react';
 
 export const LoginView: React.FC = () => {
@@ -16,7 +17,6 @@ export const LoginView: React.FC = () => {
     loginAsStudent,
     loginAsTeacher,
     loginAsAdmin,
-    quickLogin,
     isLoading,
   } = useAuth();
 
@@ -53,18 +53,18 @@ export const LoginView: React.FC = () => {
   };
 
   const [studentForm, setStudentForm] = useState({
-    schoolId: 'DHS001',
-    dob: '2008-05-14',
+    schoolId: '',
+    dob: '',
   });
 
   const [teacherForm, setTeacherForm] = useState({
-    email: 'moyo@dadaya.ac.zw',
-    password: 'password123',
+    email: '',
+    password: '',
   });
 
   const [adminForm, setAdminForm] = useState({
-    email: 'admin@dadaya.ac.zw',
-    password: 'password123',
+    email: '',
+    password: '',
   });
 
   const handleStudentSubmit = async (e: React.FormEvent) => {
@@ -268,7 +268,7 @@ export const LoginView: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="moyo@dadaya.ac.zw"
+                  placeholder="Enter your email address"
                   value={teacherForm.email}
                   onChange={(e) => setTeacherForm({ ...teacherForm, email: e.target.value })}
                   className="w-full px-4 py-3 text-sm rounded-2xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#1557B0] focus:outline-hidden transition-all"
@@ -314,29 +314,6 @@ export const LoginView: React.FC = () => {
               >
                 {isLoading ? 'Authenticating...' : 'Sign In to Faculty Portal'}
               </button>
-
-              {/* Quick Faculty Sign-In */}
-              <div className="pt-4 border-t border-slate-100">
-                <div className="text-[11px] font-semibold text-slate-400 mb-2.5 uppercase tracking-wider">
-                  QUICK FACULTY SIGN-IN
-                </div>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => quickLogin('teacher', 'tch-moyo')}
-                    className="py-2 px-3 bg-blue-50/80 hover:bg-blue-100 text-[#1557B0] rounded-xl text-xs font-bold transition-colors text-center cursor-pointer border border-blue-100"
-                  >
-                    Mr. Moyo (Sciences)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => quickLogin('teacher', 'tch-sibanda')}
-                    className="py-2 px-3 bg-slate-50 hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-bold transition-colors text-center cursor-pointer border border-slate-200"
-                  >
-                    Mrs. Sibanda (Arts)
-                  </button>
-                </div>
-              </div>
             </form>
           )}
 
@@ -350,7 +327,7 @@ export const LoginView: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="admin@dadaya.ac.zw"
+                  placeholder="Enter administrator email"
                   value={adminForm.email}
                   onChange={(e) => setAdminForm({ ...adminForm, email: e.target.value })}
                   className="w-full px-4 py-3 text-sm rounded-2xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#082B63] focus:outline-hidden transition-all"
@@ -396,16 +373,6 @@ export const LoginView: React.FC = () => {
               >
                 {isLoading ? 'Verifying Admin Privileges...' : 'Sign In as Administrator'}
               </button>
-
-              <div className="pt-3 border-t border-slate-100 text-center">
-                <button
-                  type="button"
-                  onClick={() => quickLogin('admin')}
-                  className="text-xs font-bold text-[#1557B0] hover:underline cursor-pointer"
-                >
-                  1-Click Principal / Admin Preview Access
-                </button>
-              </div>
             </form>
           )}
 
@@ -449,14 +416,14 @@ export const LoginView: React.FC = () => {
                 {isLoading ? 'Verifying Student Record...' : 'Sign In to Student Portal'}
               </button>
 
-              <div className="pt-3 border-t border-slate-100 text-center">
-                <button
-                  type="button"
-                  onClick={() => quickLogin('student', 'DHS001')}
-                  className="text-xs font-bold text-[#1557B0] hover:underline cursor-pointer"
-                >
-                  Quick Student Preview (Tendai Shumba • DHS001)
-                </button>
+              {/* Candidate Privacy Enforcement Banner */}
+              <div className="pt-3 border-t border-slate-100">
+                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200/90 text-left">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <div className="text-[11px] text-slate-600 leading-relaxed">
+                    <span className="font-semibold text-slate-800">Candidate Privacy Protected:</span> Students must enter their verified School ID and official Date of Birth to view terminal report cards.
+                  </div>
+                </div>
               </div>
             </form>
           )}
